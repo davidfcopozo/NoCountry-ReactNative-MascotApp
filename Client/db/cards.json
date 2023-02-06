@@ -1,0 +1,80 @@
+[
+    {
+        "id" : 1,
+        "image" : "https://www.lavanguardia.com/files/content_image_mobile_filter/uploads/2022/05/21/628955615d048.jpeg",
+        "name" : "Jose",
+        "service" : "Paseo de Mascotas",
+        "price" : "1000",
+        "stars" : 4,
+        "info" : "Disponible",
+        "user_picture" : null,
+        "location" : "Buenos Aires",
+        "clients" : 4,
+        "about": "Soy una persona responsable contrata mis servicios en mi perfil"
+    },
+    {
+        "id" : 2,
+        "image" : "https://sumedico.blob.core.windows.net/images/2021/04/30/pasearperrosnegocioperron_1.jpg",
+        "name" : "Juana",
+        "service" : "Paseo en Grupo",
+        "price" : "500",
+        "stars" : 5,
+        "info" : "Disponible",
+        "user_picture" : "https://www.paseaperros.com.ar/uploads/thumbs/User/300x300/172/face.jpg",
+        "location" : "Santa Fe",
+        "clients" : 5,
+        "about": "Soy una persona responsable contrata mis servicios en mi perfil"
+    },
+    {
+        "id" : 3,
+        "image" : "https://cdn.motor1.com/images/mgl/YAANLq/s3/5.jpg",
+        "name" : "Lucas",
+        "service" : "Transporte",
+        "price" : "2000",
+        "stars" : 3,
+        "info" : "Disponible",
+        "user_picture" : "https://www.paseaperros.com.ar/uploads/thumbs/User/300x300/172/face.jpg",
+        "location" : "Buenos Aires",
+        "clients" : 3,
+        "about": "Soy una persona responsable contrata mis servicios en mi perfil"
+    },
+    {
+        "id" : 4,
+        "image" : "https://media.iatiseguros.com/wp-content/uploads/2017/08/04004709/hacer-housesitting-1.jpg",
+        "name" : "Francisco",
+        "service" : "Cuidado de Mascotas",
+        "price" : "3500",
+        "stars" : 0,
+        "info" : "Disponible",
+        "user_picture" : "https://www.paseaperros.com.ar/uploads/thumbs/User/300x300/172/face.jpg",
+        "location" : "Cordoba",
+        "clients" : 0,
+        "about": "Soy una persona responsable contrata mis servicios en mi perfil"
+    },
+    {
+        "id" : 5,
+        "image" : "https://www.lavanguardia.com/files/image_449_220/uploads/2019/10/02/5fa52f5842d6f.jpeg",
+        "name" : "Mariano",
+        "service" : "Baño de Mascotas",
+        "price" : "3000",
+        "stars" : 4,
+        "info" : "Disponible",
+        "user_picture" : "https://www.paseaperros.com.ar/uploads/thumbs/User/300x300/172/face.jpg",
+        "location" : "Corrientes",
+        "clients" : 4,
+        "about": "Soy una persona responsable contrata mis servicios en mi perfil"
+    },
+    {
+        "id" : 6,
+        "image" : "https://primeraexportacion.com/wp-content/uploads/2018/07/delivery-1.jpg",
+        "name" : "Julieta",
+        "service" : "Delivery de Insumos",
+        "price" : "5000",
+        "stars" : 3,
+        "info" : "Disponible",
+        "user_picture" : "https://www.paseaperros.com.ar/uploads/thumbs/User/300x300/172/face.jpg",
+        "location" : "La Plata",
+        "clients" : 3,
+        "about": "Soy una persona responsable contrata mis servicios en mi perfil"
+    }
+]
