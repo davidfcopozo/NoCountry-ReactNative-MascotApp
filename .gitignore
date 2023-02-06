@@ -9,6 +9,7 @@ Client/*.key
 Client/*.mobileprovision
 Client/*.orig.*
 Client/web-build/
+Server/node_modules/
 
 # macOS
 *.DS_Store
