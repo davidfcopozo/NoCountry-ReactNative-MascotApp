@@ -1,0 +1,14 @@
+Client/node_modules/
+Client/.expo/
+Client/dist/
+Client/npm-debug.*
+Client/*.jks
+Client/*.p8
+Client/*.p12
+Client/*.key
+Client/*.mobileprovision
+Client/*.orig.*
+Client/web-build/
+
+# macOS
+*.DS_Store
