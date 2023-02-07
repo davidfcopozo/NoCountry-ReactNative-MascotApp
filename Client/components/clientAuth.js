@@ -1,6 +1,15 @@
-import { Text, View, TextInput, Image, Pressable, ScrollView } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useColorScheme } from 'nativewind'
+import {
+  Text,
+  View,
+  Image,
+  Pressable,
+  ScrollView,
+  Keyboard,
+  KeyboardAvoidingView
+} from "react-native";
+import { useColorScheme } from "nativewind";
+import InputField from "./InputField";
+import { useState } from "react";
 
 //Componentes de Login y Register
 
@@ -131,6 +140,7 @@ export const Register = () => {
   };
 
     return (
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
     <ScrollView>
       <View className="justify-center items-center mb-6"></View>
       <View className="gap-y-2 p-8 w-full ">
@@ -186,5 +196,6 @@ export const Register = () => {
         </View>
       </View>
     </ScrollView>
+    </KeyboardAvoidingView>
     );
 };
