@@ -1,3 +1,4 @@
+import { useColorScheme } from "nativewind";
 import { useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
@@ -20,9 +21,17 @@ const InputField = ({
 }) => {
   const [hidePassword, setHidePassword] = useState(password);
   const [isFocused, setIsFocused] = useState(false);
+  const { colorScheme } = useColorScheme();
   return (
     <View className="mb-5">
-      <Text className="text-sm font-bold color-{#1A1A1A} my-1">{label}</Text>
+      <Text
+        className="text-sm font-bold color-{#1A1A1A} my-1"
+        style={{
+          color: colorScheme === "dark" ? COLORS.grey : COLORS.black
+        }}
+      >
+        {label}
+      </Text>
       <View
         className="w-full"
         style={[
@@ -45,7 +54,10 @@ const InputField = ({
           }}
           onBlur={() => setIsFocused(false)}
           secureTextEntry={hidePassword}
-          style={{ color: COLORS.darkBlue, flex: 1 }}
+          style={{
+            color: colorScheme === "dark" ? COLORS.grey : COLORS.darkBlue
+          }}
+          className="w-full"
           placeholder={placeholder}
           placeholderTextColor="grey"
           {...props}
