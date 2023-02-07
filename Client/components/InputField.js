@@ -11,14 +11,7 @@ const COLORS = {
   darkBlue: "#7978B5",
   red: "#ff0000"
 };
-const InputField = ({
-  label,
-  error,
-  password,
-  placeholder,
-  onFocus = () => {},
-  ...props
-}) => {
+const InputField = ({ label, error, password, placeholder, onFocus = () => {}, ...props }) => {
   const [hidePassword, setHidePassword] = useState(password);
   const [isFocused, setIsFocused] = useState(false);
   const { colorScheme } = useColorScheme();
@@ -37,11 +30,7 @@ const InputField = ({
         style={[
           style.inputContainer,
           {
-            borderColor: error
-              ? COLORS.red
-              : isFocused
-              ? COLORS.black
-              : COLORS.light,
+            borderColor: error ? COLORS.red : isFocused ? COLORS.black : COLORS.light,
             alignItems: "center"
           }
         ]}
@@ -57,7 +46,7 @@ const InputField = ({
           style={{
             color: colorScheme === "dark" ? COLORS.grey : COLORS.darkBlue
           }}
-          className="w-full"
+          className="flex w-full justify-center"
           placeholder={placeholder}
           placeholderTextColor="grey"
           {...props}
