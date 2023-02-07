@@ -1,11 +1,21 @@
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, Image, Pressable } from "react-native";
+import Cards from "../components/Cards";
+import Shortcuts from "../components/Shortcuts";
+import CardsData from "../db/cards.json";
 
 const Index = () => {
   return (
     <ScrollView>
-      <Text>Index</Text>
-    </ScrollView>
-  )
-}
+      <View className="text-left w-full p-3">
+        <Shortcuts />
 
-export default Index
+        <Text className="font-bold text-2xl mb-2 dark:text-white">
+          Mascoteros cerca de tí
+        </Text>
+        <Cards Data={CardsData} />
+      </View>
+    </ScrollView>
+  );
+};
+
+export default Index;
