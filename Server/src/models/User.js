@@ -1,48 +1,48 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes } = require("sequelize");
 
-module.exports = (sequelize) => {
-   sequelize.define ('user',{
-   id: {
+module.exports = sequelize => {
+  sequelize.define("user", {
+    id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
-      primaryKey: true,
-   },
-   name: {
+      primaryKey: true
+    },
+    name: {
       type: DataTypes.STRING,
-      allowNull: false,
-   },
-   surname: {
+      allowNull: false
+    },
+    surname: {
       type: DataTypes.STRING,
-      allowNull: false,
-   },
-   age: {
+      allowNull: false
+    },
+    age: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-   },
-   city: {
+      allowNull: false
+    },
+    city: {
       type: DataTypes.STRING,
-      allowNull: false,
-   },
-   offers_services: {
+      allowNull: false
+    },
+    offers_services: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
-   },
-   description: {
+      allowNull: false
+    },
+    description: {
       type: DataTypes.STRING,
-      allowNull:  true,
-   },
-   rating: {
+      allowNull: true
+    },
+    rating: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-   },
-   profile_pic: {
+      allowNull: true
+    },
+    profile_pic: {
       type: DataTypes.STRING,
-      allowNull: false,
-   },
-   auth_id: {
+      allowNull: false
+    },
+    auth_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-   }
-   });
-}
+      allowNull: true
+    }
+  });
+};
