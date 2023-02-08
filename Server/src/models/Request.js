@@ -24,7 +24,7 @@ module.exports = sequelize => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    price: {
+    job_offer_id: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
