@@ -12,7 +12,7 @@ module.exports = sequelize => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    fav_user__id: {
+    fav_user_id: {
       type: DataTypes.INTEGER,
       allowNull: false
     }
