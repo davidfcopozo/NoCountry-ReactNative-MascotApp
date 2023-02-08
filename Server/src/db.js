@@ -39,7 +39,7 @@ Category.belongsToMany(User, { through: "User_Category" });
 Favourite.belongsTo(User, { foreignKey: "user_id" });
 Image.belongsTo(User, { foreignKey: "user_id" });
 JobOffer.belongsTo(User, { foreignKey: "user_id" });
-PetType.hasMany(Pet); // ?
+PetType.hasMany(Pet);
 PetType.belongsToMany(User, { through: "User_PetType" });
 Pet.belongsTo(User, { foreignKey: "user_id" });
 Pet.belongsTo(PetType, { foreignKey: "type_id" });
