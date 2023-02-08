@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 module.exports = sequelize => {
   sequelize.define(
-    "auth",
+    "news",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -10,16 +10,16 @@ module.exports = sequelize => {
         autoIncrement: true,
         primaryKey: true
       },
-      email: {
+      image: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      password: {
+      title: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      isGoogle: {
-        type: DataTypes.BOOLEAN,
+      link: {
+        type: DataTypes.STRING,
         allowNull: false
       }
     },
