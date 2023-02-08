@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 
 module.exports = sequelize => {
-  sequelize.define("userReview", {
+  sequelize.define("jobOffer", {
     id: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -12,9 +12,21 @@ module.exports = sequelize => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    review_id: {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    price: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    img: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   });
 };
