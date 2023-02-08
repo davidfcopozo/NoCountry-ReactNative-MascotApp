@@ -1,0 +1,17 @@
+/* Datos para Test */
+
+/*
+{
+  "email": "jose@gmail.com",
+  "password" : "1234",
+  "isGoogle" : false,
+  "name": "Jose",
+  "surname": "PSDP",
+  "age": 26,
+  "city": "Buenos Aires",
+  "offers_services": false,
+  "description": "Cuidador de Perros",
+  "rating": 0,
+  "profile_pic": "joselopez.jpg"
+}
+*/
