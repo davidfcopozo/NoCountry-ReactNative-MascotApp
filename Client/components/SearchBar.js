@@ -1,7 +1,8 @@
-import { View, TextInput, Button, Image, Pressable, Modal, ScrollView } from "react-native";
+import { View, TextInput, Modal } from "react-native";
 import { SearchIcon } from "../components/Icons";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
+import Filter from "./Filter";
 
 const SearchBar = () => {
   const [openFilter, setOpenFilter] = useState(false);
@@ -26,8 +27,16 @@ const SearchBar = () => {
         onChange={handleInput}
       ></TextInput>
       <View className="pl-4">
-        <Ionicons onPress={() => setOpenFilter(true)} size={32} name="options-outline"></Ionicons>
+        <Ionicons
+          onPress={() => setOpenFilter(!openFilter)}
+          size={32}
+          name="options-outline"
+        ></Ionicons>
       </View>
+
+      <Modal animationType="slide" transparent={false} visible={openFilter}>
+        <Filter openFilter={openFilter} setOpenFilter={setOpenFilter}></Filter>
+      </Modal>
     </View>
   );
 };

@@ -1,10 +1,17 @@
 import { Text, View, TouchableOpacity } from "react-native";
-import { useState } from "react";
 import SearchBarFilter from "./SearchBarFilter";
+import { Ionicons } from "@expo/vector-icons";
 
-const Filter = () => {
+const Filter = ({ openFilter, setOpenFilter }) => {
   return (
-    <View className="w-full" style={{ marginLeft: "auto", marginRight: "auto" }}>
+    <View className="w-full py-7" style={{ marginLeft: "auto", marginRight: "auto" }}>
+      <View className="pl-4">
+        <Ionicons
+          onPress={() => setOpenFilter(!openFilter)}
+          size={32}
+          name="md-close-sharp"
+        ></Ionicons>
+      </View>
       <Text className="flex text-2xl justify-center font-bold">Filtros</Text>
       <Text className="text-lg font-medium p-4">Servicios</Text>
       <View className="flex flex-row flex-wrap pl-4 gap-5 justify-center">
