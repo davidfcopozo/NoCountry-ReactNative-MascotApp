@@ -11,8 +11,6 @@ const Profile = () => {
 
   return (
     <ScrollView>
-      <Text>Perfil</Text>
-
       <Modal
         animationType="slide"
         transparent={true}
@@ -21,21 +19,23 @@ const Profile = () => {
           setOpenLogin(!openLogin);
         }}
       >
-        <View className="flex justify-center w-full pt-12">
-          <View className="bg-white pt-5 px-5 h-full border-t border-black/10 dark:bg-black">
-            <View className="flex justify-between flex-row items-center">
-              <Ionicons
-                onPress={() => setOpenLogin(!openLogin)}
-                name="md-close-sharp"
-                size={34}
-                color={colorScheme === "dark" ? "#fff" : "#000"}
-              />
-              <Text className="font-bold">Iniciar Sesión</Text>
-              <Text className="w-10"></Text>
+        <ScrollView>
+          <View className="flex justify-center w-full">
+            <View className="bg-white pt-5 px-5 h-full border-t border-black/10 dark:bg-black">
+              <View className="flex justify-between flex-row items-center">
+                <Ionicons
+                  onPress={() => setOpenLogin(!openLogin)}
+                  name="md-close-sharp"
+                  size={34}
+                  color={colorScheme === "dark" ? "#fff" : "#000"}
+                />
+                <Text className="font-bold">Iniciar Sesión</Text>
+                <Text className="w-10"></Text>
+              </View>
+              <Login />
             </View>
-            <Login />
           </View>
-        </View>
+        </ScrollView>
       </Modal>
 
       <Modal
@@ -46,24 +46,26 @@ const Profile = () => {
           setOpenRegister(!openRegister);
         }}
       >
-        <View className="flex justify-center w-full pt-12">
-          <View className="bg-white pt-5 px-5 h-full border-t border-black/10 dark:bg-black">
-            <View className="flex justify-between flex-row items-center">
-              <Ionicons
-                onPress={() => setOpenRegister(!openRegister)}
-                name="md-close-sharp"
-                size={34}
-                color={colorScheme === "dark" ? "#fff" : "#000"}
-              />
-              <Text className="font-bold">Registrarme</Text>
-              <Text className="w-10"></Text>
+        <ScrollView>
+          <View className="flex justify-center w-full">
+            <View className="bg-white pt-5 px-5 h-full border-t border-black/10 dark:bg-black">
+              <View className="flex justify-between flex-row items-center">
+                <Ionicons
+                  onPress={() => setOpenRegister(!openRegister)}
+                  name="md-close-sharp"
+                  size={34}
+                  color={colorScheme === "dark" ? "#fff" : "#000"}
+                />
+                <Text className="font-bold">Registrarme</Text>
+                <Text className="w-10"></Text>
+              </View>
+              <Register />
             </View>
-            <Register />
           </View>
-        </View>
+        </ScrollView>
       </Modal>
 
-      <View className="flex gap-y-2">
+      <View className="flex gap-y-2 pt-5">
         <Pressable
           className="border-[1px] p-4 w-32 mx-auto rounded-sm dark:border-white"
           onPress={() => setOpenLogin(true)}
