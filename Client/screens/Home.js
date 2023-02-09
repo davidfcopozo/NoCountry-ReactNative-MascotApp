@@ -1,17 +1,19 @@
 import { Text, View, ScrollView, Image, Pressable } from "react-native";
-import { Link } from "@react-navigation/native";
+import { Link, useTheme } from "@react-navigation/native";
 
 const Home = () => {
+  const { colors } = useTheme();
+
   return (
     <>
       <ScrollView>
         <View className="w-full">
           <View className="flex flex-row justify-between px-10 pt-6">
             <Pressable className="hover:border-b-2 hover:border-b-gray-900">
-              <Text className="font-bold">Servicios contratados</Text>
+              <Text style={{color: colors.text}} className="font-bold">Servicios contratados</Text>
             </Pressable>
             <Pressable className="hover:border-b-2 hover:border-b-gray-900">
-              <Text className="font-bold">Servicios brindados</Text>
+              <Text style={{color: colors.text}} className="font-bold">Servicios brindados</Text>
             </Pressable>
           </View>
           <View className="flex justify-center items-center">

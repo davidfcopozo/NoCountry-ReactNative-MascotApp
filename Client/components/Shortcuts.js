@@ -1,9 +1,10 @@
 import { Text, View, Image, Pressable, ScrollView } from 'react-native';
-import { Children } from 'react';
-import { Ionicons,FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Link } from '@react-navigation/native';
+import { Link, useTheme} from '@react-navigation/native';
 
 const Shortcuts = () => {
+
+  const { colors } = useTheme();
+
   return (
     <View style={{marginLeft: "auto", marginRight: "auto"}} className="flex flex-wrap flex-row py-5 gap-3 w-full">
 
@@ -18,7 +19,7 @@ const Shortcuts = () => {
             source={require('../assets/pet_haircut.png')}
         />
         </View>
-        <Text className="text-center font-bold dark:text-white">Corte de Pelo</Text>
+        <Text className="text-center font-bold" style={{color: colors.text}}>Corte de Pelo</Text>
       </View>
 
       <View className="w-28 gap-y-2">
@@ -32,7 +33,7 @@ const Shortcuts = () => {
             source={require('../assets/pet_training.png')}
         />
         </View>
-        <Text className="text-center font-bold dark:text-white">Entrenamiento</Text>
+        <Text className="text-center font-bold" style={{color: colors.text}}>Entrenamiento</Text>
       </View>
 
       <View className="w-28 gap-y-2">
@@ -46,7 +47,7 @@ const Shortcuts = () => {
             source={require('../assets/pet_walk.png')}
         />
         </View>
-        <Text className="text-center font-bold dark:text-white">Paseador</Text>
+        <Text className="text-center font-bold" style={{color: colors.text}}>Paseador</Text>
       </View>
 
       <View className="w-28 gap-y-2">
@@ -60,7 +61,7 @@ const Shortcuts = () => {
             source={require('../assets/pet_transport.png')}
         />
         </View>
-        <Text className="text-center font-bold dark:text-white">Transporte</Text>
+        <Text className="text-center font-bold" style={{color: colors.text}}>Transporte</Text>
       </View>
 
       <View className="w-28 gap-y-2">
@@ -74,7 +75,7 @@ const Shortcuts = () => {
             source={require('../assets/pet_care.png')}
         />
         </View>
-        <Text className="text-center font-bold dark:text-white">Cuidado</Text>
+        <Text className="text-center font-bold" style={{color: colors.text}}>Cuidado</Text>
       </View>
 
     </View>

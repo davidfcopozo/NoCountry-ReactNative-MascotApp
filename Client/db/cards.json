@@ -76,5 +76,31 @@
         "location" : "La Plata",
         "clients" : 3,
         "about": "Soy una persona responsable contrata mis servicios en mi perfil"
+    },
+    {
+        "id" : 7,
+        "image" : "https://www.lavanguardia.com/files/content_image_mobile_filter/uploads/2022/05/21/628955615d048.jpeg",
+        "name" : "Marcos",
+        "service" : "Paseo de Mascotas",
+        "price" : "1000",
+        "stars" : 4,
+        "info" : "Disponible",
+        "user_picture" : null,
+        "location" : "Buenos Aires",
+        "clients" : 4,
+        "about": "Soy una persona responsable contrata mis servicios en mi perfil"
+    },
+    {
+        "id" : 8,
+        "image" : "https://sumedico.blob.core.windows.net/images/2021/04/30/pasearperrosnegocioperron_1.jpg",
+        "name" : "Luciano",
+        "service" : "Paseo en Grupo",
+        "price" : "500",
+        "stars" : 5,
+        "info" : "Disponible",
+        "user_picture" : "https://www.paseaperros.com.ar/uploads/thumbs/User/300x300/172/face.jpg",
+        "location" : "Santa Fe",
+        "clients" : 5,
+        "about": "Soy una persona responsable contrata mis servicios en mi perfil"
     }
 ]

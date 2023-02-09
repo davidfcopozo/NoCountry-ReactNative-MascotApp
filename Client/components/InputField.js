@@ -1,6 +1,6 @@
-import { useColorScheme } from "nativewind";
 import { useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
+import { Link, useTheme } from "@react-navigation/native";
 
 const COLORS = {
   white: "#fff",
@@ -12,15 +12,19 @@ const COLORS = {
   red: "#ff0000"
 };
 const InputField = ({ label, error, password, placeholder, onFocus = () => {}, ...props }) => {
+  const {dark} = useTheme()
+
   const [hidePassword, setHidePassword] = useState(password);
   const [isFocused, setIsFocused] = useState(false);
-  const { colorScheme } = useColorScheme();
+
+  // hay que implementar un contexto para tomar el modo actual del dispositivo de momento uso dark de usetheme
+
   return (
     <View className="mb-5">
       <Text
-        className="text-sm font-bold color-{#1A1A1A} my-1"
+        className="text-sm font-bold my-1"
         style={{
-          color: colorScheme === "dark" ? COLORS.grey : COLORS.black
+          color: dark? COLORS.grey : COLORS.black
         }}
       >
         {label}
@@ -31,7 +35,7 @@ const InputField = ({ label, error, password, placeholder, onFocus = () => {}, .
           style.inputContainer,
           {
             borderColor: error ? COLORS.red : isFocused ? COLORS.black : COLORS.light,
-            alignItems: "center"
+            alignItems: "center",
           }
         ]}
       >
@@ -44,9 +48,9 @@ const InputField = ({ label, error, password, placeholder, onFocus = () => {}, .
           onBlur={() => setIsFocused(false)}
           secureTextEntry={hidePassword}
           style={{
-            color: colorScheme === "dark" ? COLORS.grey : COLORS.darkBlue
+            color: dark ? COLORS.grey : COLORS.darkBlue
           }}
-          className="flex w-full justify-center"
+          className="flex w-full justify-center mb-2 p-2 px-3 h-full"
           placeholder={placeholder}
           placeholderTextColor="grey"
           {...props}
@@ -60,11 +64,8 @@ const InputField = ({ label, error, password, placeholder, onFocus = () => {}, .
 
 const style = StyleSheet.create({
   inputContainer: {
-    height: 55,
     flexDirection: "row",
-    paddingHorizontal: 15,
     borderWidth: 0.5,
-    borderRadius: 5
   }
 });
 

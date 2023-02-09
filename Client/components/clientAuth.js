@@ -9,10 +9,13 @@ import {
 } from "react-native";
 import InputField from "./InputField";
 import { useState } from "react";
+import { Link, useTheme } from "@react-navigation/native";
 
 //Componentes de Login y Register
 
 export const Login = () => {
+  const { colors } = useTheme();
+
   const [inputs, setInputs] = useState({
     email: "",
     password: ""
@@ -70,7 +73,10 @@ export const Login = () => {
           source={require("../assets/logo.png")}
         />
 
-        <Text className="text-2xl mb-4 font-bold text-center dark:text-white">
+        <Text 
+          style={{color: colors.text}}
+          className="text-2xl mb-4 font-bold text-center"
+        >
           Bienvenido a MascotApp
         </Text>
         <InputField
@@ -104,6 +110,8 @@ export const Login = () => {
 };
 
 export const Register = () => {
+  const { colors } = useTheme();
+
   const [inputs, setInputs] = useState({
     email: "",
     name: "",
@@ -182,7 +190,10 @@ export const Register = () => {
             className="mb-4 h-28 w-56 mx-auto"
             source={require("../assets/logo.png")}
           />
-          <Text className="text-2xl mb-4 font-bold text-center dark:text-white">
+          <Text 
+            style={{color: colors.text}}
+            className="text-2xl mb-4 font-bold text-center"
+          >
             Unite a MascotApp
           </Text>
           <InputField
