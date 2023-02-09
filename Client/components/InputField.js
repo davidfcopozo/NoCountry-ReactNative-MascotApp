@@ -47,10 +47,7 @@ const InputField = ({ label, error, password, placeholder, onFocus = () => {}, .
           }}
           onBlur={() => setIsFocused(false)}
           secureTextEntry={hidePassword}
-          style={{
-            color: dark ? COLORS.grey : COLORS.darkBlue
-          }}
-          className="flex w-full justify-center mb-2 p-2 px-3 h-full"
+          className={"flex w-full justify-center mb-2 p-2 px-3 h-full "+(dark? "color-[#BABBC3]" : "color-[#7978B5]")}
           placeholder={placeholder}
           placeholderTextColor="grey"
           {...props}
