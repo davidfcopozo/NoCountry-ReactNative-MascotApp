@@ -12,13 +12,7 @@ import Messages from "./screens/Messages";
 import Message from "./screens/Message";
 import Profile from "./screens/Profile";
 import Post from "./screens/Post";
-import {
-  HomeIcon,
-  MessageIcon,
-  PawIcon,
-  ProfileIcon,
-  SearchIcon
-} from "./components/Icons";
+import { HomeIcon, MessageIcon, PawIcon, ProfileIcon, SearchIcon } from "./components/Icons";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -41,8 +35,7 @@ function BottomNav() {
         headerStyle: {
           height: 110,
           shadowColor: "transparent",
-          backgroundColor:
-            colorScheme === "dark" ? DarkModeColor : LightModeColor
+          backgroundColor: colorScheme === "dark" ? DarkModeColor : LightModeColor
         },
         headerLeft: () => (
           <Image
@@ -62,13 +55,11 @@ function BottomNav() {
         ),
         tabBarStyle: {
           borderTopWidth: 0,
-          backgroundColor:
-            colorScheme === "dark" ? DarkModeColor : LightModeColor,
+          backgroundColor: colorScheme === "dark" ? DarkModeColor : LightModeColor,
           marginBottom: 15
         },
         tabBarActiveTintColor: "#7f4dff",
-        tabBarInactiveTintColor:
-          colorScheme === "dark" ? LightModeColor : "#000"
+        tabBarInactiveTintColor: colorScheme === "dark" ? LightModeColor : "#000"
       }}
     >
       <Tab.Screen
@@ -126,9 +117,7 @@ function App() {
 
   return (
     <>
-      <StatusBar
-        barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
-      />
+      <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
       <NavigationContainer
         theme={{
           ...DefaultTheme,
@@ -139,11 +128,7 @@ function App() {
         }}
       >
         <Stack.Navigator>
-          <Stack.Screen
-            name="Root"
-            component={BottomNav}
-            options={{ headerShown: false }}
-          />
+          <Stack.Screen name="Root" component={BottomNav} options={{ headerShown: false }} />
           <Stack.Screen
             name="Post"
             component={Post}
