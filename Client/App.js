@@ -100,6 +100,9 @@ function BottomNavigation({isDarkMode, setDarkMode, colors}){
         headerRightContainerStyle:{
           paddingRight: 20,
         },
+        tabBarStyle:{
+          marginBottom: 2
+        },
         headerTintColor : colors.text,
         tabBarActiveTintColor: violet,
         tabBarInactiveTintColor: "#999"
