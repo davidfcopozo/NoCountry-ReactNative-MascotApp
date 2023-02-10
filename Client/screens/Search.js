@@ -5,15 +5,14 @@ import Highlights from "../components/Highlights";
 import { Link, useTheme } from "@react-navigation/native";
 
 const Search = () => {
-
   const { colors } = useTheme();
 
   return (
     <ScrollView>
-      <View className="text-left w-full p-2">
+      <View className="p-2">
         <SearchBar></SearchBar>
         <View className="mt-3">
-          <Text style={{color: colors.text}} className="font-bold text-2xl mb-2 pl-2">
+          <Text style={{ color: colors.text }} className="font-bold text-2xl mb-2 pl-3">
             Los mas destacados
           </Text>
           <Highlights Data={CardsData} />
