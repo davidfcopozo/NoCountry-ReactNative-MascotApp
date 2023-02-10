@@ -4,19 +4,24 @@ import Shortcuts from "../components/Shortcuts";
 import CardsData from "../db/cards.json";
 import Blogs from "../components/Blogs";
 import BlogsData from "../db/blogs.json";
+import { Link, useTheme } from "@react-navigation/native";
 
 const Index = () => {
+
+  const { colors } = useTheme();
+
   return (
     <ScrollView>
-      <View className="text-left w-full p-3">
+      <View className="text-left w-full p-3 px-6 gap-y-2">
         <Shortcuts />
 
-        <Text className="font-bold text-2xl mb-2 dark:text-white">
+        <Text style={{color: colors.text}} className="font-bold text-2xl mb-2">
           Mascoteros cerca de tí
         </Text>
+        
         <Cards Data={CardsData} />
 
-        <Text className="font-bold text-2xl mb-2 dark:text-white">Blogs</Text>
+        <Text style={{color: colors.text}} className="font-bold text-2xl mb-2">Blogs</Text>
         <Blogs Data={BlogsData}></Blogs>
       </View>
     </ScrollView>

@@ -1,12 +1,13 @@
 import { View, Text, ScrollView, Image } from 'react-native'
 import { Children } from 'react'
 import { Ionicons } from '@expo/vector-icons';
-import { useColorScheme } from 'nativewind'
+import { Link, useTheme } from "@react-navigation/native";
 
 const Post = ({route}) => {
 
   const user = route.params.user
-  const {colorScheme} = useColorScheme()
+  const colorScheme = 'light'
+  const { colors } = useTheme();
 
   return (
     <ScrollView className="relative">
@@ -31,8 +32,8 @@ const Post = ({route}) => {
           </View>
         }
           <View>
-            <Text className="text-2xl font-bold dark:text-white">{user.name}</Text>
-            <Text numberOfLines={1} className="text-sm text-gray-500 mb-1">{user.location}</Text>
+            <Text style={{color: colors.text}} className="text-2xl font-bold">{user.name}</Text>
+            <Text numberOfLines={1} style={{color: colors.textGray}} className="text-sm mb-1">{user.location}</Text>
             {
                 user.stars?
                 <View className="flex flex-row items-center">
@@ -41,7 +42,7 @@ const Post = ({route}) => {
                             <Ionicons name="star" size={10} color="#ffe100" />
                         ))
                     )}
-                    <Text className="text-xs text-gray-500 ml-1">
+                    <Text style={{color: colors.textGray}} className="text-xs ml-1">
                         {user.clients ? "(" + user.clients + ")" : undefined}
                     </Text>
                 </View>
@@ -52,14 +53,14 @@ const Post = ({route}) => {
         </View>
 
         <View className="mt-5">
-          <Text className="text-2xl mb-1 font-bold dark:text-white">Acerca de {user.name}</Text>
-          <Text className="text-lg text-black/80 dark:text-white/80">{user.about}</Text>
+          <Text style={{color: colors.text}} className="text-2xl mb-1 font-bold">Acerca de {user.name}</Text>
+          <Text style={{color: colors.text}} className="text-lg">{user.about}</Text>
         </View>
 
       </View>
 
       <View className="p-5">
-        <Text className="text-2xl mb-3 font-bold dark:text-white">Servicios</Text>
+        <Text style={{color: colors.text}} className="text-2xl mb-3 font-bold">Servicios</Text>
       </View>
     </ScrollView>
   )
