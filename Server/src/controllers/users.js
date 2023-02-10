@@ -6,19 +6,37 @@ const getUsers = async (req, res) => {
     return res.status(200).json(usersList);
   } catch (error) {
     return res.status(500).json({
-      message: error.message
+      errorMessage: error.original
     });
   }
 };
 
-const getUsersBestRating = async (req, res, next) => {
+const getUserById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const userById = await User.findByPk(id);
+    !userById
+      ? res.status(404).json({ errorMessage: "There is no user with that id" })
+      : res.status(200).json(userById.dataValues);
+  } catch (error) {
+    error.original.code === "22P02"
+      ? res.status(400).json({ errorMessage: "The id type must be an integer" })
+      : res.status(500).json({
+          errorMessage: error.original
+        });
+  }
+};
+
+const getUsersBestRating = async (req, res) => {
   try {
     const usersList = await User.findAll();
     const usersWithRating = usersList.filter(user => user.rating !== 0);
     usersWithRating.sort((a, b) => b.rating - a.rating);
     return res.status(200).json(usersWithRating);
   } catch (error) {
-    next(error);
+    return res.status(500).json({
+      errorMessage: error.original
+    });
   }
 };
 
@@ -45,7 +63,7 @@ const updateProfile = async (req, res) => {
       .then(result => res.json(result))
       .catch(err => res.json(err));
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ errorMessage: error.original });
   }
 };
 
@@ -87,8 +105,8 @@ const addUser = async (req, res) => {
 
     return res.json(newUser);
   } catch (error) {
-    res.status(500).json({
-      message: error.message
+    return res.status(500).json({
+      errorMessage: error.original
     });
   }
 };
@@ -112,8 +130,15 @@ const deleteProfile = async (req, res) => {
 
     return res.sendStatus(204);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ errorMessage: error.original });
   }
 };
 
-module.exports = { getUsersBestRating, getUsers, addUser, updateProfile, deleteProfile };
+module.exports = {
+  getUsersBestRating,
+  getUsers,
+  addUser,
+  updateProfile,
+  deleteProfile,
+  getUserById
+};
