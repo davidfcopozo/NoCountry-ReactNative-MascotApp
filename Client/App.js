@@ -1,3 +1,5 @@
+import { REACT_APP_BACK_URL } from "@env";
+import axios from "axios";
 import { NativeWindStyleSheet } from "nativewind";
 import { useState } from "react";
 import { NativeRouter } from "react-router-native";
@@ -21,6 +23,11 @@ import Profile from "./screens/Profile";
 import Search from "./screens/Search";
 import AboutUs from "./screens/AboutUs";
 import BlogPost from "./screens/BlogPost";
+
+// Setea la url base a partir de la cual axios va a realizar las llamadas al back
+
+axios.defaults.baseURL = REACT_APP_BACK_URL; // cuando querramos trabajar y/o probar nuestro proyecto de forma local
+// axios.defaults.baseURL = process.env.REACT_APP_DEPLOY_BACK_URL; // cuando querramos pushear o actualizar nuestro deploy del front
 
 // Habilita Tailwind en React Native Web
 
