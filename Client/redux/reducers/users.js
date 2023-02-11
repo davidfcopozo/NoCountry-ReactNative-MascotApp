@@ -1,7 +1,5 @@
-// Esto solo es a modo de template para darnos una idea de la estructura
-
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsers, fetchUserById } from "../actions";
+import { fetchUsers, sortUsersByRating, fetchUserById } from "../actions";
 
 const initialState = {
   users: [],
@@ -25,7 +23,9 @@ const usersReducer = createSlice({
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
       state.users = action.payload;
     });
-
+    builder.addCase(sortUsersByRating.fulfilled, (state, action) => {
+      state.users = action.payload;
+    });
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
       state.userDetail = action.payload;
     });
