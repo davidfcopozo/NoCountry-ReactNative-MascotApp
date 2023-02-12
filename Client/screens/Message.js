@@ -21,6 +21,9 @@ const Message = ({ route }) => {
         <ScrollView
           className="h-full flex-1"
           ref={scrollView}
+          onLayout={() => {
+            scrollView.current.scrollToEnd({ animated: true });
+          }}
           onContentSizeChange={() => {
             scrollView.current.scrollToEnd({ animated: true });
           }}
