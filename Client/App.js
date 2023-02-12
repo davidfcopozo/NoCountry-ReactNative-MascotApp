@@ -217,11 +217,7 @@ function App() {
               }}
             />
 
-            <Stack.Screen
-              name="Message"
-              component={Message}
-              options={({ route }) => ({ title: route.params.title })}
-            />
+            <Stack.Screen name="Message" component={Message} options={{ headerShown: false }} />
 
             <Stack.Screen
               name="AboutUs"
