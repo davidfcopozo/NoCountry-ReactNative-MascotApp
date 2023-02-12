@@ -17,16 +17,13 @@ const SearchBar = () => {
   };
 
   return (
-    <View
-      style={{ marginLeft: "auto", marginRight: "auto" }}
-      className="flex flex-row justify-center items-center p-7 pr-14"
-    >
+    <View className="flex flex-row justify-center items-center p-7 pr-14">
       <View className="left-12">
         <SearchIcon color={colors.text}></SearchIcon>
       </View>
       <TextInput
-        style={{color: colors.text, borderColor: colors.text}}
-        className="rounded-full p-4 pl-14 border"
+        style={{ color: colors.text, borderColor: colors.text }}
+        className="rounded-lg p-3 pl-14 border"
         placeholder="Buscar en MascotApp"
         onChange={handleInput}
         placeholderTextColor={colors.textGray}
@@ -48,4 +45,3 @@ const SearchBar = () => {
 };
 
 export default SearchBar;
-
