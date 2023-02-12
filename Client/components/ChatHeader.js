@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Pressable, Image } from "react-native";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { BackIcon } from "./Icons";
+import { Ionicons } from "@expo/vector-icons";
 
 const ChatHeader = ({ username, picture }) => {
   const navigation = useNavigation();
@@ -21,7 +22,11 @@ const ChatHeader = ({ username, picture }) => {
         style={({ pressed }) => pressed && { opacity: 0.8 }}
       >
         <View className="flex-4 flex-row align-center px-1">
-          <Image className="rounded-full h-14 w-14" source={{ uri: picture }} />
+          {picture !== null ? (
+            <Image className="rounded-full h-14 w-14" source={{ uri: picture }} />
+          ) : (
+            <Ionicons name="person-circle-outline" size={56} color={colors.text} />
+          )}
           <View className="flex-column justify-center px-1">
             <Text className="font-bold text-lg ml-2" style={{ color: colors.text }}>
               {username}
