@@ -17,22 +17,21 @@ const Messages = () => {
         CardsData.map(user => (
           <Link to={{ screen: "Message", params: { user: user, title: user.name } }}>
             <View className="flex flex-row items-center gap-x-5">
-              <View className="bg-white">
-                {user.user_picture ? (
-                  <Image
-                    style={{
-                      width: 85,
-                      height: 85,
-                      resizeMode: "contain"
-                    }}
-                    source={{
-                      uri: user.user_picture
-                    }}
-                  />
-                ) : (
-                  <Ionicons name="person-circle-outline" size={82} color="#000" />
-                )}
-              </View>
+              {user.user_picture ? (
+                <Image
+                  style={{
+                    width: 85,
+                    height: 85,
+                    resizeMode: "contain"
+                  }}
+                  source={{
+                    uri: user.user_picture
+                  }}
+                  className="rounded-full"
+                />
+              ) : (
+                <Ionicons name="person-circle-outline" size={82} color={colors.text} />
+              )}
 
               <View className="gap-y-2 items-start">
                 <Text style={{ color: colors.text }} className="font-bold text-xl">
