@@ -9,6 +9,8 @@ const setNewsDB = require("./src/seed/news");
 
 const { PORT } = process.env;
 
+console.log("connecting to database..");
+
 // Syncing all the models at once.
 conn.sync({ force: true }).then(() => {
   server.listen(PORT || 3002, () => {
