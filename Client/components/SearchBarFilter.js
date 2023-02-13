@@ -21,7 +21,7 @@ const SearchBarFilter = () => {
       </View>
       <TextInput
         style={{ color: colors.text, borderColor: colors.text }}
-        className="p-2 pl-12 rounded-md border"
+        className="p-3 pl-12 rounded-md border w-full"
         placeholder="Ciudad"
         onChange={handleInput}
         placeholderTextColor={colors.textGray}

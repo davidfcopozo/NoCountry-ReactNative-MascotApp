@@ -20,16 +20,20 @@ const Highlights = ({ Data }) => {
     <>
       <ScrollView>
         <View className="flex flex-wrap flex-row py-5 gap-4 justify-center items-center">
-          {Children.toArray(
-            Data?.map(card => (
-              <Link to={{ screen: "Post", params: { user: card, title: card.name } }}>
-                <View className="w-36 border border-black/5 rounded-lg overflow-hidden bg-white/10">
-                  <Image
-                    className="h-36"
-                    source={{
-                      uri: card.image
-                    }}
-                  />
+          {data?.length ? (
+            Children.toArray(
+              data.map(card => (
+                <Link to={{ screen: "Post", params: { user: card, title: card.name } }}>
+                  <View
+                    View
+                    className="w-36 border border-black/5 rounded-lg overflow-hidden bg-white/10"
+                  >
+                    <Image
+                      className="h-36"
+                      source={{
+                        uri: card.profile_pic
+                      }}
+                    />
 
                   <View className="p-2">
                     <Text

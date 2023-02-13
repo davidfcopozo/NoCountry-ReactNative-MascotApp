@@ -14,7 +14,7 @@ const Post = ({route}) => {
       <View className="p-5">
         <View className="flex flex-row gap-x-4 items-center">
         {
-          user.user_picture?
+          user.profile_pic?
           <Image
             style={{
                 width: 100,
@@ -23,7 +23,7 @@ const Post = ({route}) => {
             }}
             className="rounded-full"
             source={{
-                uri: user.user_picture,
+                uri: user.profile_pic,
             }}
           />
           :
@@ -32,13 +32,13 @@ const Post = ({route}) => {
           </View>
         }
           <View>
-            <Text style={{color: colors.text}} className="text-2xl font-bold">{user.name}</Text>
-            <Text numberOfLines={1} style={{color: colors.textGray}} className="text-sm mb-1">{user.location}</Text>
+            <Text style={{color: colors.text}} className="text-2xl font-bold">{user.name} {user.surname}</Text>
+            <Text numberOfLines={1} style={{color: colors.textGray}} className="text-sm mb-1">{user.city}</Text>
             {
-                user.stars?
+                user.rating?
                 <View className="flex flex-row items-center">
                     {Children.toArray(
-                        Array.from(Array(user.stars)).map((star) => (
+                        Array.from(Array(user.rating)).map((star) => (
                             <Ionicons name="star" size={10} color="#ffe100" />
                         ))
                     )}
@@ -54,7 +54,7 @@ const Post = ({route}) => {
 
         <View className="mt-5">
           <Text style={{color: colors.text}} className="text-2xl mb-1 font-bold">Acerca de {user.name}</Text>
-          <Text style={{color: colors.text}} className="text-lg">{user.about}</Text>
+          <Text style={{color: colors.text}} className="text-lg">{user.description}</Text>
         </View>
 
       </View>
