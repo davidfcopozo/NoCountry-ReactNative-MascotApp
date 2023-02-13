@@ -2,9 +2,19 @@ import { Text, View, Image, Pressable, ScrollView } from "react-native";
 import { Children } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useTheme } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchUsers } from "../redux/actions";
 
 const Highlights = ({ Data }) => {
   const { colors } = useTheme();
+
+  const dispatch = useDispatch();
+  const usersSort = useSelector(state => state.users.users);
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, []);
 
   return (
     <>
