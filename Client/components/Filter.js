@@ -8,10 +8,10 @@ const Filter = ({ openFilter, setOpenFilter }) => {
 
   return (
     <View
-      style={{ color: colors.text, backgroundColor: colors.background }}
-      className=" h-full py-4"
+      style={{ color: colors.text, backgroundColor: colors.background, borderTopColor: colors.text}}
+      className="p-5 mt-auto border-t"
     >
-      <View className="pl-4">
+      <View>
         <Ionicons
           style={{ color: colors.text }}
           onPress={() => setOpenFilter(!openFilter)}
