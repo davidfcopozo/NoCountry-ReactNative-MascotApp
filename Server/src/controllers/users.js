@@ -13,6 +13,7 @@ const getUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
   const { id } = req.params;
+
   try {
     const userById = await User.findByPk(id);
     !userById
@@ -42,6 +43,7 @@ const getUsersBestRating = async (req, res) => {
 
 const getUsersByCategory = async (req, res) => {
   const { categoryId } = req.body;
+
   try {
     if (!categoryId) return res.status(400).json({ errorMessage: "CategoryId missing" });
     if (typeof categoryId !== "number")
@@ -83,6 +85,7 @@ const getUsersByCategory = async (req, res) => {
 const updateProfile = async (req, res) => {
   const { id } = req.params;
   const { name, surname, age, city, offers_services, description, profile_pic } = req.body;
+
   try {
     await User.update(
       {
@@ -155,6 +158,7 @@ const addUser = async (req, res) => {
 
 const deleteProfile = async (req, res) => {
   const { id } = req.params;
+
   try {
     await Auth.destroy({
       where: {
