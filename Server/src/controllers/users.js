@@ -151,7 +151,7 @@ const getUserFavorites = async (req, res) => {
  * 
  * @param {Object} req.body requires all the fields of body and extract the fields needed
  * then the fields of user are updated if the content is new
- * @returns the user id
+ * @returns the user id in response
  */
 
 const updateProfile = async (req, res) => {
