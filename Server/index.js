@@ -10,7 +10,7 @@ const setUserCategoryDB = require("./src/seed/user_category");
 
 const { PORT } = process.env;
 
-console.log("connecting to database..");
+console.log("Connecting to database. Please wait a few seconds...");
 
 // Syncing all the models at once.
 conn.sync({ force: true }).then(() => {
