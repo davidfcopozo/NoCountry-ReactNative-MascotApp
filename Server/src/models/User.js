@@ -42,10 +42,6 @@ module.exports = sequelize => {
       profile_pic: {
         type: DataTypes.STRING,
         allowNull: false
-      },
-      auth_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true
       }
     },
     {
