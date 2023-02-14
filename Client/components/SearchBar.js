@@ -37,7 +37,7 @@ const SearchBar = () => {
         ></Ionicons>
       </View>
 
-      <Modal animationType="slide" transparent={false} visible={openFilter}>
+      <Modal animationType="slide" transparent={true} visible={openFilter}>
         <Filter openFilter={openFilter} setOpenFilter={setOpenFilter}></Filter>
       </Modal>
     </View>

@@ -2,9 +2,8 @@ import { REACT_APP_BACK_URL } from "@env";
 import axios from "axios";
 import { NativeWindStyleSheet } from "nativewind";
 import { useState } from "react";
-import { NativeRouter } from "react-router-native";
 import { Provider } from "react-redux";
-import { Image, View, Text, Pressable, useColorScheme, StatusBar } from "react-native";
+import { Image, View, StatusBar } from "react-native";
 import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -185,69 +184,63 @@ function App() {
   // const scheme = useColorScheme();
 
   return (
-    <NativeRouter>
-      <Provider store={store}>
-        <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
+    <Provider store={store}>
+      <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
 
-        <NavigationContainer theme={isDarkMode ? CustomDark : CustomLight}>
-          <Stack.Navigator
-            screenOptions={{
-              headerTintColor: isDarkMode ? "#fff" : "#000"
+      <NavigationContainer theme={isDarkMode ? CustomDark : CustomLight}>
+        <Stack.Navigator
+          screenOptions={{
+            headerTintColor: isDarkMode ? "#fff" : "#000"
+          }}
+        >
+          <Stack.Screen name="Root" options={{ headerShown: false }}>
+            {() => (
+              <BottomNavigation isDarkMode={isDarkMode} setDarkMode={setDarkMode} colors={colors} />
+            )}
+          </Stack.Screen>
+
+          <Stack.Screen
+            name="Post"
+            component={Post}
+            options={({ route }) => ({ title: route.params.title })}
+          />
+
+          <Stack.Screen
+            name="BlogPost"
+            component={BlogPost}
+            options={{
+              title: "Blog"
             }}
-          >
-            <Stack.Screen name="Root" options={{ headerShown: false }}>
-              {() => (
-                <BottomNavigation
-                  isDarkMode={isDarkMode}
-                  setDarkMode={setDarkMode}
-                  colors={colors}
-                />
-              )}
-            </Stack.Screen>
+          />
 
-            <Stack.Screen
-              name="Post"
-              component={Post}
-              options={({ route }) => ({ title: route.params.title })}
-            />
+          <Stack.Screen name="Message" component={Message} options={{ headerShown: false }} />
 
-            <Stack.Screen
-              name="BlogPost"
-              component={BlogPost}
-              options={{
-                title: "Blog"
-              }}
-            />
+          <Stack.Screen
+            name="AboutUs"
+            component={AboutUs}
+            options={{
+              title: "Acerca de Nosotros"
+            }}
+          />
 
-            <Stack.Screen name="Message" component={Message} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Favorites"
+            component={Favorites}
+            options={{
+              title: "Favoritos"
+            }}
+          />
 
-            <Stack.Screen
-              name="AboutUs"
-              component={AboutUs}
-              options={{
-                title: "Acerca de Nosotros"
-              }}
-            />
-
-            <Stack.Screen
-              name="Favorites"
-              component={Favorites}
-              options={{
-                title: "Favoritos"
-              }}
-            />
-
-            <Stack.Screen
-              name="Edit"
-              component={EditarProfile}
-              options={{
-                title: "Editar perfil"
-              }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </Provider>
-    </NativeRouter>
+          <Stack.Screen
+            name="Edit"
+            component={EditarProfile}
+            options={{
+              title: "Editar perfil"
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

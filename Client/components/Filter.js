@@ -8,23 +8,27 @@ const Filter = ({ openFilter, setOpenFilter }) => {
 
   return (
     <View
-      style={{ color: colors.text, backgroundColor: colors.background }}
-      className=" h-full py-4"
+      style={{ color: colors.text, backgroundColor: colors.background, borderTopColor: colors.text}}
+      className="p-5 mt-auto border-t"
     >
-      <View className="pl-4">
+      <View className="flex flex-row justify-between w-full">
         <Ionicons
           style={{ color: colors.text }}
           onPress={() => setOpenFilter(!openFilter)}
           size={32}
           name="md-close-sharp"
         ></Ionicons>
+        <Text
+          style={{ color: colors.text }}
+          className="flex text-2xl items-center font-bold"
+        >
+          Filtros
+        </Text>
+
+        <Text style={{width: 32}}>
+
+        </Text>
       </View>
-      <Text
-        style={{ color: colors.text }}
-        className="flex w-full text-2xl px-36 items-center font-bold"
-      >
-        Filtros
-      </Text>
       <Text style={{ color: colors.text }} className="text-lg font-medium p-4">
         Servicios
       </Text>
