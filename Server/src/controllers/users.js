@@ -1,4 +1,4 @@
-const { User, Auth } = require("../db");
+const { User, Auth, Category } = require("../db");
 
 const getUsers = async (req, res) => {
   try {
@@ -13,6 +13,7 @@ const getUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
   const { id } = req.params;
+
   try {
     const userById = await User.findByPk(id);
     !userById
@@ -40,9 +41,51 @@ const getUsersBestRating = async (req, res) => {
   }
 };
 
+const getUsersByCategory = async (req, res) => {
+  const { categoryId } = req.body;
+
+  try {
+    if (!categoryId) return res.status(400).json({ errorMessage: "CategoryId missing" });
+    if (typeof categoryId !== "number")
+      return res.status(400).json({ errorMessage: "The categoryId type must be an integer" });
+
+    const category = await Category.findByPk(categoryId);
+    if (category === null)
+      return res.status(404).json({ errorMessage: "The is no category with that id" });
+
+    const usersThatOfferServices = await User.findAll({
+      where: { offers_services: true },
+      include: Category
+    });
+
+    const usersArray = usersThatOfferServices.map(user => user.dataValues);
+
+    const usersToShow = [];
+    for (let user of usersArray) {
+      for (let u of user.categories) {
+        if (u.id === categoryId) {
+          usersToShow.push(user);
+        }
+      }
+    }
+
+    if (!usersToShow.length)
+      return res
+        .status(404)
+        .json({ message: `There is no users that offer ${category.dataValues.name}` });
+
+    return res.status(200).json(usersToShow);
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original
+    });
+  }
+};
+
 const updateProfile = async (req, res) => {
   const { id } = req.params;
   const { name, surname, age, city, offers_services, description, profile_pic } = req.body;
+
   try {
     await User.update(
       {
@@ -115,6 +158,7 @@ const addUser = async (req, res) => {
 
 const deleteProfile = async (req, res) => {
   const { id } = req.params;
+
   try {
     await Auth.destroy({
       where: {
@@ -140,5 +184,6 @@ module.exports = {
   addUser,
   updateProfile,
   deleteProfile,
-  getUserById
+  getUserById,
+  getUsersByCategory
 };

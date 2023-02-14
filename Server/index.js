@@ -16,10 +16,12 @@ console.log("Connecting to database. Please wait a few seconds...");
 conn.sync({ force: true }).then(() => {
   server.listen(PORT || 3002, () => {
     try {
-      setUsersDB().then(data => console.log(data));
-      setCategoriesDB().then(data => {
+      setUsersDB().then(data => {
         console.log(data);
-        setUserCategoryDB().then(data => console.log(data));
+        setCategoriesDB().then(data => {
+          console.log(data);
+          setUserCategoryDB().then(data => console.log(data));
+        });
       });
       setPetTypesDB().then(data => console.log(data));
       setNewsDB().then(data => console.log(data));

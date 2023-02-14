@@ -5,13 +5,15 @@ const {
   addUser,
   updateProfile,
   deleteProfile,
-  getUserById
+  getUserById,
+  getUsersByCategory
 } = require("../controllers/users");
 
 const router = Router();
 
 router.get("/", getUsers);
 router.get("/rating", getUsersBestRating);
+router.get("/category", getUsersByCategory);
 router.post("/add", addUser);
 router.patch("/:id", updateProfile);
 router.delete("/:id", deleteProfile);
