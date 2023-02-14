@@ -122,6 +122,26 @@ const getUsersByFilter = async (req, res) => {
 /**
  * STATUS : Testing
  * MESSAGE : is not finished yet, requires a session manager to manage the request to the database
+ * Add Favorite to the current user favorites
+ * @returns favorite
+ */
+
+const addUserFavorites = async (req, res) => {
+
+  const {id, favorite} = req.params
+
+  try {
+    return res.json("Favorite Added"); 
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original
+    });
+  }
+}
+
+/**
+ * STATUS : Testing
+ * MESSAGE : is not finished yet, requires a session manager to manage the request to the database
  * Gets the list of favorites of one user, only returns 10 articles by page
  * @returns favorites list
  */
@@ -285,5 +305,6 @@ module.exports = {
   getUserById,
   getUsersByCategory,
   getUsersByFilter,
-  getUserFavorites
+  getUserFavorites,
+  addUserFavorites
 };

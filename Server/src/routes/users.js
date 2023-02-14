@@ -9,7 +9,8 @@ const {
   getUsersByCategory,
   getUsersByFilter,
   getUserFavorites,
-  deleteFavorite
+  deleteFavorite,
+  addUserFavorites
 } = require("../controllers/users");
 
 const router = Router();
@@ -20,6 +21,7 @@ router.get("/rating", getUsersBestRating);
 router.get("/category", getUsersByCategory);
 router.get("/filter", getUsersByFilter);
 router.post("/add", addUser);
+router.post("/favorites/:id/:favorite", addUserFavorites);
 router.patch("/:id", updateProfile);
 router.delete("/:id", deleteProfile);
 router.delete("/favorites/:id/:favorite", deleteFavorite);
