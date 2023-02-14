@@ -6,17 +6,23 @@ const {
   updateProfile,
   deleteProfile,
   getUserById,
-  getUsersByCategory
+  getUsersByCategory,
+  getUsersByFilter,
+  getUserFavorites,
+  deleteFavorite
 } = require("../controllers/users");
 
 const router = Router();
 
 router.get("/", getUsers);
+router.get("/favorites/:id/:page", getUserFavorites);
 router.get("/rating", getUsersBestRating);
 router.get("/category", getUsersByCategory);
+router.get("/filter", getUsersByFilter);
 router.post("/add", addUser);
 router.patch("/:id", updateProfile);
 router.delete("/:id", deleteProfile);
+router.delete("/favorites/:id/:favorite", deleteFavorite);
 router.get("/:id", getUserById);
 
 module.exports = router;
