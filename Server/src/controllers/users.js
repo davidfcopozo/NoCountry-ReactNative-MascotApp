@@ -1,4 +1,5 @@
 const { User, Auth, Category } = require("../db");
+const { Op } = require("sequelize");
 
 const getUsers = async (req, res) => {
   try {
@@ -30,10 +31,15 @@ const getUserById = async (req, res) => {
 
 const getUsersBestRating = async (req, res) => {
   try {
-    const usersList = await User.findAll();
-    const usersWithRating = usersList.filter(user => user.rating !== 0);
-    usersWithRating.sort((a, b) => b.rating - a.rating);
-    return res.status(200).json(usersWithRating);
+    const usersOrdered = await User.findAll({
+      where: {
+        rating: {
+          [Op.gt]: 0
+        }
+      },
+      order: [["rating", "DESC"]]
+    });
+    return res.status(200).json(usersOrdered);
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original
@@ -51,11 +57,16 @@ const getUsersByCategory = async (req, res) => {
 
     const category = await Category.findByPk(categoryId);
     if (category === null)
-      return res.status(404).json({ errorMessage: "The is no category with that id" });
+      return res.status(404).json({ errorMessage: "There is no category with that id" });
 
     const usersThatOfferServices = await User.findAll({
       where: { offers_services: true },
-      include: Category
+      include: {
+        model: Category,
+        through: {
+          attributes: []
+        }
+      }
     });
 
     const usersArray = usersThatOfferServices.map(user => user.dataValues);
