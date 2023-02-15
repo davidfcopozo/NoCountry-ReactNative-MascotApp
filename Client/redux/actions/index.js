@@ -28,3 +28,14 @@ export const fetchUserById = createAsyncThunk("/users/fetchUserById", async user
     console.log(error);
   }
 });
+
+export const searchView = createAsyncThunk("/users/search", async searchThis => {
+  try {
+    const users = await axios.get(`/users/search/${searchThis? searchThis : null}`);
+    console.log(users.data);
+    return users.data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+

@@ -2,8 +2,7 @@ import { Text, View, ScrollView } from "react-native";
 import SearchBar from "../components/SearchBar";
 import Highlights from "../components/Highlights";
 import { useTheme } from "@react-navigation/native";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { sortUsersByRating } from "../redux/actions";
 import { useEffect } from "react";
 
@@ -11,7 +10,7 @@ const Search = () => {
   const { colors } = useTheme();
 
   const dispatch = useDispatch();
-  const sortedUsersByRating = useSelector(state => state.users.users);
+  const sortedUsersByRating = useSelector(state => state.users.search);
 
   useEffect(() => {
     dispatch(sortUsersByRating());

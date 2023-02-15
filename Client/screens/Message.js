@@ -13,7 +13,7 @@ const Message = ({ route }) => {
   return (
     <>
       <KeyboardAvoidingView
-        className="pb-4 pt-8 h-full justify-center"
+        className="pb-4 h-full justify-center"
         behavior="padding"
         style={{ flex: 1 }}
       >
@@ -31,7 +31,7 @@ const Message = ({ route }) => {
           <ChatMessages />
         </ScrollView>
 
-        <View className="flex-row w-full mb-1 justify-center h-12 mt-4 mb-4">
+        <View className="flex-row w-full justify-center h-12 mt-6 mb-2">
           <View className="flex-row w-[90%] h-full">
             <ChatInput username={user.name} reply={reply} isReceived={isLeft} />
             <Pressable className="bg-violet-700 w-[20%] rounded-br-full rounded-tr-full ">

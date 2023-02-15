@@ -11,7 +11,7 @@ const Highlights = ({ data }) => {
     <>
       <ScrollView>
         <View className="flex flex-wrap flex-row py-5 gap-4 justify-center items-center">
-          {data?.length ? (
+          {data?.length > 0 ? (
             Children.toArray(
               data.map(card => (
                 <Link to={{ screen: "Post", params: { user: card, title: card.name } }}>
@@ -19,18 +19,22 @@ const Highlights = ({ data }) => {
                     View
                     className="w-36 border border-black/5 rounded-lg overflow-hidden bg-white/10"
                   >
-                    <Image
+                    {card.profile_pic ? (
+                      <Image
                       className="h-36"
-                      source={{
-                        uri: card.profile_pic
-                      }}
-                    />
+                        source={{
+                          uri: card.profile_pic
+                        }}
+                      />
+                      ) : (
+                        <Ionicons name="person-circle-outline" size={32} color={colors.text} />
+                    )}
 
                     <View className="p-2">
                       <Text
                         numberOfLines={1}
                         style={{ color: colors.text }}
-                        className="text-base font-semibold -mb-1"
+                        className="text-base font-semibold mb-1"
                       >
                         {card.service}
                       </Text>

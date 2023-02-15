@@ -3,6 +3,8 @@ import { Link, useTheme } from "@react-navigation/native";
 import { SearchIcon } from "../components/Icons";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { searchView } from "../redux/actions";
 import Filter from "./Filter";
 
 const SearchBar = () => {
@@ -11,9 +13,10 @@ const SearchBar = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const [input, setInput] = useState("");
 
-  const handleInput = event => {
-    event.preventDefault();
-    setInput(event.nativeEvent.text);
+  const dispatch = useDispatch();
+
+  const handleInput = () => {
+    dispatch(searchView(input));
   };
 
   return (
@@ -23,9 +26,10 @@ const SearchBar = () => {
       </View>
       <TextInput
         style={{ color: colors.text, borderColor: colors.text }}
-        className="rounded-lg p-3 pl-14 border"
+        className="rounded-lg p-3 pl-14 border w-full"
         placeholder="Buscar en MascotApp"
-        onChange={handleInput}
+        onChange={e => setInput(e.nativeEvent.text)}
+        onSubmitEditing={handleInput}
         placeholderTextColor={colors.textGray}
       ></TextInput>
       <View className="pl-4">

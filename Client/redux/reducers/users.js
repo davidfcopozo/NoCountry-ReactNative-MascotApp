@@ -1,25 +1,11 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchUsers, sortUsersByRating, fetchUserById } from "../actions";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-  sendPasswordResetEmail,
-  updateEmail,
-  updatePassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-  updateProfile,
-  sendEmailVerification
-} from "firebase/auth";
-import { auth } from "../../firebase";
-import axios from "axios";
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchUsers, sortUsersByRating, fetchUserById, searchView } from "../actions";
 
 const initialState = {
   users: [],
   userDetail: {},
-  favouriteUsers: []
+  favouriteUsers: [],
+  search: []
 };
 
 export const registerUser = createAsyncThunk("users/registerUser", async formData => {
@@ -58,13 +44,13 @@ const usersReducer = createSlice({
       state.users = action.payload;
     });
     builder.addCase(sortUsersByRating.fulfilled, (state, action) => {
-      state.users = action.payload;
+      state.search = action.payload;
     });
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
       state.userDetail = action.payload;
     });
-    builder.addCase(registerUser.fulfilled, (state, action) => {
-      state.users = action.payload;
+    builder.addCase(searchView.fulfilled, (state, action) => {
+      state.search = action.payload;
     });
   }
 });

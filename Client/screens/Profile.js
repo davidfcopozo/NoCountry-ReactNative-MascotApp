@@ -3,6 +3,7 @@ import { Text, View, Modal, ScrollView, Pressable } from "react-native";
 import { Login, Register } from "../components/clientAuth";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useTheme } from "@react-navigation/native";
+import UserProfile from "../components/UserProfile";
 
 const Profile = () => {
   const [openLogin, setOpenLogin] = useState(false);
@@ -100,6 +101,7 @@ const Profile = () => {
           </Link>
         </Pressable>
       </View>
+      {/* <UserProfile></UserProfile> */}
     </ScrollView>
   );
 };
