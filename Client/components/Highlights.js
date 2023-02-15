@@ -19,12 +19,16 @@ const Highlights = ({ data }) => {
                     View
                     className="w-36 border border-black/5 rounded-lg overflow-hidden bg-white/10"
                   >
-                    <Image
+                    {card.profile_pic ? (
+                      <Image
                       className="h-36"
-                      source={{
-                        uri: card.profile_pic
-                      }}
-                    />
+                        source={{
+                          uri: card.profile_pic
+                        }}
+                      />
+                      ) : (
+                        <Ionicons name="person-circle-outline" size={32} color={colors.text} />
+                    )}
 
                     <View className="p-2">
                       <Text
