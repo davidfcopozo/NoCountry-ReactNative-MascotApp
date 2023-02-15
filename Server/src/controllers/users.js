@@ -173,33 +173,6 @@ const addUserFavourites = async (req, res) => {
 /**
  * STATUS : Testing
  * MESSAGE : is not finished yet, requires a session manager to manage the request to the database
- * Returns users filtered by city
- * @returns users list
- */
-
-const getSearch = async (req, res) => {
-  const { search } = req.params;
-  const searchWord = search? search.toLowerCase() : ''
-  console.log(search);
-
-  try {
-    const users = await User.findAll({
-      where: {
-        city: sequelize.where(sequelize.fn('LOWER', sequelize.col('city')), 'LIKE', '%' + searchWord + '%')
-      },
-    });
-
-    return res.json(users);
-  } catch (error) {
-    return res.status(500).json({
-      errorMessage: error.original
-    });
-  }
-};
-
-/**
- * STATUS : Testing
- * MESSAGE : is not finished yet, requires a session manager to manage the request to the database
  * Gets the list of favorites of one user, only returns 10 articles by page
  * @returns favorites list
  */
@@ -350,6 +323,34 @@ const deleteUser = async (req, res) => {
     return res.status(500).json({ errorMessage: error.original });
   }
 };
+
+/**
+ * STATUS : Testing
+ * MESSAGE : is not finished yet, requires a session manager to manage the request to the database
+ * Returns users filtered by city
+ * @returns users list
+ */
+
+const getSearch = async (req, res) => {
+  const { search } = req.params;
+  const searchWord = search? search.toLowerCase() : ''
+  console.log(search);
+
+  try {
+    const users = await User.findAll({
+      where: {
+        city: sequelize.where(sequelize.fn('LOWER', sequelize.col('city')), 'LIKE', '%' + searchWord + '%')
+      },
+    });
+
+    return res.json(users);
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original
+    });
+  }
+};
+
 
 module.exports = {
   getUsersBestRating,
