@@ -3,7 +3,14 @@ const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 
-const { DB_HOST } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
+
+// Esto lo dejo comentado porque es lo que uso continuamente para hacer pruebas locales, de la otra forma tarda mucho en cargar cada vez que mato el servidor y lo vuelvo a levantar
+
+// const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/MascotApp`, {
+//   logging: false,
+//   native: false
+// });
 
 const sequelize = new Sequelize(DB_HOST, {
   logging: false,
@@ -45,7 +52,7 @@ Pet.belongsTo(User, { foreignKey: "user_id" });
 Pet.belongsTo(PetType, { foreignKey: "type_id" });
 Request.belongsTo(User, { foreignKey: "user_id" });
 Review.belongsTo(User, { through: "User_Review" });
-User.belongsTo(Auth, { foreignKey: "auth_id" });
+User.belongsTo(Auth);
 User.belongsToMany(Category, { through: "User_Category" });
 User.hasMany(Favourite);
 User.hasMany(Image);

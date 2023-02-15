@@ -4,7 +4,7 @@ import { View, Text, TextInput, Pressable } from "react-native";
 const ChatInput = ({ reply, isReceived, username }) => {
   const [message, setMessage] = useState("");
   return (
-    <View className="justify-center bg-black dark:bg-white w-[80%] rounded-bl-full rounded-tl-full border border-gray-500/30">
+    <View className="justify-center bg-white w-[80%] rounded-bl-full rounded-tl-full border border-gray-500/30">
       {reply ? (
         <View className="px-2 justify-center align-start">
           <Pressable className="absolute right-2 top-1"></Pressable>
@@ -16,7 +16,7 @@ const ChatInput = ({ reply, isReceived, username }) => {
         <TextInput
           multiline
           placeholder={"Escribe algo..."}
-          className="bg-transparent w-full h-full py-3 justify-center text-black text-sm  "
+          className="bg-transparent w-full h-full py-3 justify-center text-black text-sm"
           value={message}
           onChangeText={text => setMessage(text)}
         />
