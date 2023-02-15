@@ -40,6 +40,7 @@ const getUsersBestRating = async (req, res) => {
       },
       order: [["rating", "DESC"]]
     });
+
     return res.status(200).json(usersOrdered);
   } catch (error) {
     return res.status(500).json({
@@ -95,8 +96,8 @@ const getUsersByCategory = async (req, res) => {
 };
 
 const getUserJobOffers = async (req, res) => {
-  
   const { userId } = req.body;
+
   try {
     if (!userId) return res.status(400).json({ errorMessage: "UserId missing" });
     if (typeof userId !== "number")
@@ -151,18 +152,15 @@ const getUsersByFilter = async (req, res) => {
 
 const addUserFavourites = async (req, res) => {
   const { id, favorite } = req.params;
-
-  console.log(id+favorite);
+  console.log(id + favorite);
 
   try {
-
     await Favourite.create({
-      user_id : id,
-      fav_user_id : favorite
-    })
+      user_id: id,
+      fav_user_id: favorite
+    });
 
-    return res.json({ message : favorite+" Added to favorites of User "+id});
-
+    return res.json({ message: favorite + " Added to favorites of User " + id });
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original
@@ -180,15 +178,15 @@ const addUserFavourites = async (req, res) => {
 const getUserFavourites = async (req, res) => {
   const { page, id } = req.params;
 
-  const favourites = await Favourite.findAll({
-    where: {
-      user_id: id
-    },
-    offset: (page - 1) * 10,
-    limit: 10
-  });
-
   try {
+    const favourites = await Favourite.findAll({
+      where: {
+        user_id: id
+      },
+      offset: (page - 1) * 10,
+      limit: 10
+    });
+
     return res.json(favourites);
   } catch (error) {
     return res.status(500).json({
@@ -205,7 +203,6 @@ const getUserFavourites = async (req, res) => {
  */
 
 const updateUser = async (req, res) => {
-
   const { id } = req.params;
   const { name, surname, age, city, offers_services, description, profile_pic } = req.body;
 
@@ -286,7 +283,6 @@ const deleteFavourite = async (req, res) => {
   const { favorite, id } = req.params;
 
   try {
-    
     await Favourite.destroy({
       where: {
         user_id: id,
@@ -333,14 +329,19 @@ const deleteUser = async (req, res) => {
 
 const getSearch = async (req, res) => {
   const { search } = req.params;
-  const searchWord = search? search.toLowerCase() : ''
   console.log(search);
 
   try {
+    const searchWord = search ? search.toLowerCase() : "";
+
     const users = await User.findAll({
       where: {
-        city: sequelize.where(sequelize.fn('LOWER', sequelize.col('city')), 'LIKE', '%' + searchWord + '%')
-      },
+        city: sequelize.where(
+          sequelize.fn("LOWER", sequelize.col("city")),
+          "LIKE",
+          "%" + searchWord + "%"
+        )
+      }
     });
 
     return res.json(users);
@@ -350,7 +351,6 @@ const getSearch = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   getUsersBestRating,
