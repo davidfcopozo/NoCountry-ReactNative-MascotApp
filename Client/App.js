@@ -25,6 +25,7 @@ import BlogPost from "./screens/BlogPost";
 import Favorites from "./screens/Favorites";
 import EditarProfile from "./screens/EditProfile";
 import Service from "./screens/Service";
+import AuthProvider from "./context/AuthContext";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
@@ -186,51 +187,53 @@ function App() {
 
   return (
     <NativeRouter>
-      <Provider store={store}>
-        <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
+      <AuthProvider>
+        <Provider store={store}>
+          <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
 
-        <NavigationContainer theme={isDarkMode ? CustomDark : CustomLight}>
-          <Stack.Navigator
-            screenOptions={{
-              headerTintColor: isDarkMode ? "#fff" : "#000"
-            }}
-          >
-            <Stack.Screen name="Root" options={{ headerShown: false }}>
-              {() => (
-                <BottomNavigation
-                  isDarkMode={isDarkMode}
-                  setDarkMode={setDarkMode}
-                  colors={colors}
-                />
-              )}
-            </Stack.Screen>
-
-            <Stack.Screen
-              name="Post"
-              component={Post}
-              options={({ route }) => ({ title: route.params.title })}
-            />
-
-            <Stack.Screen
-              name="BlogPost"
-              component={BlogPost}
-              options={{
-                title: "Blog"
+          <NavigationContainer theme={isDarkMode ? CustomDark : CustomLight}>
+            <Stack.Navigator
+              screenOptions={{
+                headerTintColor: isDarkMode ? "#fff" : "#000"
               }}
-            />
+            >
+              <Stack.Screen name="Root" options={{ headerShown: false }}>
+                {() => (
+                  <BottomNavigation
+                    isDarkMode={isDarkMode}
+                    setDarkMode={setDarkMode}
+                    colors={colors}
+                  />
+                )}
+              </Stack.Screen>
 
-            <Stack.Screen name="Message" component={Message} options={{ headerShown: false }} />
+              <Stack.Screen
+                name="Post"
+                component={Post}
+                options={({ route }) => ({ title: route.params.title })}
+              />
 
-            <Stack.Screen
-              name="AboutUs"
-              component={AboutUs}
-              options={{
-                title: "Acerca de Nosotros"
-              }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </Provider>
+              <Stack.Screen
+                name="BlogPost"
+                component={BlogPost}
+                options={{
+                  title: "Blog"
+                }}
+              />
+
+              <Stack.Screen name="Message" component={Message} options={{ headerShown: false }} />
+
+              <Stack.Screen
+                name="AboutUs"
+                component={AboutUs}
+                options={{
+                  title: "Acerca de Nosotros"
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </Provider>
+      </AuthProvider>
     </NativeRouter>
   );
 }
