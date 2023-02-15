@@ -1,5 +1,6 @@
 const { User, Auth, Category, Favourite, JobOffer } = require("../db");
 const { Op } = require("sequelize");
+const sequelize = require("sequelize");
 
 const getUsers = async (req, res) => {
   try {
@@ -94,8 +95,8 @@ const getUsersByCategory = async (req, res) => {
 };
 
 const getUserJobOffers = async (req, res) => {
+  
   const { userId } = req.body;
-
   try {
     if (!userId) return res.status(400).json({ errorMessage: "UserId missing" });
     if (typeof userId !== "number")
@@ -149,10 +150,19 @@ const getUsersByFilter = async (req, res) => {
  */
 
 const addUserFavourites = async (req, res) => {
-  const { id, favourite } = req.params;
+  const { id, favorite } = req.params;
+
+  console.log(id+favorite);
 
   try {
-    return res.json("Favourite added");
+
+    await Favourite.create({
+      user_id : id,
+      fav_user_id : favorite
+    })
+
+    return res.json({ message : favorite+" Added to favorites of User "+id});
+
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original
@@ -170,7 +180,7 @@ const addUserFavourites = async (req, res) => {
 const getUserFavourites = async (req, res) => {
   const { page, id } = req.params;
 
-  const favourites = Favourite.findAll({
+  const favourites = await Favourite.findAll({
     where: {
       user_id: id
     },
@@ -195,6 +205,7 @@ const getUserFavourites = async (req, res) => {
  */
 
 const updateUser = async (req, res) => {
+
   const { id } = req.params;
   const { name, surname, age, city, offers_services, description, profile_pic } = req.body;
 
@@ -221,8 +232,6 @@ const updateUser = async (req, res) => {
     return res.status(500).json({ errorMessage: error.original });
   }
 };
-
-/* Necesita Cambios - solo se uso para testear editar perfil */
 
 const addUser = async (req, res) => {
   const {
@@ -258,7 +267,7 @@ const addUser = async (req, res) => {
       authId: auth.id
     });
 
-    return res.json(newUser);
+    return res.json({ user: newUser });
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original
@@ -274,13 +283,14 @@ const addUser = async (req, res) => {
  */
 
 const deleteFavourite = async (req, res) => {
-  const { favourite, id } = req.params;
+  const { favorite, id } = req.params;
 
   try {
+    
     await Favourite.destroy({
       where: {
         user_id: id,
-        fav_user_id: favourite
+        fav_user_id: favorite
       }
     });
 
@@ -314,6 +324,34 @@ const deleteUser = async (req, res) => {
   }
 };
 
+/**
+ * STATUS : Testing
+ * MESSAGE : is not finished yet, requires a session manager to manage the request to the database
+ * Returns users filtered by city
+ * @returns users list
+ */
+
+const getSearch = async (req, res) => {
+  const { search } = req.params;
+  const searchWord = search? search.toLowerCase() : ''
+  console.log(search);
+
+  try {
+    const users = await User.findAll({
+      where: {
+        city: sequelize.where(sequelize.fn('LOWER', sequelize.col('city')), 'LIKE', '%' + searchWord + '%')
+      },
+    });
+
+    return res.json(users);
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original
+    });
+  }
+};
+
+
 module.exports = {
   getUsersBestRating,
   getUsers,
@@ -326,5 +364,6 @@ module.exports = {
   getUsersByFilter,
   getUserFavourites,
   addUserFavourites,
-  getUserJobOffers
+  getUserJobOffers,
+  getSearch
 };

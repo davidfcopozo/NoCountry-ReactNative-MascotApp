@@ -20,14 +20,12 @@ conn.sync({ force: false }).then(() => {
       //   console.log(data);
       //   setCategoriesDB().then(data => {
       //     console.log(data);
-      //     setUserCategoryDB().then(data => {
-      //       console.log(data);
-      //       console.log("The database has been set up successfully!");
-      //     });
+      //     setUserCategoryDB().then(data => console.log(data));
       //   });
       // });
       // setPetTypesDB().then(data => console.log(data));
       // setNewsDB().then(data => console.log(data));
+
 
       PORT
         ? console.log(`Server listening at port ${PORT}.`)

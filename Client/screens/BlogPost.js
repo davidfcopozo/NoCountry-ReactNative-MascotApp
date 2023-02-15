@@ -12,7 +12,7 @@ const BlogPost = ({route}) => {
   return (
     <ScrollView className="relative">
       <View className="flex justify-center items-center p-5 gap-y-4">
-        <Text className="text-xl text-center font-bold">{blog.title}</Text>
+        <Text style={{color: colors.text}} className="text-xl text-center font-bold">{blog.title}</Text>
         <Image
             className="w-full"
             style={{

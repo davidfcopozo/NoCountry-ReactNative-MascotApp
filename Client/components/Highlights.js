@@ -11,7 +11,7 @@ const Highlights = ({ data }) => {
     <>
       <ScrollView>
         <View className="flex flex-wrap flex-row py-5 gap-4 justify-center items-center">
-          {data?.length ? (
+          {data?.length > 0 ? (
             Children.toArray(
               data.map(card => (
                 <Link to={{ screen: "Post", params: { user: card, title: card.name } }}>
