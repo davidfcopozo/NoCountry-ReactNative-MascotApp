@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsers, sortUsersByRating, fetchUserById } from "../actions";
+import { fetchUsers, sortUsersByRating, fetchUserById, searchView } from "../actions";
 
 const initialState = {
   users: [],
   userDetail: {},
-  favouriteUsers: []
+  favouriteUsers: [],
+  search: []
 };
 
 const usersReducer = createSlice({
@@ -24,10 +25,13 @@ const usersReducer = createSlice({
       state.users = action.payload;
     });
     builder.addCase(sortUsersByRating.fulfilled, (state, action) => {
-      state.users = action.payload;
+      state.search = action.payload;
     });
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
       state.userDetail = action.payload;
+    });
+    builder.addCase(searchView.fulfilled, (state, action) => {
+      state.search = action.payload;
     });
   }
 });

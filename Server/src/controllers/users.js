@@ -1,5 +1,6 @@
 const { User, Auth, Category, Favourite, JobOffer } = require("../db");
 const { Op } = require("sequelize");
+const sequelize = require("sequelize");
 
 const getUsers = async (req, res) => {
   try {
@@ -93,9 +94,145 @@ const getUsersByCategory = async (req, res) => {
   }
 };
 
+const getUserJobOffers = async (req, res) => {
+  
+  const { userId } = req.body;
+  try {
+    if (!userId) return res.status(400).json({ errorMessage: "UserId missing" });
+    if (typeof userId !== "number")
+      return res.status(400).json({ errorMessage: "The userId type must be an integer" });
 
-/* Necesita Cambios - solo se uso para testear editar perfil */
-const updateProfile = async (req, res) => {
+    const user = await User.findByPk(userId, { include: JobOffer });
+    if (user === null)
+      return res.status(404).json({ errorMessage: "There is no user with that id" });
+
+    !user.dataValues.jobOffers.length
+      ? res.status(404).json({
+          errorMessage: `${user.dataValues.name} ${user.dataValues.surname} has no jobOffers to show`
+        })
+      : res.status(200).send(user.dataValues.jobOffers);
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original
+    });
+  }
+};
+
+/**
+ *
+ * @param {Number} req.query.filter Requires a rating value from query, the value is validated between 1 and 5 as a valid option by default returns the users with the rating of 5
+ * @returns users filtered by the rating value // example query.filter 2 returns users with rating of 2
+ */
+
+const getUsersByFilter = async (req, res) => {
+  const option = req.query.filter > 0 ? (req.query.filter > 5 ? 5 : req.query.filter) : 5;
+
+  try {
+    const usersFound = await User.findAll({
+      where: {
+        rating: option
+      }
+    });
+
+    return res.status(200).json(usersFound);
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original
+    });
+  }
+};
+
+/**
+ * STATUS : Testing
+ * MESSAGE : is not finished yet, requires a session manager to manage the request to the database
+ * Add Favorite to the current user favorites
+ * @returns favorite
+ */
+
+const addUserFavourites = async (req, res) => {
+  const { id, favorite } = req.params;
+
+  console.log(id+favorite);
+
+  try {
+
+    await Favourite.create({
+      user_id : id,
+      fav_user_id : favorite
+    })
+
+    return res.json({ message : favorite+" Added to favorites of User "+id});
+
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original
+    });
+  }
+};
+
+/**
+ * STATUS : Testing
+ * MESSAGE : is not finished yet, requires a session manager to manage the request to the database
+ * Returns users filtered by city
+ * @returns users list
+ */
+
+const getSearch = async (req, res) => {
+  const { search } = req.params;
+  const searchWord = search? search.toLowerCase() : ''
+  console.log(search);
+
+  try {
+    const users = await User.findAll({
+      where: {
+        city: sequelize.where(sequelize.fn('LOWER', sequelize.col('city')), 'LIKE', '%' + searchWord + '%')
+      },
+    });
+
+    return res.json(users);
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original
+    });
+  }
+};
+
+/**
+ * STATUS : Testing
+ * MESSAGE : is not finished yet, requires a session manager to manage the request to the database
+ * Gets the list of favorites of one user, only returns 10 articles by page
+ * @returns favorites list
+ */
+
+const getUserFavourites = async (req, res) => {
+  const { page, id } = req.params;
+
+  const favourites = await Favourite.findAll({
+    where: {
+      user_id: id
+    },
+    offset: (page - 1) * 10,
+    limit: 10
+  });
+
+  try {
+    return res.json(favourites);
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original
+    });
+  }
+};
+
+/**
+ *
+ * @param {Object} req.body requires all the fields of body and extract the fields needed
+ * then the fields of user are updated if the content is new
+ * @returns the user id
+ */
+
+const updateUser = async (req, res) => {
+
   const { id } = req.params;
   const { name, surname, age, city, offers_services, description, profile_pic } = req.body;
 
@@ -173,13 +310,14 @@ const addUser = async (req, res) => {
  */
 
 const deleteFavourite = async (req, res) => {
-  const { favourite, id } = req.params;
+  const { favorite, id } = req.params;
 
   try {
+    
     await Favourite.destroy({
       where: {
         user_id: id,
-        fav_user_id: favourite
+        fav_user_id: favorite
       }
     });
 
@@ -225,5 +363,6 @@ module.exports = {
   getUsersByFilter,
   getUserFavourites,
   addUserFavourites,
-  getUserJobOffers
+  getUserJobOffers,
+  getSearch
 };
