@@ -13,19 +13,21 @@ const { PORT } = process.env;
 console.log("Connecting to database. Please wait a few seconds...");
 
 // Syncing all the models at once.
-conn.sync({ force: false }).then(() => {
+conn.sync({ force: true }).then(() => {
   server.listen(PORT || 3002, () => {
     try {
-      // setUsersDB().then(data => {
-      //   console.log(data);
-      //   setCategoriesDB().then(data => {
-      //     console.log(data);
-      //     setUserCategoryDB().then(data => console.log(data));
-      //   });
-      // });
-      // setPetTypesDB().then(data => console.log(data));
-      // setNewsDB().then(data => console.log(data));
-
+      setUsersDB().then(data => {
+        console.log(data);
+        setCategoriesDB().then(data => {
+          console.log(data);
+          setUserCategoryDB().then(data => {
+            console.log(data);
+            console.log("The database has been set up successfully!");
+          });
+        });
+      });
+      setPetTypesDB().then(data => console.log(data));
+      setNewsDB().then(data => console.log(data));
 
       PORT
         ? console.log(`Server listening at port ${PORT}.`)
