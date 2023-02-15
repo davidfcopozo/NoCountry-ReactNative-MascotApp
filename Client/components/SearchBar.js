@@ -24,7 +24,7 @@ const SearchBar = () => {
       <TextInput
         style={{ color: colors.text, borderColor: colors.text }}
         className="rounded-lg p-3 pl-14 border"
-        placeholder="Buscar en MascotApp"
+        placeholder="Buscar ciudad"
         onChange={handleInput}
         placeholderTextColor={colors.textGray}
       ></TextInput>
