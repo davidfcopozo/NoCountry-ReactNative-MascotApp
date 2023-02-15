@@ -255,7 +255,7 @@ const addUser = async (req, res) => {
       description,
       rating,
       profile_pic,
-      auth_id: auth.id
+      authId: auth.id
     });
 
     return res.json(newUser);
