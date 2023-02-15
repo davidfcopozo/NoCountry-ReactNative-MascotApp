@@ -2,6 +2,7 @@ import { REACT_APP_BACK_URL } from "@env";
 import axios from "axios";
 import { NativeWindStyleSheet } from "nativewind";
 import { useState } from "react";
+import { NativeRouter } from "react-router-native";
 import { Provider } from "react-redux";
 import { Image, View, StatusBar } from "react-native";
 import { NavigationContainer, useTheme } from "@react-navigation/native";
