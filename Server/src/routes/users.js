@@ -24,7 +24,7 @@ router.get("/jobOffers", getUserJobOffers);
 router.get("/favorites/:id/:page", getUserFavourites);
 router.post("/favorites/:id/:favorite", addUserFavourites);
 router.delete("/favorites/:id/:favorite", deleteFavourite);
-router.post("/add", addUser);
+router.post("/register", addUser);
 router.patch("/:id", updateUser);
 router.delete("/:id", deleteUser);
 router.get("/:id", getUserById);
