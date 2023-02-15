@@ -1,5 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchUsers, sortUsersByRating, fetchUserById, searchView } from "../actions";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase";
+import axios from "axios";
 
 const initialState = {
   users: [],
@@ -51,6 +54,9 @@ const usersReducer = createSlice({
     });
     builder.addCase(searchView.fulfilled, (state, action) => {
       state.search = action.payload;
+    });
+    builder.addCase(registerUser.fulfilled, (state, action) => {
+      state.users = action.payload;
     });
   }
 });
