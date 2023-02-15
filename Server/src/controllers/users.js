@@ -82,6 +82,7 @@ const getUsersByCategory = async (req, res) => {
   }
 };
 
+/* Necesita Cambios - solo se uso para testear editar perfil */
 const updateProfile = async (req, res) => {
   const { id } = req.params;
   const { name, surname, age, city, offers_services, description, profile_pic } = req.body;
@@ -109,8 +110,6 @@ const updateProfile = async (req, res) => {
     return res.status(500).json({ errorMessage: error.original });
   }
 };
-
-/* Necesita Cambios - solo se uso para testear editar perfil */
 
 const addUser = async (req, res) => {
   const {
@@ -143,10 +142,10 @@ const addUser = async (req, res) => {
       description,
       rating,
       profile_pic,
-      auth_id: auth.id
+      authId: auth.id
     });
 
-    return res.json(newUser);
+    return res.json({ user: newUser });
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original
