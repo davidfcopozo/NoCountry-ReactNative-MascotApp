@@ -26,9 +26,10 @@ conn.sync({ force: false }).then(() => {
       // setPetTypesDB().then(data => console.log(data));
       // setNewsDB().then(data => console.log(data));
 
+
       PORT
-        ? console.log(`Server listening at port ${PORT}`)
-        : console.log("Server listening at port 3002");
+        ? console.log(`Server listening at port ${PORT}.`)
+        : console.log("Server listening at port 3002.");
     } catch (error) {
       console.log("Preloading database error: ", error);
     }

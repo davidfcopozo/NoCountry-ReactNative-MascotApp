@@ -30,7 +30,7 @@ const Highlights = ({ data }) => {
                       <Text
                         numberOfLines={1}
                         style={{ color: colors.text }}
-                        className="text-base font-semibold -mb-1"
+                        className="text-base font-semibold mb-1"
                       >
                         {card.service}
                       </Text>

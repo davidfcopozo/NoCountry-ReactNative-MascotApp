@@ -1,4 +1,5 @@
-const { User, Auth, Category } = require("../db");
+const { User, Auth, Category, Favourite, JobOffer } = require("../db");
+const { Op } = require("sequelize");
 
 const getUsers = async (req, res) => {
   try {
@@ -30,10 +31,15 @@ const getUserById = async (req, res) => {
 
 const getUsersBestRating = async (req, res) => {
   try {
-    const usersList = await User.findAll();
-    const usersWithRating = usersList.filter(user => user.rating !== 0);
-    usersWithRating.sort((a, b) => b.rating - a.rating);
-    return res.status(200).json(usersWithRating);
+    const usersOrdered = await User.findAll({
+      where: {
+        rating: {
+          [Op.gt]: 0
+        }
+      },
+      order: [["rating", "DESC"]]
+    });
+    return res.status(200).json(usersOrdered);
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original
@@ -51,11 +57,16 @@ const getUsersByCategory = async (req, res) => {
 
     const category = await Category.findByPk(categoryId);
     if (category === null)
-      return res.status(404).json({ errorMessage: "The is no category with that id" });
+      return res.status(404).json({ errorMessage: "There is no category with that id" });
 
     const usersThatOfferServices = await User.findAll({
       where: { offers_services: true },
-      include: Category
+      include: {
+        model: Category,
+        through: {
+          attributes: []
+        }
+      }
     });
 
     const usersArray = usersThatOfferServices.map(user => user.dataValues);
@@ -81,6 +92,7 @@ const getUsersByCategory = async (req, res) => {
     });
   }
 };
+
 
 /* Necesita Cambios - solo se uso para testear editar perfil */
 const updateProfile = async (req, res) => {
@@ -153,9 +165,33 @@ const addUser = async (req, res) => {
   }
 };
 
+/**
+ * STATUS : Testing
+ * MESSAGE : is not finished yet, requires a session manager to manage the request to the database
+ * Deletes user favorite
+ * @returns response of the request
+ */
+
+const deleteFavourite = async (req, res) => {
+  const { favourite, id } = req.params;
+
+  try {
+    await Favourite.destroy({
+      where: {
+        user_id: id,
+        fav_user_id: favourite
+      }
+    });
+
+    return res.sendStatus(204);
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.original });
+  }
+};
+
 /* Funcion de prueba */
 
-const deleteProfile = async (req, res) => {
+const deleteUser = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -181,8 +217,13 @@ module.exports = {
   getUsersBestRating,
   getUsers,
   addUser,
-  updateProfile,
-  deleteProfile,
+  updateUser,
+  deleteFavourite,
+  deleteUser,
   getUserById,
-  getUsersByCategory
+  getUsersByCategory,
+  getUsersByFilter,
+  getUserFavourites,
+  addUserFavourites,
+  getUserJobOffers
 };
