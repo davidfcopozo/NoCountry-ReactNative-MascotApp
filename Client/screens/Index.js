@@ -7,7 +7,6 @@ import BlogsData from "../db/blogs.json";
 import { Link, useTheme } from "@react-navigation/native";
 
 const Index = () => {
-
   const { colors } = useTheme();
 
   return (
@@ -15,13 +14,15 @@ const Index = () => {
       <View className="text-left w-full p-3 px-6 gap-y-2">
         <Shortcuts />
 
-        <Text style={{color: colors.text}} className="font-bold text-2xl mb-2">
+        <Text style={{ color: colors.text }} className="font-bold text-2xl mb-2">
           Mascoteros cerca de tí
         </Text>
-        
+
         <Cards Data={CardsData} />
 
-        <Text style={{color: colors.text}} className="font-bold text-2xl mb-2">Blogs</Text>
+        <Text style={{ color: colors.text }} className="font-bold text-2xl mb-2">
+          Blogs
+        </Text>
         <Blogs Data={BlogsData}></Blogs>
       </View>
     </ScrollView>

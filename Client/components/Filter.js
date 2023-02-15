@@ -8,8 +8,12 @@ const Filter = ({ openFilter, setOpenFilter }) => {
 
   return (
     <View
-      style={{ color: colors.text, backgroundColor: colors.background, borderTopColor: colors.text}}
-      className="p-5 mt-auto border-t"
+      style={{
+        color: colors.text,
+        backgroundColor: colors.background,
+        borderTopColor: colors.text
+      }}
+      className="p-5 h-full border-t"
     >
       <View className="flex flex-row justify-between w-full">
         <Ionicons
@@ -18,16 +22,11 @@ const Filter = ({ openFilter, setOpenFilter }) => {
           size={32}
           name="md-close-sharp"
         ></Ionicons>
-        <Text
-          style={{ color: colors.text }}
-          className="flex text-2xl items-center font-bold"
-        >
+        <Text style={{ color: colors.text }} className="flex text-2xl items-center font-bold">
           Filtros
         </Text>
 
-        <Text style={{width: 32}}>
-
-        </Text>
+        <Text style={{ width: 32 }}></Text>
       </View>
       <Text style={{ color: colors.text }} className="text-lg font-medium p-4">
         Servicios
@@ -48,13 +47,6 @@ const Filter = ({ openFilter, setOpenFilter }) => {
         <TouchableOpacity className="flex items-center w-40 border rounded-md p-2 bg-purple-600">
           <Text className="text-lg text-white">Entretenimiento</Text>
         </TouchableOpacity>
-      </View>
-
-      <Text style={{ color: colors.text }} className="text-lg font-medium p-4 pt-5">
-        Buscar Ciudad
-      </Text>
-      <View className="pl-4">
-        <SearchBarFilter></SearchBarFilter>
       </View>
 
       <View className="flex flex-row justify-center items-center py-20 gap-5">

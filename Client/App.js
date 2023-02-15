@@ -23,7 +23,8 @@ import Search from "./screens/Search";
 import AboutUs from "./screens/AboutUs";
 import BlogPost from "./screens/BlogPost";
 import Favorites from "./screens/Favorites";
-import EditarProfile from "./components/EditProfile";
+import EditarProfile from "./screens/EditProfile";
+import Service from "./screens/Service";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
@@ -236,6 +237,14 @@ function App() {
             component={EditarProfile}
             options={{
               title: "Editar perfil"
+            }}
+          />
+
+          <Stack.Screen
+            name="Service"
+            component={Service}
+            options={{
+              title: "Servicio"
             }}
           />
         </Stack.Navigator>

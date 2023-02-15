@@ -12,7 +12,7 @@ const Cards = ({ Data }) => {
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} className="gap-x-3 py-2">
       {Children.toArray(
         Data?.map(card => (
-          <Link to={{ screen: "Post", params: { user: card, title: card.name } }}>
+          <Link to={{ screen: "Service", params: { user: card, title: card.name } }}>
             <View className="w-44 relative border border-black/5 rounded-lg overflow-hidden bg-white/10">
               <Image
                 className="h-36"
