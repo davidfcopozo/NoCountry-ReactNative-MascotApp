@@ -5,14 +5,14 @@ module.exports = sequelize => {
     "auth",
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true
       },
       email: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
       },
       password: {
         type: DataTypes.STRING,
@@ -20,7 +20,8 @@ module.exports = sequelize => {
       },
       isGoogle: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        defaultValue: false
       }
     },
     {

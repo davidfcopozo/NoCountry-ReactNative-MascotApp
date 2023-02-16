@@ -13,7 +13,7 @@ import { useState } from "react";
 import { useTheme, useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
 import { useDispatch } from "react-redux";
-import { registerUser } from "../redux/reducers/users";
+import { registerUser } from "./../redux/actions/index";
 
 const FormSecondScreen = ({ formData, setFormData, setScreen }) => {
   const { colors } = useTheme();

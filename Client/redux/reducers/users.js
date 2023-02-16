@@ -1,9 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchUsers, sortUsersByRating, fetchUserById, searchView } from "../actions";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase";
-
-import axios from "axios";
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchUsers, sortUsersByRating, fetchUserById, searchView, registerUser } from "../actions";
 
 const initialState = {
   users: [],
@@ -11,25 +7,6 @@ const initialState = {
   favouriteUsers: [],
   search: []
 };
-
-export const registerUser = createAsyncThunk("users/registerUser", async formData => {
-  try {
-    const { name, surname, email, password, city } = formData;
-    await createUserWithEmailAndPassword(auth, email, password);
-
-    const userData = {
-      name,
-      surname,
-      city,
-      email,
-      uid: auth.currentUser.uid
-    };
-    const response = await axios.post("/users/add", userData);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
-});
 
 const usersReducer = createSlice({
   name: "users",
