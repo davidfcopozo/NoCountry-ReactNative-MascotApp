@@ -18,10 +18,10 @@ const Search = () => {
 
   return (
     <ScrollView>
-      <View className="p-2">
+      <View className="p-2 w-full">
         <SearchBar></SearchBar>
         <View className="mt-3">
-          <Text style={{ color: colors.text }} className="font-bold text-2xl mb-2 pl-3">
+          <Text style={{ color: colors.text }} className="font-bold text-2xl mb-2">
             Los más destacados
           </Text>
           <Highlights data={sortedUsersByRating} />

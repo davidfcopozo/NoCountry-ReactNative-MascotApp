@@ -22,7 +22,7 @@ router.get("/rating", getUsersBestRating);
 router.get("/category", getUsersByCategory);
 router.post("/register", addUser);
 router.get("/filter", getUsersByFilter);
-router.get("/search/:search", getSearch);
+router.get("/search", getSearch);
 router.get("/jobOffers", getUserJobOffers);
 router.get("/favorites/:id/:page", getUserFavourites);
 router.post("/favorites/:id/:favorite", addUserFavourites);

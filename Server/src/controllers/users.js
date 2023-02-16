@@ -38,6 +38,9 @@ const getUsersBestRating = async (req, res) => {
           [Op.gt]: 0
         }
       },
+      include: {
+        model: Category
+      },
       order: [["rating", "DESC"]]
     });
 
@@ -328,23 +331,52 @@ const deleteUser = async (req, res) => {
  */
 
 const getSearch = async (req, res) => {
-  const { search } = req.params;
-  console.log(search);
+
+  let filters = [
+    req.query.walk === 'true' ? 1 : false,
+    req.query.care === 'true' ? 2 : false,
+    req.query.transport === 'true' ? 3 : false,
+    req.query.training === 'true' ? 4 : false,
+    req.query.hair === 'true' ? 5 : false,
+  ]
+
+  filters = filters.filter( e => e !== false)
+
+  let searchWord, baseFilters
+
+  if (req.query.search) {
+    searchWord = req.query.search
+    searchWord = {city: sequelize.where(sequelize.fn('LOWER', sequelize.col('city')), 'LIKE', '%' + searchWord.toLowerCase() + '%')}
+  }
+  
+  if (filters.length > 0) {
+    baseFilters = {id : filters}
+  }
 
   try {
-    const searchWord = search ? search.toLowerCase() : "";
 
     const users = await User.findAll({
       where: {
-        city: sequelize.where(
-          sequelize.fn("LOWER", sequelize.col("city")),
-          "LIKE",
-          "%" + searchWord + "%"
-        )
-      }
-    });
+        [Op.and] : [
+          searchWord
+        ],
+        rating: {
+          [Op.gt]: 0
+        }
+      },
+      include: {
+        model: Category,
+        where: {
+          [Op.and] : [
+            baseFilters
+          ]
+        }
+      },
+      order: [["rating", "DESC"]]
+    })
 
-    return res.json(users);
+    return res.json(users)
+
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original

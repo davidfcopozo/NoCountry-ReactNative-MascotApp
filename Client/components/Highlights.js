@@ -1,51 +1,57 @@
 import { Text, View, Image, ScrollView } from "react-native";
-import { Children } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { Children} from "react";
 import { Link, useTheme } from "@react-navigation/native";
 import LoadingGif from "./LoadingGif";
 
 const Highlights = ({ data }) => {
   const { colors } = useTheme();
 
+  if (!data) return <LoadingGif />
+
   return (
     <>
       <ScrollView>
-        <View className="flex flex-wrap flex-row py-5 gap-4 justify-center items-center">
+        <View className="flex flex-wrap flex-row py-5 gap-1">
           {data?.length > 0 ? (
             Children.toArray(
               data.map(card => (
-                <Link to={{ screen: "Post", params: { user: card, title: card.name } }}>
+                <Link to={{ screen: "UserProfile", params: { user: card, title: card.name } }}>
                   <View
-                    View
-                    className="w-36 border border-black/5 rounded-lg overflow-hidden bg-white/10"
+                    className="flex-1 flex items-center w-32 border border-black/5 rounded-lg overflow-hidden bg-white/10 pt-3"
                   >
                     {card.profile_pic ? (
                       <Image
-                      className="h-36"
+                        style={{
+                          height: 100,
+                          width: 100,
+                          resizeMode: "contain"
+                        }}
                         source={{
                           uri: card.profile_pic
                         }}
                       />
                       ) : (
-                        <Ionicons name="person-circle-outline" size={32} color={colors.text} />
+                        <Ionicons name="person-circle-outline" size={100} style={{height: 100, width: 100}} color={colors.text} />
                     )}
 
                     <View className="p-2">
-                      <Text
-                        numberOfLines={1}
-                        style={{ color: colors.text }}
-                        className="text-base font-semibold mb-1"
-                      >
-                        {card.service}
-                      </Text>
 
                       <Text
                         numberOfLines={1}
                         style={{ color: colors.textGray }}
-                        className="text-sm"
+                        className="text-sm w-28"
                       >
                         De {card.city}
                       </Text>
+
+                      {
+                        Children.toArray(
+                        card?.categories?.map(category => (
+                          <Text className="bg-violet-700 text-white font-bold p-1 text-center capitalize">{category?.name}</Text>
+                        ))
+                        )
+                      }
 
                       <View className="flex flex-row py-2 justify-left items-left gap-x-2">
                         {card.profile_pic ? (
@@ -80,7 +86,9 @@ const Highlights = ({ data }) => {
               ))
             )
           ) : (
-            <LoadingGif />
+            <View className="flex justify-center items-center w-full">
+              <Text className="py-3 px-4 text-center font-bold text-2xl text-white bg-violet-600">Sin Resultados.</Text>
+            </View>
           )}
         </View>
       </ScrollView>
