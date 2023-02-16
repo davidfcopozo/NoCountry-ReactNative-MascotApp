@@ -1,4 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase";
 import axios from "axios";
 
 export const fetchUsers = createAsyncThunk("/users/fetchUsers", async () => {
@@ -41,3 +43,30 @@ export const searchView = createAsyncThunk("/users/search", async searchThis => 
   }
 });
 
+export const registerUser = createAsyncThunk("users/registerUser", async formData => {
+  try {
+    const { name, surname, email, password, city } = formData;
+    await createUserWithEmailAndPassword(auth, email, password);
+    const firebaseId = auth.currentUser.uid;
+
+    const userData = {
+      name,
+      surname,
+      age,
+      city,
+      offers_services,
+      description,
+      rating,
+      profile_pic,
+      fb_authId: firebaseId,
+      email,
+      password,
+      isGoogle
+    };
+
+    const response = await axios.post("/users/register", userData);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+});
