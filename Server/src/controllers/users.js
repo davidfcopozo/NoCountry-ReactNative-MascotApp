@@ -243,36 +243,51 @@ const addUser = async (req, res) => {
     description,
     rating,
     profile_pic,
+    fb_authId,
     email,
     password,
-    uid,
     isGoogle
   } = req.body;
 
   try {
-    let auth = await Auth.create({
-      email,
-      password,
-      isGoogle
+    if (!name || !surname || !city || !fb_authId || !email || !password) {
+      return res.status(400).json({ errorMessage: "Missing required fields" });
+    }
+
+    let [auth, created] = await Auth.findOrCreate({
+      where: { email },
+      defaults: {
+        id: fb_authId,
+        email,
+        password,
+        isGoogle
+      }
     });
 
-    let newUser = await User.create({
-      name,
-      surname,
-      age,
-      city,
-      offers_services,
-      description,
-      rating,
-      profile_pic,
-      uid,
-      authId: auth.id
-    });
+    if (created) {
+      let newUser = await User.create({
+        name,
+        surname,
+        age,
+        city,
+        offers_services,
+        description,
+        rating,
+        profile_pic,
+        authId: auth.id
+      });
 
-    return res.json({ user: newUser });
+      return res.status(201).json({
+        message: "A new user has been authenticated and created successfully",
+        user: newUser.dataValues
+      });
+    }
+
+    return res.status(400).json({ errorMessage: "There is already an account with that email" });
   } catch (error) {
     return res.status(500).json({
-      errorMessage: error.original
+      errorMessage: error
+      // errorMessage: error.original ? error.original : error
     });
   }
 };
@@ -333,35 +348,37 @@ const deleteUser = async (req, res) => {
  */
 
 const getSearch = async (req, res) => {
-
   let filters = [
-    req.query.walk === 'true' ? 1 : false,
-    req.query.care === 'true' ? 2 : false,
-    req.query.transport === 'true' ? 3 : false,
-    req.query.training === 'true' ? 4 : false,
-    req.query.hair === 'true' ? 5 : false,
-  ]
+    req.query.walk === "true" ? 1 : false,
+    req.query.care === "true" ? 2 : false,
+    req.query.transport === "true" ? 3 : false,
+    req.query.training === "true" ? 4 : false,
+    req.query.hair === "true" ? 5 : false
+  ];
 
-  filters = filters.filter( e => e !== false)
+  filters = filters.filter(e => e !== false);
 
-  let searchWord, baseFilters
+  let searchWord, baseFilters;
 
   if (req.query.search) {
-    searchWord = req.query.search
-    searchWord = {city: sequelize.where(sequelize.fn('LOWER', sequelize.col('city')), 'LIKE', '%' + searchWord.toLowerCase() + '%')}
+    searchWord = req.query.search;
+    searchWord = {
+      city: sequelize.where(
+        sequelize.fn("LOWER", sequelize.col("city")),
+        "LIKE",
+        "%" + searchWord.toLowerCase() + "%"
+      )
+    };
   }
-  
+
   if (filters.length > 0) {
-    baseFilters = {id : filters}
+    baseFilters = { id: filters };
   }
 
   try {
-
     const users = await User.findAll({
       where: {
-        [Op.and] : [
-          searchWord
-        ],
+        [Op.and]: [searchWord],
         rating: {
           [Op.gt]: 0
         }
@@ -369,16 +386,13 @@ const getSearch = async (req, res) => {
       include: {
         model: Category,
         where: {
-          [Op.and] : [
-            baseFilters
-          ]
+          [Op.and]: [baseFilters]
         }
       },
       order: [["rating", "DESC"]]
-    })
+    });
 
-    return res.json(users)
-
+    return res.json(users);
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original
