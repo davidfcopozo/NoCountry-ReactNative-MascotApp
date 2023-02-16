@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchUsers, sortUsersByRating, fetchUserById, searchView } from "../actions";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase.template";
+import { auth } from "../../firebase";
 
 import axios from "axios";
 
@@ -16,24 +16,15 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
   try {
     const { name, surname, email, password, city } = formData;
     await createUserWithEmailAndPassword(auth, email, password);
-    let firebaseId = auth.currentUser.uid;
 
     const userData = {
       name,
       surname,
       city,
       email,
-      age: 27,
-      offers_services: false,
-      description: "yo",
-      rating: 5.0,
-      profile_pic: " ",
-      email: "hola",
-      password: "hola",
-      isGoogle: false,
-      uid: firebaseId
+      uid: auth.currentUser.uid
     };
-    const response = await axios.post("/users/register", userData);
+    const response = await axios.post("/users/add", userData);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -66,7 +57,6 @@ const usersReducer = createSlice({
       state.search = action.payload;
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
-      console.log("DESDE REDUCERS", action.payload);
       state.users = action.payload;
     });
   }
