@@ -11,7 +11,6 @@ Client/*.orig.*
 Client/web-build/
 Client/.env
 Client/yarn.lock
-Client/firebase.js
 Server/node_modules/
 Server/.env
 Server/package-lock.json

@@ -27,6 +27,7 @@ import Favorites from "./screens/Favorites";
 import EditarProfile from "./screens/EditProfile";
 import Service from "./screens/Service";
 import AuthProvider from "./context/AuthContext";
+import UserProfile from "./screens/UserProfile";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
@@ -233,18 +234,10 @@ function App() {
               />
 
               <Stack.Screen
-                name="Service"
-                component={Service}
-                options={{
-                  title: "Servicio"
-                }}
-              />
-
-              <Stack.Screen
                 name="Favorites"
                 component={Favorites}
                 options={{
-                  title: "Mis favoritos"
+                  title: "Favoritos"
                 }}
               />
 
@@ -254,6 +247,20 @@ function App() {
                 options={{
                   title: "Editar perfil"
                 }}
+              />
+
+              <Stack.Screen
+                name="Service"
+                component={Service}
+                options={{
+                  title: "Servicio"
+                }}
+              />
+
+              <Stack.Screen
+                name="UserProfile"
+                component={UserProfile}
+                options={({ route }) => ({ title: route.params.title })}
               />
             </Stack.Navigator>
           </NavigationContainer>
