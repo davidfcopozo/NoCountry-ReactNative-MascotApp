@@ -245,6 +245,7 @@ const addUser = async (req, res) => {
     profile_pic,
     email,
     password,
+    uid,
     isGoogle
   } = req.body;
 
@@ -264,6 +265,7 @@ const addUser = async (req, res) => {
       description,
       rating,
       profile_pic,
+      uid,
       authId: auth.id
     });
 

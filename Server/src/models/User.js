@@ -20,7 +20,7 @@ module.exports = sequelize => {
       },
       age: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
       },
       city: {
         type: DataTypes.STRING,
@@ -28,7 +28,7 @@ module.exports = sequelize => {
       },
       offers_services: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
       },
       description: {
         type: DataTypes.STRING,
@@ -36,10 +36,14 @@ module.exports = sequelize => {
       },
       rating: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         defaultValue: 0
       },
       profile_pic: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      uid: {
         type: DataTypes.STRING,
         allowNull: false
       }
