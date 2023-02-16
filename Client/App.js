@@ -31,7 +31,7 @@ import UserProfile from "./screens/UserProfile";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
-axios.defaults.baseURL = "http://192.168.1.134:3001"; // cuando querramos trabajar y/o probar nuestro proyecto de forma local
+axios.defaults.baseURL = REACT_APP_BACK_URL; // cuando querramos trabajar y/o probar nuestro proyecto de forma local
 // axios.defaults.baseURL = process.env.REACT_APP_DEPLOY_BACK_URL; // cuando querramos pushear o actualizar nuestro deploy del front
 
 // Habilita Tailwind en React Native Web
