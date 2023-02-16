@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchUsers, sortUsersByRating, fetchUserById, searchView } from "../actions";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase";
+import { auth } from "../../firebase.template";
+
 import axios from "axios";
 
 const initialState = {

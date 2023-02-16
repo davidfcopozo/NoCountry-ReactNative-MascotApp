@@ -12,7 +12,7 @@ import {
   updateProfile,
   sendEmailVerification
 } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth } from "../firebase.template";
 
 //Create context
 const AuthContext = React.createContext();

@@ -231,6 +231,30 @@ function App() {
                   title: "Acerca de Nosotros"
                 }}
               />
+
+              <Stack.Screen
+                name="Service"
+                component={Service}
+                options={{
+                  title: "Servicio"
+                }}
+              />
+
+              <Stack.Screen
+                name="Favorites"
+                component={Favorites}
+                options={{
+                  title: "Mis favoritos"
+                }}
+              />
+
+              <Stack.Screen
+                name="Edit"
+                component={EditarProfile}
+                options={{
+                  title: "Editar perfil"
+                }}
+              />
             </Stack.Navigator>
           </NavigationContainer>
         </Provider>
