@@ -28,7 +28,8 @@ module.exports = sequelize => {
       },
       offers_services: {
         type: DataTypes.BOOLEAN,
-        allowNull: true
+        allowNull: true,
+        defaultValue: false
       },
       description: {
         type: DataTypes.STRING,
@@ -42,10 +43,6 @@ module.exports = sequelize => {
       profile_pic: {
         type: DataTypes.STRING,
         allowNull: true
-      },
-      uid: {
-        type: DataTypes.STRING,
-        allowNull: false
       }
     },
     {
