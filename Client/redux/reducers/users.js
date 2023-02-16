@@ -15,15 +15,24 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
   try {
     const { name, surname, email, password, city } = formData;
     await createUserWithEmailAndPassword(auth, email, password);
+    let firebaseId = auth.currentUser.uid;
 
     const userData = {
       name,
       surname,
       city,
       email,
-      uid: auth.currentUser.uid
+      age: 27,
+      offers_services: false,
+      description: "yo",
+      rating: 5.0,
+      profile_pic: " ",
+      email: "hola",
+      password: "hola",
+      isGoogle: false,
+      uid: firebaseId
     };
-    const response = await axios.post("/users/add", userData);
+    const response = await axios.post("/users/register", userData);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -56,6 +65,7 @@ const usersReducer = createSlice({
       state.search = action.payload;
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
+      console.log("DESDE REDUCERS", action.payload);
       state.users = action.payload;
     });
   }
