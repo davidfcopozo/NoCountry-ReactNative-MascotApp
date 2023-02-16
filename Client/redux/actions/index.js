@@ -52,16 +52,10 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
     const userData = {
       name,
       surname,
-      age,
       city,
-      offers_services,
-      description,
-      rating,
-      profile_pic,
       fb_authId: firebaseId,
       email,
-      password,
-      isGoogle
+      password
     };
 
     const response = await axios.post("/users/register", userData);
