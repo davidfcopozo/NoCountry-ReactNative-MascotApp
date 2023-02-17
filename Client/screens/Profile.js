@@ -1,14 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text, View, Modal, ScrollView, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useTheme } from "@react-navigation/native";
 import Register from "./Register";
 import Login from "./Login";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
   const { colors } = useTheme();
+
+  const { currentUser } = useSelector(state => state.users);
+
+  useEffect(() => {
+    if (currentUser) {
+      setOpenLogin(false);
+    }
+  }, [currentUser]);
 
   return (
     <ScrollView>
@@ -101,7 +110,6 @@ const Profile = () => {
           </Link>
         </Pressable>
       </View>
-      {/* <UserProfile></UserProfile> */}
     </ScrollView>
   );
 };
