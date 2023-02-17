@@ -3,7 +3,7 @@ import { Link, useTheme } from "@react-navigation/native";
 import { SearchIcon } from "../components/Icons";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { searchView } from "../redux/actions";
 import Filter from "./Filter";
 
@@ -16,11 +16,11 @@ const SearchBar = () => {
   const dispatch = useDispatch();
 
   const handleInput = () => {
-    dispatch(searchView(input));
+    dispatch(searchView({search: input}));
   };
 
   return (
-    <View className="flex flex-row justify-center items-center p-7 pr-14">
+    <View className="flex flex-row justify-center items-center pl-2 pr-14">
       <View className="left-12">
         <SearchIcon color={colors.text}></SearchIcon>
       </View>
@@ -32,6 +32,7 @@ const SearchBar = () => {
         onSubmitEditing={handleInput}
         placeholderTextColor={colors.textGray}
       ></TextInput>
+
       <View className="pl-4">
         <Ionicons
           onPress={() => setOpenFilter(!openFilter)}
@@ -42,7 +43,7 @@ const SearchBar = () => {
       </View>
 
       <Modal animationType="slide" transparent={true} visible={openFilter}>
-        <Filter openFilter={openFilter} setOpenFilter={setOpenFilter}></Filter>
+        <Filter currentSearch={{search: input}} openFilter={openFilter} setOpenFilter={setOpenFilter}></Filter>
       </Modal>
     </View>
   );

@@ -27,10 +27,11 @@ import Favorites from "./screens/Favorites";
 import EditarProfile from "./screens/EditProfile";
 import Service from "./screens/Service";
 import AuthProvider from "./context/AuthContext";
+import UserProfile from "./screens/UserProfile";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
-axios.defaults.baseURL = "http://192.168.1.134:3001"; // cuando querramos trabajar y/o probar nuestro proyecto de forma local
+axios.defaults.baseURL = REACT_APP_BACK_URL; // cuando querramos trabajar y/o probar nuestro proyecto de forma local
 // axios.defaults.baseURL = process.env.REACT_APP_DEPLOY_BACK_URL; // cuando querramos pushear o actualizar nuestro deploy del front
 
 // Habilita Tailwind en React Native Web
@@ -230,6 +231,36 @@ function App() {
                 options={{
                   title: "Acerca de Nosotros"
                 }}
+              />
+
+              <Stack.Screen
+                name="Favorites"
+                component={Favorites}
+                options={{
+                  title: "Favoritos"
+                }}
+              />
+
+              <Stack.Screen
+                name="Edit"
+                component={EditarProfile}
+                options={{
+                  title: "Editar perfil"
+                }}
+              />
+
+              <Stack.Screen
+                name="Service"
+                component={Service}
+                options={{
+                  title: "Servicio"
+                }}
+              />
+
+              <Stack.Screen
+                name="UserProfile"
+                component={UserProfile}
+                options={({ route }) => ({ title: route.params.title })}
               />
             </Stack.Navigator>
           </NavigationContainer>

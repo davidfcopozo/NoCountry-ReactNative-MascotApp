@@ -33,7 +33,9 @@ export const fetchUserById = createAsyncThunk("/users/fetchUserById", async user
 
 export const searchView = createAsyncThunk("/users/search", async searchThis => {
   try {
-    const users = await axios.get(`/users/search/${searchThis? searchThis : null}`);
+    const users = await axios.get("/users/search", {
+      params: searchThis
+    });
     console.log(users.data);
     return users.data;
   } catch (error) {
