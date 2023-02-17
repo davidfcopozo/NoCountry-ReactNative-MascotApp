@@ -12,7 +12,8 @@ const {
   deleteFavourite,
   addUserFavourites,
   getUserJobOffers,
-  getSearch
+  getSearch,
+  singInUser
 } = require("../controllers/users");
 
 const router = Router();
@@ -30,5 +31,6 @@ router.delete("/favorites/:id/:favorite", deleteFavourite);
 router.patch("/:id", updateUser);
 router.delete("/:id", deleteUser);
 router.get("/:id", getUserById);
+router.get("/signin/:id", singInUser);
 
 module.exports = router;
