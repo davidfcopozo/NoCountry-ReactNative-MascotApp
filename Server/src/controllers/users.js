@@ -1,4 +1,5 @@
 const { User, Auth, Category, Favourite, JobOffer } = require("../db");
+const { isValidString, isValidNumber } = require("./../validations/index");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
 
@@ -8,7 +9,7 @@ const getUsers = async (req, res) => {
     return res.status(200).json(usersList);
   } catch (error) {
     return res.status(500).json({
-      errorMessage: error.original
+      errorMessage: error.original ? error.original : error
     });
   }
 };
@@ -17,16 +18,17 @@ const getUserById = async (req, res) => {
   const { id } = req.params;
 
   try {
+    if (isValidNumber(id))
+      return res.status(400).json({ errorMessage: "The id type must be an integer" });
+
     const userById = await User.findByPk(id);
     !userById
       ? res.status(404).json({ errorMessage: "There is no user with that id" })
       : res.status(200).json(userById.dataValues);
   } catch (error) {
-    error.original.code === "22P02"
-      ? res.status(400).json({ errorMessage: "The id type must be an integer" })
-      : res.status(500).json({
-          errorMessage: error.original
-        });
+    return res.status(500).json({
+      errorMessage: error.original ? error.original : error
+    });
   }
 };
 
@@ -47,7 +49,7 @@ const getUsersBestRating = async (req, res) => {
     return res.status(200).json(usersOrdered);
   } catch (error) {
     return res.status(500).json({
-      errorMessage: error.original
+      errorMessage: error.original ? error.original : error
     });
   }
 };
@@ -57,7 +59,7 @@ const getUsersByCategory = async (req, res) => {
 
   try {
     if (!categoryId) return res.status(400).json({ errorMessage: "CategoryId missing" });
-    if (typeof categoryId !== "number")
+    if (isValidNumber(categoryId))
       return res.status(400).json({ errorMessage: "The categoryId type must be an integer" });
 
     const category = await Category.findByPk(categoryId);
@@ -93,7 +95,7 @@ const getUsersByCategory = async (req, res) => {
     return res.status(200).json(usersToShow);
   } catch (error) {
     return res.status(500).json({
-      errorMessage: error.original
+      errorMessage: error.original ? error.original : error
     });
   }
 };
@@ -103,7 +105,7 @@ const getUserJobOffers = async (req, res) => {
 
   try {
     if (!userId) return res.status(400).json({ errorMessage: "UserId missing" });
-    if (typeof userId !== "number")
+    if (isValidNumber(userId))
       return res.status(400).json({ errorMessage: "The userId type must be an integer" });
 
     const user = await User.findByPk(userId, { include: JobOffer });
@@ -117,7 +119,7 @@ const getUserJobOffers = async (req, res) => {
       : res.status(200).send(user.dataValues.jobOffers);
   } catch (error) {
     return res.status(500).json({
-      errorMessage: error.original
+      errorMessage: error.original ? error.original : error
     });
   }
 };
@@ -141,7 +143,7 @@ const getUsersByFilter = async (req, res) => {
     return res.status(200).json(usersFound);
   } catch (error) {
     return res.status(500).json({
-      errorMessage: error.original
+      errorMessage: error.original ? error.original : error
     });
   }
 };
@@ -166,7 +168,7 @@ const addUserFavourites = async (req, res) => {
     return res.json({ message: favorite + " Added to favorites of User " + id });
   } catch (error) {
     return res.status(500).json({
-      errorMessage: error.original
+      errorMessage: error.original ? error.original : error
     });
   }
 };
@@ -193,7 +195,7 @@ const getUserFavourites = async (req, res) => {
     return res.json(favourites);
   } catch (error) {
     return res.status(500).json({
-      errorMessage: error.original
+      errorMessage: error.original ? error.original : error
     });
   }
 };
@@ -229,7 +231,7 @@ const updateUser = async (req, res) => {
       .then(result => res.json(result))
       .catch(err => res.json(err));
   } catch (error) {
-    return res.status(500).json({ errorMessage: error.original });
+    return res.status(500).json({ errorMessage: error.original ? error.original : error });
   }
 };
 
@@ -253,6 +255,16 @@ const addUser = async (req, res) => {
     if (!name || !surname || !city || !fb_authId || !email || !password) {
       return res.status(400).json({ errorMessage: "Missing required fields" });
     }
+
+    if (
+      isValidString(name) ||
+      isValidString(surname) ||
+      isValidString(city) ||
+      isValidString(fb_authId) ||
+      isValidString(email) ||
+      isValidString(password)
+    )
+      return res.status(400).json({ errorMessage: "All fields must be string type" });
 
     let [auth, created] = await Auth.findOrCreate({
       where: { email },
@@ -286,8 +298,7 @@ const addUser = async (req, res) => {
     return res.status(400).json({ errorMessage: "There is already an account with that email" });
   } catch (error) {
     return res.status(500).json({
-      errorMessage: error
-      // errorMessage: error.original ? error.original : error
+      errorMessage: error.original ? error.original : error
     });
   }
 };
@@ -312,7 +323,7 @@ const deleteFavourite = async (req, res) => {
 
     return res.sendStatus(204);
   } catch (error) {
-    return res.status(500).json({ errorMessage: error.original });
+    return res.status(500).json({ errorMessage: error.original ? error.original : error });
   }
 };
 
@@ -336,7 +347,7 @@ const deleteUser = async (req, res) => {
 
     return res.sendStatus(204);
   } catch (error) {
-    return res.status(500).json({ errorMessage: error.original });
+    return res.status(500).json({ errorMessage: error.original ? error.original : error });
   }
 };
 
@@ -395,7 +406,7 @@ const getSearch = async (req, res) => {
     return res.json(users);
   } catch (error) {
     return res.status(500).json({
-      errorMessage: error.original
+      errorMessage: error.original ? error.original : error
     });
   }
 };
