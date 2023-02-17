@@ -1,18 +1,30 @@
 import { Text, View, ScrollView } from "react-native";
 import SearchBar from "../components/SearchBar";
 import Highlights from "../components/Highlights";
-import CardsData from "../db/cards.json";
-import Filter from "../components/Filter";
-import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { sortUsersByRating } from "../redux/actions";
+import { useEffect } from "react";
 
 const Search = () => {
+  const { colors } = useTheme();
+
+  const dispatch = useDispatch();
+  const sortedUsersByRating = useSelector(state => state.users.search);
+
+  useEffect(() => {
+    dispatch(sortUsersByRating());
+  }, []);
+
   return (
     <ScrollView>
-      <View className=" w-full p-2">
+      <View className="p-2 w-full">
         <SearchBar></SearchBar>
         <View className="mt-3">
-          <Text className="font-bold text-2xl mb-2 pl-2 dark:text-white">Los mas destacados</Text>
-          <Highlights Data={CardsData} />
+          <Text style={{ color: colors.text }} className="font-bold text-2xl mb-2">
+            Los más destacados
+          </Text>
+          <Highlights data={sortedUsersByRating} />
         </View>
       </View>
     </ScrollView>

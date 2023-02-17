@@ -1,41 +1,49 @@
 import { View, TextInput, Modal } from "react-native";
+import { Link, useTheme } from "@react-navigation/native";
 import { SearchIcon } from "../components/Icons";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { searchView } from "../redux/actions";
 import Filter from "./Filter";
 
 const SearchBar = () => {
+  const { colors } = useTheme();
+
   const [openFilter, setOpenFilter] = useState(false);
   const [input, setInput] = useState("");
 
-  const handleInput = event => {
-    event.preventDefault();
-    setInput(event.nativeEvent.text);
+  const dispatch = useDispatch();
+
+  const handleInput = () => {
+    dispatch(searchView({search: input}));
   };
 
   return (
-    <View
-      style={{ marginLeft: "auto", marginRight: "auto" }}
-      className="flex flex-row justify-center items-center p-7 h-20 pr-14"
-    >
+    <View className="flex flex-row justify-center items-center pl-2 pr-14">
       <View className="left-12">
-        <SearchIcon></SearchIcon>
+        <SearchIcon color={colors.text}></SearchIcon>
       </View>
       <TextInput
-        className="rounded-full p-4 pl-14 border"
+        style={{ color: colors.text, borderColor: colors.text }}
+        className="rounded-lg p-3 pl-14 border w-full"
         placeholder="Buscar en MascotApp"
-        onChange={handleInput}
+        onChange={e => setInput(e.nativeEvent.text)}
+        onSubmitEditing={handleInput}
+        placeholderTextColor={colors.textGray}
       ></TextInput>
+
       <View className="pl-4">
         <Ionicons
           onPress={() => setOpenFilter(!openFilter)}
           size={32}
           name="options-outline"
+          color={colors.text}
         ></Ionicons>
       </View>
 
-      <Modal animationType="slide" transparent={false} visible={openFilter}>
-        <Filter openFilter={openFilter} setOpenFilter={setOpenFilter}></Filter>
+      <Modal animationType="slide" transparent={true} visible={openFilter}>
+        <Filter currentSearch={{search: input}} openFilter={openFilter} setOpenFilter={setOpenFilter}></Filter>
       </Modal>
     </View>
   );

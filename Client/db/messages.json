@@ -1,0 +1,57 @@
+[
+  {
+    "user": 2,
+    "time": "12:00",
+    "content": "Hola"
+  },
+  {
+    "user": 1,
+    "time": "12:05",
+    "content": "Qué hay?"
+  },
+  {
+    "user": 2,
+    "time": "12:07",
+    "content": "Cómo estas?"
+  },
+  {
+    "user": 1,
+    "time": "12:09",
+    "content": "todo bien"
+  },
+  {
+    "user": 2,
+    "time": "12:00",
+    "content": "Me alegro :)"
+  },
+  {
+    "user": 1,
+    "time": "12:05",
+    "content": "Te invito a salir"
+  },
+  {
+    "user": 2,
+    "time": "12:07",
+    "content": "Listo"
+  },
+  {
+    "user": 1,
+    "time": "12:09",
+    "content": "Dale"
+  },
+  {
+    "user": 2,
+    "time": "12:07",
+    "content": "a las 9?"
+  },
+  {
+    "user": 1,
+    "time": "12:09",
+    "content": "Me parece bien"
+  },
+  {
+    "user": 0,
+    "time": "12:09",
+    "content": "Genial"
+  }
+]

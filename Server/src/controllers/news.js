@@ -1,9 +1,9 @@
-const axios = require("axios").default;
+const { News } = require("../db");
 
 const getNews = async (req, res, next) => {
   try {
-    const { data } = await axios.get("https://apimocha.com/mascot-app/news");
-    res.status(200).json(data);
+    const newsList = await News.findAll();
+    return res.status(200).json(newsList);
   } catch (error) {
     next(error);
   }

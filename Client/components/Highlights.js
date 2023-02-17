@@ -1,98 +1,94 @@
-import { Text, View, Image, Pressable, ScrollView } from "react-native";
-import { Children } from "react";
+import { Text, View, Image, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from "@react-navigation/native";
-import { useColorScheme } from "nativewind";
+import { Children} from "react";
+import { Link, useTheme } from "@react-navigation/native";
+import LoadingGif from "./LoadingGif";
 
-const Highlights = ({ Data }) => {
-  const { colorScheme } = useColorScheme();
+const Highlights = ({ data }) => {
+  const { colors } = useTheme();
+
+  if (!data) return <LoadingGif />
 
   return (
     <>
       <ScrollView>
-        <View
-          style={{ marginLeft: "auto", marginRight: "auto" }}
-          className="flex flex-wrap flex-row py-5 gap-3 w-full"
-        >
-          {Children.toArray(
-            Data?.map(card => (
-              <Link
-                to={{
-                  screen: "Post",
-                  params: { user: card, title: card.name }
-                }}
-              >
-                <View className="w-44 relative border-[1px] border-black/5 rounded-sm dark:bg-slate-300/10">
-                  <Image
-                    className="h-36"
-                    source={{
-                      uri: card.image
-                    }}
-                  />
-
-                  <View className="p-2">
-                    <Text
-                      numberOfLines={1}
-                      className="text-base font-semibold -mb-1 dark:text-white"
-                    >
-                      {card.service}
-                    </Text>
-
-                    <Text
-                      numberOfLines={1}
-                      className="text-sm text-gray-500 dark:text-white/70"
-                    >
-                      De {card.location}
-                    </Text>
-
-                    <View className="flex flex-row py-2 justify-left items-left gap-x-2">
-                      {card.user_picture ? (
-                        <Image
-                          style={{
-                            width: 35,
-                            height: 35,
-                            resizeMode: "contain"
-                          }}
-                          className="rounded-full"
-                          source={{
-                            uri: card.user_picture
-                          }}
-                        />
+        <View className="flex flex-wrap flex-row py-5 gap-1">
+          {data?.length > 0 ? (
+            Children.toArray(
+              data.map(card => (
+                <Link to={{ screen: "UserProfile", params: { user: card, title: card.name } }}>
+                  <View
+                    className="flex-1 flex items-center w-32 border border-black/5 rounded-lg overflow-hidden bg-white/10 pt-3"
+                  >
+                    {card.profile_pic ? (
+                      <Image
+                        style={{
+                          height: 100,
+                          width: 100,
+                          resizeMode: "contain"
+                        }}
+                        source={{
+                          uri: card.profile_pic
+                        }}
+                      />
                       ) : (
-                        <Ionicons
-                          name="person-circle-outline"
-                          size={32}
-                          color={colorScheme === "dark" ? "#fff" : "#000"}
-                        />
-                      )}
-                      <View>
-                        <Text className="text-black dark:text-white">
-                          {card.name}
-                        </Text>
-                        {card.stars ? (
+                        <Ionicons name="person-circle-outline" size={100} style={{height: 100, width: 100}} color={colors.text} />
+                    )}
+
+                    <View className="p-2">
+
+                      <Text
+                        numberOfLines={1}
+                        style={{ color: colors.textGray }}
+                        className="text-sm w-28"
+                      >
+                        De {card.city}
+                      </Text>
+
+                      {
+                        Children.toArray(
+                        card?.categories?.map(category => (
+                          <Text className="bg-violet-700 text-white font-bold p-1 text-center capitalize">{category?.name}</Text>
+                        ))
+                        )
+                      }
+
+                      <View className="flex flex-row py-2 justify-left items-left gap-x-2">
+                        {card.profile_pic ? (
+                          <Image
+                            style={{
+                              width: 35,
+                              height: 35,
+                              resizeMode: "contain"
+                            }}
+                            className="rounded-full"
+                            source={{
+                              uri: card.profile_pic
+                            }}
+                          />
+                        ) : (
+                          <Ionicons name="person-circle-outline" size={32} color={colors.text} />
+                        )}
+                        <View>
+                          <Text style={{ color: colors.text }}>{card.name}</Text>
                           <View className="flex flex-row items-center">
                             {Children.toArray(
-                              Array.from(Array(card.stars)).map(star => (
-                                <Ionicons
-                                  name="star"
-                                  size={10}
-                                  color="#ffe100"
-                                />
+                              Array.from(Array(card.rating)).map(star => (
+                                <Ionicons name="star" size={10} color="#ffe100" />
                               ))
                             )}
-                            <Text className="text-xs text-gray-500 ml-1 dark:text-white/70">
-                              {card.clients
-                                ? "(" + card.clients + ")"
-                                : undefined}
-                            </Text>
                           </View>
-                        ) : undefined}
+                        </View>
                       </View>
                     </View>
                   </View>
-                </View>
-              </Link>
-            ))
+                </Link>
+              ))
+            )
+          ) : (
+            <View className="flex justify-center items-center w-full">
+              <Text className="py-3 px-4 text-center font-bold text-2xl text-white bg-violet-600">Sin Resultados.</Text>
+            </View>
           )}
         </View>
       </ScrollView>

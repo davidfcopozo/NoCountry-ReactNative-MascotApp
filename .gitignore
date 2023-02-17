@@ -10,8 +10,10 @@ Client/*.mobileprovision
 Client/*.orig.*
 Client/web-build/
 Client/.env
+Client/yarn.lock
 Server/node_modules/
 Server/.env
+Server/package-lock.json
 
 # macOS
 *.DS_Store

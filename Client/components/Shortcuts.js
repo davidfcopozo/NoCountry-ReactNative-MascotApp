@@ -1,84 +1,92 @@
-import { Text, View, Image, Pressable, ScrollView } from 'react-native';
-import { Children } from 'react';
-import { Ionicons,FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Link } from '@react-navigation/native';
+import { Text, View, Image, Pressable, ScrollView } from "react-native";
+import { Link, useTheme } from "@react-navigation/native";
 
 const Shortcuts = () => {
+  const { colors } = useTheme();
+
   return (
-    <View style={{marginLeft: "auto", marginRight: "auto"}} className="flex flex-wrap flex-row py-5 gap-3 w-full">
-
-      <View className="w-28 gap-y-2">
+    <View className="flex flex-wrap flex-row py-5 gap-4">
+      <View className="gap-y-2">
         <View className="bg-pink-200 items-center p-4 rounded-xl">
-        <Image
+          <Image
             style={{
-                width: 55,
-                height: 55,
-                resizeMode: "contain"
+              width: 55,
+              height: 55,
+              resizeMode: "contain"
             }}
-            source={require('../assets/pet_haircut.png')}
-        />
+            source={require("../assets/pet_haircut.png")}
+          />
         </View>
-        <Text className="text-center font-bold dark:text-white">Corte de Pelo</Text>
+        <Text className="text-center font-bold" style={{ color: colors.text }}>
+          Corte de Pelo
+        </Text>
       </View>
 
-      <View className="w-28 gap-y-2">
+      <View className="gap-y-2">
         <View className="bg-pink-200 items-center p-4 rounded-xl">
-        <Image
+          <Image
             style={{
-                width: 55,
-                height: 55,
-                resizeMode: "contain"
+              width: 55,
+              height: 55,
+              resizeMode: "contain"
             }}
-            source={require('../assets/pet_training.png')}
-        />
+            source={require("../assets/pet_walk.png")}
+          />
         </View>
-        <Text className="text-center font-bold dark:text-white">Entrenamiento</Text>
+        <Text className="text-center font-bold" style={{ color: colors.text }}>
+          Paseador
+        </Text>
       </View>
 
-      <View className="w-28 gap-y-2">
+      <View className="gap-y-2">
         <View className="bg-pink-200 items-center p-4 rounded-xl">
-        <Image
+          <Image
             style={{
-                width: 55,
-                height: 55,
-                resizeMode: "contain"
+              width: 55,
+              height: 55,
+              resizeMode: "contain"
             }}
-            source={require('../assets/pet_walk.png')}
-        />
+            source={require("../assets/pet_transport.png")}
+          />
         </View>
-        <Text className="text-center font-bold dark:text-white">Paseador</Text>
+        <Text className="text-center font-bold" style={{ color: colors.text }}>
+          Transporte
+        </Text>
       </View>
 
-      <View className="w-28 gap-y-2">
+      <View className="gap-y-2">
         <View className="bg-pink-200 items-center p-4 rounded-xl">
-        <Image
+          <Image
             style={{
-                width: 55,
-                height: 55,
-                resizeMode: "contain"
+              width: 55,
+              height: 55,
+              resizeMode: "contain"
             }}
-            source={require('../assets/pet_transport.png')}
-        />
+            source={require("../assets/pet_care.png")}
+          />
         </View>
-        <Text className="text-center font-bold dark:text-white">Transporte</Text>
+        <Text className="text-center font-bold" style={{ color: colors.text }}>
+          Cuidado
+        </Text>
       </View>
 
-      <View className="w-28 gap-y-2">
+      <View className="gap-y-2">
         <View className="bg-pink-200 items-center p-4 rounded-xl">
-        <Image
+          <Image
             style={{
-                width: 55,
-                height: 55,
-                resizeMode: "contain"
+              width: 55,
+              height: 55,
+              resizeMode: "contain"
             }}
-            source={require('../assets/pet_care.png')}
-        />
+            source={require("../assets/pet_training.png")}
+          />
         </View>
-        <Text className="text-center font-bold dark:text-white">Cuidado</Text>
+        <Text className="text-center font-bold" style={{ color: colors.text }}>
+          Entrenamiento
+        </Text>
       </View>
-
     </View>
-  )
-}
+  );
+};
 
-export default Shortcuts
+export default Shortcuts;

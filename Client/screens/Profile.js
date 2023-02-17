@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { Text, View, Modal, ScrollView, Pressable } from "react-native";
-import { Login, Register } from "../components/clientAuth";
 import { Ionicons } from "@expo/vector-icons";
-import { useColorScheme } from "nativewind";
+import { Link, useTheme } from "@react-navigation/native";
+import Register from "./Register";
+import Login from "./Login";
 
 const Profile = () => {
-  const { colorScheme } = useColorScheme();
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
+  const { colors } = useTheme();
 
   return (
     <ScrollView>
       <Modal
         animationType="slide"
-        transparent={true}
+        transparent={false}
         visible={openLogin}
         onRequestClose={() => {
           setOpenLogin(!openLogin);
@@ -21,13 +22,16 @@ const Profile = () => {
       >
         <ScrollView>
           <View className="flex justify-center w-full">
-            <View className="bg-white pt-5 px-5 h-full border-t border-black/10 dark:bg-black">
+            <View
+              style={{ color: colors.text, backgroundColor: colors.background }}
+              className="pt-5 px-5 h-full border-t border-black/10"
+            >
               <View className="flex justify-between flex-row items-center">
                 <Ionicons
                   onPress={() => setOpenLogin(!openLogin)}
                   name="md-close-sharp"
                   size={34}
-                  color={colorScheme === "dark" ? "#fff" : "#000"}
+                  color={colors.text}
                 />
                 <Text className="font-bold">Iniciar Sesión</Text>
                 <Text className="w-10"></Text>
@@ -40,7 +44,7 @@ const Profile = () => {
 
       <Modal
         animationType="slide"
-        transparent={true}
+        transparent={false}
         visible={openRegister}
         onRequestClose={() => {
           setOpenRegister(!openRegister);
@@ -48,13 +52,16 @@ const Profile = () => {
       >
         <ScrollView>
           <View className="flex justify-center w-full">
-            <View className="bg-white pt-5 px-5 h-full border-t border-black/10 dark:bg-black">
+            <View
+              style={{ color: colors.text, backgroundColor: colors.background }}
+              className="pt-5 px-5 h-full border-t border-black/10"
+            >
               <View className="flex justify-between flex-row items-center">
                 <Ionicons
                   onPress={() => setOpenRegister(!openRegister)}
                   name="md-close-sharp"
                   size={34}
-                  color={colorScheme === "dark" ? "#fff" : "#000"}
+                  color={colors.text}
                 />
                 <Text className="font-bold">Registrarme</Text>
                 <Text className="w-10"></Text>
@@ -65,12 +72,15 @@ const Profile = () => {
         </ScrollView>
       </Modal>
 
-      <View className="flex gap-y-2 pt-5">
+      <View className="flex gap-y-2 py-6">
         <Pressable
-          className="border-[1px] p-4 w-32 mx-auto rounded-sm dark:border-white"
+          style={{ borderColor: colors.text }}
+          className="border p-4 w-32 mx-auto rounded-sm"
           onPress={() => setOpenLogin(true)}
         >
-          <Text className="font-bold text-center dark:text-white">Iniciar Sesión</Text>
+          <Text style={{ color: colors.text }} className="font-bold text-center">
+            Iniciar Sesión
+          </Text>
         </Pressable>
 
         <Pressable
@@ -79,7 +89,19 @@ const Profile = () => {
         >
           <Text className="text-white font-bold text-center">Registrarme</Text>
         </Pressable>
+
+        <Pressable
+          style={{ color: colors.text, borderColor: colors.text }}
+          className="border p-4 w-32 mx-auto rounded-sm"
+        >
+          <Link to={{ screen: "AboutUs" }}>
+            <Text style={{ color: colors.text }} className="flex text-center">
+              Acerca de Nosotros
+            </Text>
+          </Link>
+        </Pressable>
       </View>
+      {/* <UserProfile></UserProfile> */}
     </ScrollView>
   );
 };
