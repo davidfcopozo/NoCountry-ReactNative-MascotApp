@@ -34,6 +34,6 @@ const token = await response.user.getIdToken();
 console.log('TokenID', token);
 and after that, you can use it into
 
-const response = await httpClient.get(url,headers: {'Authorization':"Bearer $token"});
+const response = await httpClient.get(url, { headers: { 'Authorization': "Bearer $token" } });
 
 */
