@@ -9,9 +9,11 @@ import {
   KeyboardAvoidingView,
   Alert
 } from "react-native";
+import { useDispatch } from "react-redux";
 import InputField from "../components/InputField";
 import { useTheme, useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
+import { singInUser } from "./../redux/actions/index";
 
 const Login = () => {
   const { colors } = useTheme();
@@ -23,16 +25,19 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const handleError = (error, input) => {
     setErrors(prevState => ({ ...prevState, [input]: error }));
   };
 
   async function handleSignin() {
+    const signInCredencials = { email, password };
     try {
       handleError("");
       setLoading(true);
-      await login(email, password);
+      /*   await login(email, password); */
+      dispatch(singInUser(signInCredencials));
 
       setLoading(false);
     } catch (error) {
