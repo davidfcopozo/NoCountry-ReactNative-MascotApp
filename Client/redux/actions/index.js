@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import axios from "axios";
 
@@ -60,6 +60,20 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
 
     const response = await axios.post("/users/register", userData);
     return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const singInUser = createAsyncThunk("users/singInUser", async signInCredencials => {
+  const { email, password } = signInCredencials;
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    const firebaseId = await auth.currentUser.uid;
+    console.log(firebaseId);
+    const userById = await axios.get(`/users/signin/${firebaseId}`);
+    console.log(userById.data);
+    return userById;
   } catch (error) {
     console.log(error);
   }
