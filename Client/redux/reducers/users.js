@@ -1,8 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsers, sortUsersByRating, fetchUserById, searchView, registerUser } from "../actions";
+import {
+  fetchUsers,
+  sortUsersByRating,
+  fetchUserById,
+  searchView,
+  registerUser,
+  singInUser
+} from "../actions";
 
 const initialState = {
   users: [],
+  currentUser: [],
   userDetail: {},
   favouriteUsers: [],
   search: []
@@ -34,8 +42,10 @@ const usersReducer = createSlice({
       state.search = action.payload;
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
-      console.log("DESDE REDUCERS", action.payload);
       state.users = action.payload;
+    });
+    builder.addCase(singInUser.fulfilled, (state, action) => {
+      state.currentUser = action.payload.data;
     });
   }
 });
