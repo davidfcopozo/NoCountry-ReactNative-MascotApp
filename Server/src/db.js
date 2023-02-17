@@ -3,7 +3,7 @@ const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 
-const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_DEPLOY } = process.env;
 
 // Esto lo dejo comentado porque es lo que uso continuamente para hacer pruebas locales, de la otra forma tarda mucho en cargar cada vez que mato el servidor y lo vuelvo a levantar
 
@@ -12,7 +12,7 @@ const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
 //   native: false
 // });
 
-const sequelize = new Sequelize(DB_HOST, {
+const sequelize = new Sequelize(DB_DEPLOY, {
   logging: false,
   native: false
 });
