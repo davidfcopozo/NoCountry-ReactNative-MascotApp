@@ -48,6 +48,8 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
     const { name, surname, email, password, city } = formData;
     await createUserWithEmailAndPassword(auth, email, password);
     const firebaseId = auth.currentUser.uid;
+    // Para saber a qué rutas se debe mandar el firebaseToken por headers, ir a Server/src/routes/users.js
+    const firebaseToken = auth.currentUser.accessToken;
 
     const userData = {
       name,

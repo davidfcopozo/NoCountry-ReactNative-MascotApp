@@ -70,6 +70,7 @@ function AuthProvider({ children }) {
     //Cleanup to unsubscribe
     return unsubscribe;
   }, []);
+
   useEffect(() => {
     setCurrentUser(auth.currentUser);
   }, [signup]);
@@ -89,6 +90,7 @@ function AuthProvider({ children }) {
     passwordUpdate,
     googleSingIn
   };
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
