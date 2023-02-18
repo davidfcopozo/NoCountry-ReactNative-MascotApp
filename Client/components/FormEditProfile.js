@@ -5,28 +5,12 @@ import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const FormEditProfile = () => {
   const colorScheme = "light";
   const { colors } = useTheme();
-
-  const [user, setUser] = useState({
-    id: 1,
-    image:
-      "https://www.lavanguardia.com/files/content_image_mobile_filter/uploads/2022/05/21/628955615d048.jpeg",
-    name: "Lautaro",
-    lastName: "Santillan",
-    email: "pepito@gmail.com",
-    service: "Paseo de Mascotas",
-    price: "1000",
-    stars: 5,
-    info: "Disponible",
-    user_picture: null,
-    location: "Córdoba, Argentina",
-    clients: 5,
-    about:
-      "Soy una persona responsable contrata mis servicios en mi perfil. Hago un servicio de calidad que flipas, dale crack"
-  });
+  const user = useSelector(state => state.users.currentUser);
 
   const [loading, setLoading] = useState("");
   const [success, setSuccess] = useState(false);
@@ -50,7 +34,7 @@ const FormEditProfile = () => {
         initialValues={{
           name: `${user.name} ${user.lastName}`,
           email: user.email,
-          location: user.location,
+          location: user.city,
           about: user.about,
           service: user.service,
           user_picture: user.user_picture

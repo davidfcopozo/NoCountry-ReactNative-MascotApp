@@ -12,8 +12,10 @@ import {
 import InputField from "../components/InputField";
 import { useTheme, useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
+import { useDispatch } from "react-redux";
+import { actionLogin } from "../redux/reducers/users";
 
-const Login = () => {
+const Login = ({ openLogin, setOpenLogin }) => {
   const { colors } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,6 +24,7 @@ const Login = () => {
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
 
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const handleError = (error, input) => {
@@ -69,6 +72,8 @@ const Login = () => {
 
     if (valid) {
       await handleSignin();
+      dispatch(actionLogin(true));
+      setOpenLogin(!openLogin);
       await navigation.navigate("Perfil");
     }
   };

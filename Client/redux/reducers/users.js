@@ -5,7 +5,8 @@ const initialState = {
   users: [],
   userDetail: {},
   favouriteUsers: [],
-  search: []
+  search: [],
+  isLogin: false
 };
 
 const usersReducer = createSlice({
@@ -18,6 +19,9 @@ const usersReducer = createSlice({
     removeFavouriteUser: (state, action) => {
       const newArray = state.favouriteUsers.filter(favUser => favUser.imdbID !== action.payload);
       state.favouriteUsers = newArray;
+    },
+    actionLogin: (state, action) => {
+      state.isLogin = action.payload;
     }
   },
   extraReducers: builder => {
@@ -33,12 +37,8 @@ const usersReducer = createSlice({
     builder.addCase(searchView.fulfilled, (state, action) => {
       state.search = action.payload;
     });
-    builder.addCase(registerUser.fulfilled, (state, action) => {
-      console.log("DESDE REDUCERS", action.payload);
-      state.users = action.payload;
-    });
   }
 });
 
-export const { addFavouriteUser, removeFavouriteUser } = usersReducer.actions;
+export const { addFavouriteUser, removeFavouriteUser, actionLogin } = usersReducer.actions;
 export default usersReducer.reducer;

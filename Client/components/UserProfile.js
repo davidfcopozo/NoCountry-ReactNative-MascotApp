@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Text,
   View,
@@ -12,17 +11,16 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useTheme } from "@react-navigation/native";
 import { Children } from "react";
+import { useSelector } from "react-redux";
+import { useAuth } from "../context/AuthContext";
 
-const UserProfile = ({route}) => {
-
+const UserProfile = () => {
   const colorScheme = "light";
   const { colors } = useTheme();
 
-  const user = route.params.user
+  const user = useSelector(state => state.users.currentUser);
 
-  const userLogged = false;
-  const [openEdit, setOpenEdit] = useState(false);
-
+  if (!user) return <Text>No hay datos de user</Text>;
   return (
     <View className="h-full w-full p-5 gap-y-5">
       <View className="flex flex-row justify-start gap-x-4 w-full">
@@ -71,14 +69,13 @@ const UserProfile = ({route}) => {
             </Text>
           )}
 
-          {
-            userLogged?
+          {currentUser ? (
             <View className="flex flex-row gap-x-2">
               <Pressable
                 style={{ color: colors.text, borderColor: colors.text }}
                 className="border"
               >
-                <Link to={{ screen: "Edit" }} style={{padding: 8}} >
+                <Link to={{ screen: "Edit" }} style={{ padding: 8 }}>
                   <Text style={{ color: colors.text }} className="text-sm font-bold">
                     Editar perfil
                   </Text>
@@ -88,17 +85,14 @@ const UserProfile = ({route}) => {
                 style={{ color: colors.text, borderColor: colors.text }}
                 className="border"
               >
-                <Link to={{ screen: "Favorites" }} style={{padding: 8}}>
+                <Link to={{ screen: "Favorites" }} style={{ padding: 8 }}>
                   <Text style={{ color: colors.text }} className="text-sm font-bold">
                     Favoritos
                   </Text>
                 </Link>
               </Pressable>
             </View>
-            :
-            undefined
-          }
-
+          ) : undefined}
         </View>
       </View>
 
@@ -117,20 +111,19 @@ const UserProfile = ({route}) => {
         </Text>
 
         <View className="flex justify-start flex-row items-center gap-x-3">
-          <Text className="text-base p-2 text-white bg-violet-700 rounded-2xl">{user?.service}</Text>
+          <Text className="text-base p-2 text-white bg-violet-700 rounded-2xl">
+            {user?.service}
+          </Text>
         </View>
       </View>
 
-      {
-        userLogged?
+      {currentUser ? (
         <View className="flex justify-center items-center">
           <TouchableOpacity className="bg-violet-700 py-2 px-4 rounded-lg">
             <Text className="text-xl text-white">Cerrar sesion</Text>
           </TouchableOpacity>
         </View>
-        :
-        undefined
-      }
+      ) : undefined}
     </View>
   );
 };
