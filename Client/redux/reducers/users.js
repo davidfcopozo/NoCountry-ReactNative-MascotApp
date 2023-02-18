@@ -10,6 +10,7 @@ import {
 
 const initialState = {
   users: [],
+  loading: false,
   currentUser: [],
   userDetail: {},
   favouriteUsers: [],
@@ -44,8 +45,15 @@ const usersReducer = createSlice({
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.users = action.payload;
     });
+    builder.addCase(singInUser.pending, state => {
+      state.loading = true;
+    });
     builder.addCase(singInUser.fulfilled, (state, action) => {
-      state.currentUser = action.payload.data;
+      state.currentUser = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(singInUser.rejected, state => {
+      state.loading = false;
     });
   }
 });
