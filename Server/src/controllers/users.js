@@ -15,6 +15,9 @@ const getUsers = async (req, res) => {
 };
 
 const singInUser = async (req, res) => {
+  const { id } = req.params;
+  if (isValidString(id))
+    return res.status(400).json({ errorMessage: "The id type must be an string" });
   try {
     const userById = await User.findOne({
       include: {
@@ -22,9 +25,6 @@ const singInUser = async (req, res) => {
         where: {
           id: req.params.id
         }
-      },
-      include: {
-        model: Category
       }
     });
     !userById
