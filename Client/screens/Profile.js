@@ -10,11 +10,10 @@ const Profile = () => {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
   const { colors } = useTheme();
-
-  const { currentUser } = useSelector(state => state.users);
+  const { currentUser, loading } = useSelector(state => state.users);
 
   useEffect(() => {
-    if (currentUser) {
+    if (currentUser && loading === false) {
       setOpenLogin(false);
     }
   }, [currentUser]);
