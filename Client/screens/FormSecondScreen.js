@@ -14,6 +14,7 @@ import { useTheme, useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
 import { useDispatch } from "react-redux";
 import { registerUser } from "./../redux/actions/index";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const FormSecondScreen = ({ formData, setFormData, setScreen }) => {
   const { colors } = useTheme();
@@ -57,6 +58,7 @@ const FormSecondScreen = ({ formData, setFormData, setScreen }) => {
 
     if (valid) {
       await handleSignup();
+      await AsyncStorage.setItem("token", formData);
     }
   };
 
