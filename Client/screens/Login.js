@@ -13,7 +13,6 @@ import InputField from "../components/InputField";
 import { useTheme, useNavigation } from "@react-navigation/native";
 import { singInUser } from "./../redux/actions/index";
 import { useAuth } from "../context/AuthContext";
-import { useDispatch } from "react-redux";
 import { actionLogin } from "../redux/reducers/users";
 
 const Login = ({ openLogin, setOpenLogin }) => {
