@@ -1,18 +1,16 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   Text,
   View,
   Image,
   Pressable,
-  ScrollView,
   Keyboard,
   KeyboardAvoidingView,
-  Alert
+  ActivityIndicator
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import InputField from "../components/InputField";
 import { useTheme, useNavigation } from "@react-navigation/native";
-import { useAuth } from "../context/AuthContext";
 import { singInUser } from "./../redux/actions/index";
 
 const Login = () => {
@@ -21,8 +19,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(false);
-  const { login } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { loading } = useSelector(state => state.users);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -35,11 +32,7 @@ const Login = () => {
     const signInCredencials = { email, password };
     try {
       handleError("");
-      setLoading(true);
-      /*   await login(email, password); */
       dispatch(singInUser(signInCredencials));
-
-      setLoading(false);
     } catch (error) {
       if (error.code === "auth/wrong-password") {
         handleError("Contraseña incorrecta, por favor intentelo de nuevo", "password");
@@ -81,6 +74,16 @@ const Login = () => {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
       <View className="flex gap-y-2 p-8 w-full">
+        {loading ? (
+          <View className="absolute bottom-0  top-[-60] left-[-20] right-0 justify-center  align-center w-[100vw] bg-gray-100 opacity-25 h-[100vh] m-0 z-10">
+            <ActivityIndicator
+              animating={true}
+              size="large"
+              color="blue"
+              className="self-center z-50"
+            />
+          </View>
+        ) : null}
         <Image
           style={{
             resizeMode: "contain"
