@@ -70,10 +70,8 @@ export const singInUser = createAsyncThunk("users/singInUser", async signInCrede
   try {
     await signInWithEmailAndPassword(auth, email, password);
     const firebaseId = await auth.currentUser.uid;
-    console.log(firebaseId);
-    const userById = await axios.get(`/users/signin/${firebaseId}`);
-    console.log(userById.data);
-    return userById;
+    const currentUser = await axios.get(`/users/signin/${firebaseId}`);
+    return currentUser;
   } catch (error) {
     console.log(error);
   }
