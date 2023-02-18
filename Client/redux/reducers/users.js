@@ -14,7 +14,8 @@ const initialState = {
   currentUser: [],
   userDetail: {},
   favouriteUsers: [],
-  search: []
+  search: [],
+  isLogin: false
 };
 
 const usersReducer = createSlice({
@@ -27,6 +28,9 @@ const usersReducer = createSlice({
     removeFavouriteUser: (state, action) => {
       const newArray = state.favouriteUsers.filter(favUser => favUser.imdbID !== action.payload);
       state.favouriteUsers = newArray;
+    },
+    actionLogin: (state, action) => {
+      state.isLogin = action.payload;
     }
   },
   extraReducers: builder => {
@@ -58,5 +62,5 @@ const usersReducer = createSlice({
   }
 });
 
-export const { addFavouriteUser, removeFavouriteUser } = usersReducer.actions;
+export const { addFavouriteUser, removeFavouriteUser, actionLogin } = usersReducer.actions;
 export default usersReducer.reducer;
