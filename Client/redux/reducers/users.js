@@ -1,8 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsers, sortUsersByRating, fetchUserById, searchView, registerUser } from "../actions";
+import {
+  fetchUsers,
+  sortUsersByRating,
+  fetchUserById,
+  searchView,
+  registerUser,
+  singInUser
+} from "../actions";
 
 const initialState = {
   users: [],
+  loading: false,
+  currentUser: [],
   userDetail: {},
   favouriteUsers: [],
   search: [],
@@ -36,6 +45,19 @@ const usersReducer = createSlice({
     });
     builder.addCase(searchView.fulfilled, (state, action) => {
       state.search = action.payload;
+    });
+    builder.addCase(registerUser.fulfilled, (state, action) => {
+      state.users = action.payload;
+    });
+    builder.addCase(singInUser.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(singInUser.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(singInUser.rejected, state => {
+      state.loading = false;
     });
   }
 });

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useTheme } from "@react-navigation/native";
-import { Children } from "react";
+import { Children, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
 
@@ -18,7 +18,8 @@ const UserProfile = () => {
   const colorScheme = "light";
   const { colors } = useTheme();
 
-  const user = useSelector(state => state.users.currentUser);
+  const { currentUser } = useSelector(state => state.users);
+  const user = currentUser?.data;
 
   if (!user) return <Text>No hay datos de user</Text>;
   return (
