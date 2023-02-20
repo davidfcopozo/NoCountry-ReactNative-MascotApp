@@ -14,7 +14,7 @@ const getUsers = async (req, res) => {
   }
 };
 
-const singInUser = async (req, res) => {
+const signInUser = async (req, res) => {
   const { id } = req.params;
   if (isValidString(id))
     return res.status(400).json({ errorMessage: "The id type must be an string" });
@@ -448,5 +448,5 @@ module.exports = {
   addUserFavourites,
   getUserJobOffers,
   getSearch,
-  singInUser
+  signInUser
 };

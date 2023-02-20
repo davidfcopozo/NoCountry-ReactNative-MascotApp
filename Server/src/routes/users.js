@@ -13,7 +13,7 @@ const {
   addUserFavourites,
   getUserJobOffers,
   getSearch,
-  singInUser
+  signInUser
 } = require("../controllers/users");
 
 const router = Router();
@@ -31,6 +31,6 @@ router.delete("/favorites/:id/:favorite", deleteFavourite);
 router.patch("/:id", updateUser);
 router.delete("/:id", deleteUser);
 router.get("/:id", getUserById);
-router.get("/signin/:id", singInUser);
+router.get("/signin/:id", signInUser);
 
 module.exports = router;
