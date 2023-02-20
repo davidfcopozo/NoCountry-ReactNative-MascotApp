@@ -51,7 +51,7 @@ PetType.belongsToMany(User, { through: "User_PetType" });
 Pet.belongsTo(User, { foreignKey: "user_id" });
 Pet.belongsTo(PetType, { foreignKey: "type_id" });
 Request.belongsTo(User, { foreignKey: "user_id" });
-Review.belongsTo(User, { through: "User_Review" });
+Review.belongsTo(User);
 User.belongsTo(Auth);
 User.belongsToMany(Category, { through: "User_Category" });
 User.hasMany(Favourite);
@@ -59,7 +59,7 @@ User.hasMany(Image);
 User.hasMany(JobOffer);
 User.belongsToMany(PetType, { through: "User_PetType" });
 User.hasMany(Request);
-User.belongsToMany(Review, { through: "User_Review" });
+User.hasMany(Review);
 
 module.exports = {
   ...sequelize.models,

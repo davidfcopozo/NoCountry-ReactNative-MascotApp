@@ -1,4 +1,4 @@
-const { User, Auth, Category, Favourite, JobOffer } = require("../db");
+const { User, Auth, Category, Favourite, JobOffer, Review } = require("../db");
 const { isValidString, isValidNumber } = require("./../validations/index");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
@@ -211,6 +211,48 @@ const getUserJobOffers = async (req, res) => {
           errorMessage: `${user.dataValues.name} ${user.dataValues.surname} has no jobOffers to show`
         })
       : res.status(200).send(user.dataValues.jobOffers);
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original ? error.original : error
+    });
+  }
+};
+
+const addUserReview = async (req, res) => {
+  const { id } = req.params;
+  const { reviewer_user_id, description, stars } = req.body;
+
+  try {
+    if (isValidNumber(id))
+      return res.status(400).json({ errorMessage: "The id type must be an integer" });
+
+    const userById = await User.findByPk(id);
+    if (!userById) return res.status(404).json({ errorMessage: "There is no user with that id" });
+
+    if (!reviewer_user_id || isValidNumber(reviewer_user_id))
+      return res
+        .status(400)
+        .json({ errorMessage: "The rewiewer_user_id is required and must be an integer" });
+
+    if (reviewer_user_id === parseInt(id))
+      return res.status(400).json({ errorMessage: "A user cannot be self-reviewed" });
+
+    if (!stars || isValidNumber(stars) || stars < 1 || stars > 5)
+      return res.status(400).json({
+        errorMessage: "The stars are required and must be an integer between 1 and 5 included"
+      });
+
+    if (description && isValidString(description))
+      return res.status(400).json({ errorMessage: "Description field must be string type" });
+
+    const newReview = await Review.create({
+      reviewer_user_id,
+      description,
+      stars,
+      userId: id
+    });
+
+    return res.status(201).json(newReview.dataValues);
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
@@ -451,5 +493,6 @@ module.exports = {
   getUserFavourites,
   addUserFavourites,
   getUserJobOffers,
-  getSearch
+  getSearch,
+  addUserReview
 };

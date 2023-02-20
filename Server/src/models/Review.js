@@ -14,10 +14,6 @@ module.exports = sequelize => {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      reviewed_user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
       description: {
         type: DataTypes.STRING,
         allowNull: true
