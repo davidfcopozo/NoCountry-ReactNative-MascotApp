@@ -10,9 +10,7 @@ import {
 } from "react-native";
 import InputField from "../components/InputField";
 import { useState } from "react";
-import { useTheme, useNavigation } from "@react-navigation/native";
-import { useAuth } from "../context/AuthContext";
-import { useDispatch } from "react-redux";
+import { useTheme } from "@react-navigation/native";
 import FormSecondScreen from "../screens/FormSecondScreen";
 
 const Register = () => {
@@ -22,7 +20,6 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [valid, setValid] = useState(false);
   const [screen, setScreen] = useState(0);
-  const { signup } = useAuth();
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -31,31 +28,6 @@ const Register = () => {
     confirmPassword: "",
     city: ""
   });
-
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
-
-  async function handleSignup() {
-    try {
-      setErrors("");
-      setLoading(true);
-      setScreen(1);
-    } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        handleError(
-          "Este correo ya está en uso, si ya tiene una cuenta presione la optición de cambiar contraseña o utilice un correo diferente",
-          "email"
-        );
-      } else if (error.code === "auth/invalid-email") {
-        handleError("Por favor, introduzca un correo válido", "email");
-      } else if (error.code === "auth/weak-password") {
-        handleError("Por favor, introduzca una contraseña con al menos 5 caracteres", "password");
-      } else if (error.code) {
-        Alert.alert("Algo salió mal, por favor, intentalo de nuevo");
-      }
-    }
-    setLoading(false);
-  }
 
   const handleValidation = async () => {
     Keyboard.dismiss();
@@ -86,7 +58,7 @@ const Register = () => {
     }
 
     if (valid) {
-      await handleSignup();
+      setScreen(1);
     }
   };
 
@@ -146,8 +118,6 @@ const Register = () => {
           )}
         </View>
       </ScrollView>
-
-      {/* <FormSecondScreen formData={formData} setFormData={setFormData} setScreen={setScreen} /> */}
     </KeyboardAvoidingView>
   );
 };

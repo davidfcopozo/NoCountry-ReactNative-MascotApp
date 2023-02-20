@@ -12,7 +12,8 @@ const {
   deleteFavourite,
   addUserFavourites,
   getUserJobOffers,
-  getSearch
+  getSearch,
+  singInUser
 } = require("../controllers/users");
 const decodeToken = require("../middleware");
 
@@ -25,12 +26,14 @@ router.get("/category", getUsersByCategory);
 router.post("/register", addUser);
 router.get("/filter", getUsersByFilter);
 router.get("/search", getSearch);
-router.get("/jobOffers", decodeToken, getUserJobOffers);
-router.get("/favorites/:id/:page", decodeToken, getUserFavourites);
-router.post("/favorites/:id/:favorite", decodeToken, addUserFavourites);
-router.delete("/favorites/:id/:favorite", decodeToken, deleteFavourite);
-router.patch("/:id", decodeToken, updateUser);
-router.delete("/:id", decodeToken, deleteUser);
-router.get("/:id", decodeToken, getUserById);
+router.get("/jobOffers", getUserJobOffers);
+router.get("/favorites/:id/:page", getUserFavourites);
+router.post("/favorites/:id/:favorite", addUserFavourites);
+router.delete("/favorites/:id/:favorite", deleteFavourite);
+router.patch("/:id", updateUser);
+router.delete("/:id", deleteUser);
+router.get("/:id", getUserById);
+router.get("/signin/:id", singInUser);
+
 
 module.exports = router;

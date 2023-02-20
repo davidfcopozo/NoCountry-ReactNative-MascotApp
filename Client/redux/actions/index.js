@@ -1,5 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendEmailVerification
+} from "firebase/auth";
 import { auth } from "../../firebase";
 import axios from "axios";
 
@@ -46,7 +50,9 @@ export const searchView = createAsyncThunk("/users/search", async searchThis => 
 export const registerUser = createAsyncThunk("users/registerUser", async formData => {
   try {
     const { name, surname, email, password, city } = formData;
-    await createUserWithEmailAndPassword(auth, email, password);
+    await createUserWithEmailAndPassword(auth, email, password).then(async res =>
+      sendEmailVerification(await res.user)
+    );
     const firebaseId = auth.currentUser.uid;
     // Para saber a qué rutas se debe mandar el firebaseToken por headers, ir a Server/src/routes/users.js
     const firebaseToken = auth.currentUser.accessToken;
@@ -62,6 +68,19 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
 
     const response = await axios.post("/users/register", userData);
     return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const singInUser = createAsyncThunk("users/singInUser", async signInCredencials => {
+  const { email, password } = signInCredencials;
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    const firebaseId = await auth.currentUser.uid;
+    console.log(firebaseId);
+    const currentUser = await axios.get(`/users/signin/${firebaseId}`);
+    return currentUser;
   } catch (error) {
     console.log(error);
   }

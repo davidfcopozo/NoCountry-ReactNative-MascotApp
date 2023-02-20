@@ -1,40 +1,40 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   Text,
   View,
   Image,
   Pressable,
-  ScrollView,
   Keyboard,
   KeyboardAvoidingView,
-  Alert
+  ActivityIndicator
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import InputField from "../components/InputField";
 import { useTheme, useNavigation } from "@react-navigation/native";
+import { singInUser } from "./../redux/actions/index";
 import { useAuth } from "../context/AuthContext";
+import { actionLogin } from "../redux/reducers/users";
 
-const Login = () => {
+const Login = ({ openLogin, setOpenLogin }) => {
   const { colors } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(false);
-  const { login } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { loading } = useSelector(state => state.users);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const handleError = (error, input) => {
     setErrors(prevState => ({ ...prevState, [input]: error }));
   };
 
   async function handleSignin() {
+    const signInCredencials = { email, password };
     try {
       handleError("");
-      setLoading(true);
-      await login(email, password);
-
-      setLoading(false);
+      dispatch(singInUser(signInCredencials));
     } catch (error) {
       if (error.code === "auth/wrong-password") {
         handleError("Contraseña incorrecta, por favor intentelo de nuevo", "password");
@@ -69,6 +69,8 @@ const Login = () => {
 
     if (valid) {
       await handleSignin();
+      dispatch(actionLogin(true));
+      setOpenLogin(!openLogin);
       await navigation.navigate("Perfil");
     }
   };
@@ -76,6 +78,16 @@ const Login = () => {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
       <View className="flex gap-y-2 p-8 w-full">
+        {loading ? (
+          <View className="absolute bottom-0  top-[-60] left-[-20] right-0 justify-center  align-center w-[100vw] bg-gray-100 opacity-25 h-[100vh] m-0 z-10">
+            <ActivityIndicator
+              animating={true}
+              size="large"
+              color="blue"
+              className="self-center z-50"
+            />
+          </View>
+        ) : null}
         <Image
           style={{
             resizeMode: "contain"

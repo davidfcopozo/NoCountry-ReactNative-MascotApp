@@ -14,6 +14,29 @@ const getUsers = async (req, res) => {
   }
 };
 
+const singInUser = async (req, res) => {
+  const { id } = req.params;
+  if (isValidString(id))
+    return res.status(400).json({ errorMessage: "The id type must be an string" });
+  try {
+    const userById = await User.findOne({
+      include: {
+        model: Auth,
+        where: {
+          id: req.params.id
+        }
+      }
+    });
+    !userById
+      ? res.status(404).json({ errorMessage: "There is no user with that id" })
+      : res.status(200).json(userById);
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original ? error.original : error
+    });
+  }
+};
+
 const getUserById = async (req, res) => {
   const { id } = req.params;
 
@@ -424,5 +447,6 @@ module.exports = {
   getUserFavourites,
   addUserFavourites,
   getUserJobOffers,
-  getSearch
+  getSearch,
+  singInUser
 };

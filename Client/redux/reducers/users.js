@@ -1,11 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsers, sortUsersByRating, fetchUserById, searchView, registerUser } from "../actions";
+import {
+  fetchUsers,
+  sortUsersByRating,
+  fetchUserById,
+  searchView,
+  registerUser,
+  singInUser
+} from "../actions";
 
 const initialState = {
   users: [],
+  loading: false,
+  currentUser: [],
   userDetail: {},
   favouriteUsers: [],
-  search: []
+  search: [],
+  isLogin: false
 };
 
 const usersReducer = createSlice({
@@ -18,6 +28,9 @@ const usersReducer = createSlice({
     removeFavouriteUser: (state, action) => {
       const newArray = state.favouriteUsers.filter(favUser => favUser.imdbID !== action.payload);
       state.favouriteUsers = newArray;
+    },
+    actionLogin: (state, action) => {
+      state.isLogin = action.payload;
     }
   },
   extraReducers: builder => {
@@ -34,11 +47,20 @@ const usersReducer = createSlice({
       state.search = action.payload;
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
-      console.log("DESDE REDUCERS", action.payload);
       state.users = action.payload;
+    });
+    builder.addCase(singInUser.pending, state => {
+      state.loading = true;
+    });
+    builder.addCase(singInUser.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(singInUser.rejected, state => {
+      state.loading = false;
     });
   }
 });
 
-export const { addFavouriteUser, removeFavouriteUser } = usersReducer.actions;
+export const { addFavouriteUser, removeFavouriteUser, actionLogin } = usersReducer.actions;
 export default usersReducer.reducer;
