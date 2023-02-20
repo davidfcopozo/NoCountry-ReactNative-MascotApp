@@ -12,16 +12,29 @@ import { Ionicons } from "@expo/vector-icons";
 import { Link, useTheme } from "@react-navigation/native";
 import { Children, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useAuth } from "../context/AuthContext";
+import { actionLogin } from "../redux/reducers/users";
+import { useDispatch } from "react-redux";
+import VisitorOptions from "./VisitorOptions";
 
 const UserProfile = () => {
   const colorScheme = "light";
   const { colors } = useTheme();
+  const dispatch = useDispatch();
 
   const { currentUser } = useSelector(state => state.users);
   const user = currentUser?.data;
 
-  if (!user) return <Text>No hay datos de user</Text>;
+  const handleLogOut = () => {
+    dispatch(actionLogin(false));
+  };
+
+  if (!user)
+    return (
+      <View>
+        <VisitorOptions></VisitorOptions>
+      </View>
+    );
+
   return (
     <View className="h-full w-full p-5 gap-y-5">
       <View className="flex flex-row justify-start gap-x-4 w-full">
@@ -120,7 +133,7 @@ const UserProfile = () => {
 
       {currentUser ? (
         <View className="flex justify-center items-center">
-          <TouchableOpacity className="bg-violet-700 py-2 px-4 rounded-lg">
+          <TouchableOpacity onPress={handleLogOut} className="bg-violet-700 py-2 px-4 rounded-lg">
             <Text className="text-xl text-white">Cerrar sesion</Text>
           </TouchableOpacity>
         </View>

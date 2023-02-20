@@ -71,7 +71,7 @@ const Login = ({ openLogin, setOpenLogin }) => {
       await handleSignin();
       dispatch(actionLogin(true));
       setOpenLogin(!openLogin);
-      await navigation.navigate("Perfil");
+      navigation.navigate("Perfil");
     }
   };
 
