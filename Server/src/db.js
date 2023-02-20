@@ -41,25 +41,56 @@ const { Auth, Category, Favourite, Image, JobOffer, News, Pet, PetType, Request,
   sequelize.models;
 
 // Aca vendrian las relaciones
-Auth.hasOne(User);
-Category.belongsToMany(User, { through: "User_Category" });
-Favourite.belongsTo(User, { foreignKey: "user_id" });
-Image.belongsTo(User, { foreignKey: "user_id" });
-JobOffer.belongsTo(User, { foreignKey: "user_id" });
-PetType.hasMany(Pet);
-PetType.belongsToMany(User, { through: "User_PetType" });
-Pet.belongsTo(User, { foreignKey: "user_id" });
-Pet.belongsTo(PetType, { foreignKey: "type_id" });
-Request.belongsTo(User, { foreignKey: "user_id" });
-Review.belongsTo(User);
-User.belongsTo(Auth);
+
+// Relaciones User
+
 User.belongsToMany(Category, { through: "User_Category" });
+Category.belongsToMany(User, { through: "User_Category" });
+
+Auth.hasOne(User);
+User.belongsTo(Auth);
+
 User.hasMany(Favourite);
+Favourite.belongsTo(User);
+
 User.hasMany(Image);
-User.hasMany(JobOffer);
-User.belongsToMany(PetType, { through: "User_PetType" });
-User.hasMany(Request);
+Image.belongsTo(User);
+
 User.hasMany(Review);
+Review.belongsTo(User);
+
+User.hasMany(Pet);
+Pet.belongsTo(User);
+
+// Relación PetType - Pet
+
+PetType.hasMany(Pet);
+Pet.belongsTo(PetType);
+
+// Relaciones JobOffer
+
+PetType.belongsToMany(JobOffer, { through: "PetType_JobOffer" });
+JobOffer.belongsToMany(PetType, { through: "PetType_JobOffer" });
+
+Category.hasMany(JobOffer);
+JobOffer.belongsTo(Category);
+
+User.hasMany(JobOffer);
+JobOffer.belongsTo(User);
+
+// Relaciones Request
+
+Pet.belongsToMany(Request, { through: "Pet_Request" });
+Request.belongsToMany(Pet, { through: "Pet_Request" });
+
+Category.hasMany(Request);
+Request.belongsTo(Category);
+
+JobOffer.hasMany(Request);
+Request.belongsTo(JobOffer);
+
+User.hasMany(Request);
+Request.belongsTo(User);
 
 module.exports = {
   ...sequelize.models,
