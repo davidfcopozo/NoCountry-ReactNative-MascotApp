@@ -9,8 +9,9 @@ import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
-
+import persistStore from "redux-persist/es/persistStore";
 import store from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 import { HomeIcon, MessageIcon, PawIcon, ProfileIcon, SearchIcon } from "./components/Icons";
 
@@ -27,7 +28,6 @@ import Favorites from "./screens/Favorites";
 import EditarProfile from "./screens/EditProfile";
 import Service from "./screens/Service";
 import AuthProvider from "./context/AuthContext";
-import UserProfile from "./components/UserProfile";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
@@ -179,6 +179,8 @@ function BottomNavigation({ isDarkMode, setDarkMode, colors }) {
 
 // Index de Rutas
 
+let persistorStore = persistStore(store);
+
 function App() {
   const [isDarkMode, setDarkMode] = useState(false);
 
@@ -191,73 +193,75 @@ function App() {
     <NativeRouter>
       <AuthProvider>
         <Provider store={store}>
-          <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
+          <PersistGate persistor={persistorStore}>
+            <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
 
-          <NavigationContainer theme={isDarkMode ? CustomDark : CustomLight}>
-            <Stack.Navigator
-              screenOptions={{
-                headerTintColor: isDarkMode ? "#fff" : "#000"
-              }}
-            >
-              <Stack.Screen name="Root" options={{ headerShown: false }}>
-                {() => (
-                  <BottomNavigation
-                    isDarkMode={isDarkMode}
-                    setDarkMode={setDarkMode}
-                    colors={colors}
-                  />
-                )}
-              </Stack.Screen>
-
-              <Stack.Screen
-                name="Post"
-                component={Post}
-                options={({ route }) => ({ title: route.params.title })}
-              />
-
-              <Stack.Screen
-                name="BlogPost"
-                component={BlogPost}
-                options={{
-                  title: "Blog"
+            <NavigationContainer theme={isDarkMode ? CustomDark : CustomLight}>
+              <Stack.Navigator
+                screenOptions={{
+                  headerTintColor: isDarkMode ? "#fff" : "#000"
                 }}
-              />
+              >
+                <Stack.Screen name="Root" options={{ headerShown: false }}>
+                  {() => (
+                    <BottomNavigation
+                      isDarkMode={isDarkMode}
+                      setDarkMode={setDarkMode}
+                      colors={colors}
+                    />
+                  )}
+                </Stack.Screen>
 
-              <Stack.Screen name="Message" component={Message} options={{ headerShown: false }} />
+                <Stack.Screen
+                  name="Post"
+                  component={Post}
+                  options={({ route }) => ({ title: route.params.title })}
+                />
 
-              <Stack.Screen
-                name="AboutUs"
-                component={AboutUs}
-                options={{
-                  title: "Acerca de Nosotros"
-                }}
-              />
+                <Stack.Screen
+                  name="BlogPost"
+                  component={BlogPost}
+                  options={{
+                    title: "Blog"
+                  }}
+                />
 
-              <Stack.Screen
-                name="Favorites"
-                component={Favorites}
-                options={{
-                  title: "Favoritos"
-                }}
-              />
+                <Stack.Screen name="Message" component={Message} options={{ headerShown: false }} />
 
-              <Stack.Screen
-                name="Edit"
-                component={EditarProfile}
-                options={{
-                  title: "Editar perfil"
-                }}
-              />
+                <Stack.Screen
+                  name="AboutUs"
+                  component={AboutUs}
+                  options={{
+                    title: "Acerca de Nosotros"
+                  }}
+                />
 
-              <Stack.Screen
-                name="Service"
-                component={Service}
-                options={{
-                  title: "Servicio"
-                }}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
+                <Stack.Screen
+                  name="Favorites"
+                  component={Favorites}
+                  options={{
+                    title: "Favoritos"
+                  }}
+                />
+
+                <Stack.Screen
+                  name="Edit"
+                  component={EditarProfile}
+                  options={{
+                    title: "Editar perfil"
+                  }}
+                />
+
+                <Stack.Screen
+                  name="Service"
+                  component={Service}
+                  options={{
+                    title: "Servicio"
+                  }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </PersistGate>
         </Provider>
       </AuthProvider>
     </NativeRouter>

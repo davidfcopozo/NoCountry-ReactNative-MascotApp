@@ -54,6 +54,8 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
       sendEmailVerification(await res.user)
     );
     const firebaseId = auth.currentUser.uid;
+    // Para saber a qué rutas se debe mandar el firebaseToken por headers, ir a Server/src/routes/users.js
+    const firebaseToken = auth.currentUser.accessToken;
 
     const userData = {
       name,
@@ -76,7 +78,6 @@ export const singInUser = createAsyncThunk("users/singInUser", async signInCrede
   try {
     await signInWithEmailAndPassword(auth, email, password);
     const firebaseId = await auth.currentUser.uid;
-    console.log(firebaseId);
     const currentUser = await axios.get(`/users/signin/${firebaseId}`);
     return currentUser;
   } catch (error) {

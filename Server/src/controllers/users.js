@@ -14,22 +14,93 @@ const getUsers = async (req, res) => {
   }
 };
 
-const signInUser = async (req, res) => {
-  const { id } = req.params;
-  if (isValidString(id))
-    return res.status(400).json({ errorMessage: "The id type must be an string" });
+const register = async (req, res) => {
+  const {
+    name,
+    surname,
+    age,
+    city,
+    offers_services,
+    description,
+    rating,
+    profile_pic,
+    fb_authId,
+    email,
+    password,
+    isGoogle
+  } = req.body;
+
   try {
-    const userById = await User.findOne({
+    if (!name || !surname || !city || !fb_authId || !email || !password) {
+      return res.status(400).json({ errorMessage: "Missing required fields" });
+    }
+
+    if (
+      isValidString(name) ||
+      isValidString(surname) ||
+      isValidString(city) ||
+      isValidString(fb_authId) ||
+      isValidString(email) ||
+      isValidString(password)
+    )
+      return res.status(400).json({ errorMessage: "All fields must be string type" });
+
+    let [auth, created] = await Auth.findOrCreate({
+      where: { email },
+      defaults: {
+        id: fb_authId,
+        email,
+        password,
+        isGoogle
+      }
+    });
+
+    if (created) {
+      let newUser = await User.create({
+        name,
+        surname,
+        age,
+        city,
+        offers_services,
+        description,
+        rating,
+        profile_pic,
+        authId: auth.id
+      });
+
+      return res.status(201).json({
+        message: "A new user has been authenticated and created successfully",
+        user: newUser.dataValues
+      });
+    }
+
+    return res.status(400).json({ errorMessage: "There is already an account with that email" });
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original ? error.original : error
+    });
+  }
+};
+
+const login = async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    if (isValidString(id))
+      return res.status(400).json({ errorMessage: "The id type must be a string" });
+
+    const userByAuthId = await User.findOne({
       include: {
         model: Auth,
         where: {
-          id: req.params.id
+          id
         }
       }
     });
-    !userById
-      ? res.status(404).json({ errorMessage: "There is no user with that id" })
-      : res.status(200).json(userById);
+
+    !userByAuthId
+      ? res.status(404).json({ errorMessage: "There is no user with that authId" })
+      : res.status(200).json(userByAuthId);
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
@@ -258,74 +329,6 @@ const updateUser = async (req, res) => {
   }
 };
 
-const addUser = async (req, res) => {
-  const {
-    name,
-    surname,
-    age,
-    city,
-    offers_services,
-    description,
-    rating,
-    profile_pic,
-    fb_authId,
-    email,
-    password,
-    isGoogle
-  } = req.body;
-
-  try {
-    if (!name || !surname || !city || !fb_authId || !email || !password) {
-      return res.status(400).json({ errorMessage: "Missing required fields" });
-    }
-
-    if (
-      isValidString(name) ||
-      isValidString(surname) ||
-      isValidString(city) ||
-      isValidString(fb_authId) ||
-      isValidString(email) ||
-      isValidString(password)
-    )
-      return res.status(400).json({ errorMessage: "All fields must be string type" });
-
-    let [auth, created] = await Auth.findOrCreate({
-      where: { email },
-      defaults: {
-        id: fb_authId,
-        email,
-        password,
-        isGoogle
-      }
-    });
-
-    if (created) {
-      let newUser = await User.create({
-        name,
-        surname,
-        age,
-        city,
-        offers_services,
-        description,
-        rating,
-        profile_pic,
-        authId: auth.id
-      });
-
-      return res.status(201).json({
-        message: "A new user has been authenticated and created successfully",
-        user: newUser.dataValues
-      });
-    }
-
-    return res.status(400).json({ errorMessage: "There is already an account with that email" });
-  } catch (error) {
-    return res.status(500).json({
-      errorMessage: error.original ? error.original : error
-    });
-  }
-};
-
 /**
  * STATUS : Testing
  * MESSAGE : is not finished yet, requires a session manager to manage the request to the database
@@ -437,7 +440,8 @@ const getSearch = async (req, res) => {
 module.exports = {
   getUsersBestRating,
   getUsers,
-  addUser,
+  register,
+  login,
   updateUser,
   deleteFavourite,
   deleteUser,
@@ -447,6 +451,5 @@ module.exports = {
   getUserFavourites,
   addUserFavourites,
   getUserJobOffers,
-  getSearch,
-  signInUser
+  getSearch
 };
