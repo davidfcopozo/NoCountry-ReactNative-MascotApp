@@ -2,8 +2,13 @@ const { Pet } = require("../db");
 const { isValidNumber } = require("./../validations/index");
 
 const getUserPets = async (req, res) => {
+  const { id } = req.body;
   try {
-    const petList = await Pet.findAll();
+    const petList = await Pet.findAll({
+      where: {
+        user_id: id
+      }
+    });
     return res.status(200).json(petList);
   } catch (err) {
     res.status(500).json({
