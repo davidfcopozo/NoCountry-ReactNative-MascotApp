@@ -13,7 +13,8 @@ const {
   deleteFavourite,
   addUserFavourites,
   getUserJobOffers,
-  getSearch
+  getSearch,
+  addUserReview
 } = require("../controllers/users");
 const decodeToken = require("../middleware");
 
@@ -34,5 +35,6 @@ router.delete("/favorites/:id/:favorite", deleteFavourite);
 router.patch("/:id", updateUser);
 router.delete("/:id", deleteUser);
 router.get("/:id", getUserById);
+router.post("/review/:id", addUserReview);
 
 module.exports = router;
