@@ -15,10 +15,12 @@ const {
   getSearch,
   singInUser
 } = require("../controllers/users");
+const decodeToken = require("../middleware");
 
 const router = Router();
 
-router.get("/", getUsers);
+// El middleware decodeToken se aplica a determinadas rutas (son las que se necesita estar logueado para poder acceder)
+router.get("/", decodeToken, getUsers);
 router.get("/rating", getUsersBestRating);
 router.get("/category", getUsersByCategory);
 router.post("/register", addUser);
@@ -32,5 +34,6 @@ router.patch("/:id", updateUser);
 router.delete("/:id", deleteUser);
 router.get("/:id", getUserById);
 router.get("/signin/:id", singInUser);
+
 
 module.exports = router;
