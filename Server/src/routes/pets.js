@@ -1,5 +1,4 @@
 const { Router } = require("express");
-
 const { getUserPets, getPetInfo, addPet, updatePet, deletePet } = require("../controllers/pets");
 
 const router = Router();
