@@ -50,8 +50,8 @@ export const searchView = createAsyncThunk("/users/search", async searchThis => 
 export const registerUser = createAsyncThunk("users/registerUser", async formData => {
   try {
     const { name, surname, email, password, city } = formData;
-    await createUserWithEmailAndPassword(auth, email, password).then(async res =>
-      sendEmailVerification(await res.user)
+    await createUserWithEmailAndPassword(auth, email, password).then(res =>
+      sendEmailVerification(res.user)
     );
     const firebaseId = auth.currentUser.uid;
     // Para saber a qué rutas se debe mandar el firebaseToken por headers, ir a Server/src/routes/users.js
@@ -73,12 +73,12 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
   }
 });
 
-export const singInUser = createAsyncThunk("users/singInUser", async signInCredencials => {
-  const { email, password } = signInCredencials;
+export const loginUser = createAsyncThunk("users/loginUser", async loginCredentials => {
   try {
+    const { email, password } = loginCredentials;
     await signInWithEmailAndPassword(auth, email, password);
-    const firebaseId = await auth.currentUser.uid;
-    const currentUser = await axios.get(`/users/signin/${firebaseId}`);
+    const firebaseId = auth.currentUser.uid;
+    const currentUser = await axios.get(`/users/login/${firebaseId}`);
     return currentUser;
   } catch (error) {
     console.log(error);

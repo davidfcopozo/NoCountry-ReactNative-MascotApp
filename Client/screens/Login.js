@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import InputField from "../components/InputField";
 import { useTheme, useNavigation } from "@react-navigation/native";
-import { singInUser } from "./../redux/actions/index";
+import { loginUser } from "./../redux/actions/index";
 import { useAuth } from "../context/AuthContext";
 import { actionLogin } from "../redux/reducers/users";
 
@@ -31,10 +31,10 @@ const Login = ({ openLogin, setOpenLogin }) => {
   };
 
   async function handleSignin() {
-    const signInCredencials = { email, password };
     try {
+      const loginCredentials = { email, password };
       handleError("");
-      dispatch(singInUser(signInCredencials));
+      dispatch(loginUser(loginCredentials));
     } catch (error) {
       if (error.code === "auth/wrong-password") {
         handleError("Contraseña incorrecta, por favor intentelo de nuevo", "password");
