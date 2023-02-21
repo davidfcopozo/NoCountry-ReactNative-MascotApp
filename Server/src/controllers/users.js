@@ -85,12 +85,12 @@ const login = async (req, res) => {
         .status(404)
         .json({ errorMessage: "There is no account registered with that email" });
 
-    const doesPasswordsMatch = await bcrypt.compare(
+    const passwordsMatch = await bcrypt.compare(
       password,
       emailAuthenticated.dataValues.password
     );
 
-    if (!doesPasswordsMatch) return res.status(400).json({ errorMessage: "Invalid password" });
+    if (!passwordsMatch) return res.status(400).json({ errorMessage: "Invalid password" });
 
     const userLoggedIn = await User.findOne({
       include: {
