@@ -23,9 +23,8 @@ const getPetInfo = async (req, res) => {
   const { id } = req.params;
 
   try {
-    if (isValidNumber(id)) {
-      res.status(400).json({ errorMessage: "id must be a number", id: id });
-    }
+    if (!isValidNumber(id))
+      return res.status(400).json({ errorMessage: "id must be a number", id: id });
 
     const petInfo = await Pet.findOne({
       where: { id }

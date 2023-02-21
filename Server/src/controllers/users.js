@@ -23,12 +23,12 @@ const register = async (req, res) => {
     }
 
     if (
-      isValidString(name) ||
-      isValidString(surname) ||
-      isValidString(city) ||
-      isValidString(fb_authId) ||
-      isValidString(email) ||
-      isValidString(password)
+      !isValidString(name) ||
+      !isValidString(surname) ||
+      !isValidString(city) ||
+      !isValidString(fb_authId) ||
+      !isValidString(email) ||
+      !isValidString(password)
     )
       return res.status(400).json({ errorMessage: "All fields must be string type" });
 
@@ -56,9 +56,10 @@ const register = async (req, res) => {
       });
     }
 
-    return res
-      .status(400)
-      .json({ errorMessage: "There is already an account with that authId or email" });
+    return res.status(400).json({
+      errorMessage: "There is already an account registered with that fb_authId or email",
+      data: auth.dataValues
+    });
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
@@ -70,7 +71,7 @@ const login = async (req, res) => {
   const { id } = req.params;
 
   try {
-    if (isValidString(id))
+    if (isValidNumber(id))
       return res.status(400).json({ errorMessage: "The id type must be a string" });
 
     const userByAuthId = await User.findOne({
@@ -96,7 +97,7 @@ const getUserById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    if (isValidNumber(id))
+    if (!isValidNumber(id))
       return res.status(400).json({ errorMessage: "The id type must be an integer" });
 
     const userById = await User.findByPk(id);
@@ -137,7 +138,7 @@ const getUsersByCategory = async (req, res) => {
 
   try {
     if (!categoryId) return res.status(400).json({ errorMessage: "CategoryId missing" });
-    if (isValidNumber(categoryId))
+    if (!isValidNumber(categoryId))
       return res.status(400).json({ errorMessage: "The categoryId type must be an integer" });
 
     const category = await Category.findByPk(categoryId);
@@ -183,7 +184,7 @@ const getUserJobOffers = async (req, res) => {
 
   try {
     if (!userId) return res.status(400).json({ errorMessage: "UserId missing" });
-    if (isValidNumber(userId))
+    if (!isValidNumber(userId))
       return res.status(400).json({ errorMessage: "The userId type must be an integer" });
 
     const user = await User.findByPk(userId, { include: JobOffer });
@@ -204,15 +205,15 @@ const getUserJobOffers = async (req, res) => {
 
 const addUserReview = async (req, res) => {
   const { id } = req.params;
-  const { reviewer_user_id, description, stars } = req.body;
+  const { reviewer_user_id, stars, description } = req.body;
 
   try {
     // Validaciones varias
 
-    if (isValidNumber(id))
+    if (!isValidNumber(id))
       return res.status(400).json({ errorMessage: "The id type must be an integer" });
 
-    if (!reviewer_user_id || isValidNumber(reviewer_user_id))
+    if (!reviewer_user_id || !isValidNumber(reviewer_user_id))
       return res
         .status(400)
         .json({ errorMessage: "The rewiewer_user_id is required and must be an integer" });
@@ -220,12 +221,12 @@ const addUserReview = async (req, res) => {
     if (reviewer_user_id === parseInt(id))
       return res.status(400).json({ errorMessage: "A user cannot be self-reviewed" });
 
-    if (!stars || isValidNumber(stars) || stars < 1 || stars > 5)
+    if (!stars || !isValidNumber(stars) || stars < 1 || stars > 5)
       return res.status(400).json({
         errorMessage: "The stars are required and must be an integer between 1 and 5 included"
       });
 
-    if (description && isValidString(description))
+    if (description && !isValidString(description))
       return res.status(400).json({ errorMessage: "Description field must be string type" });
 
     // Los usuarios (tanto el reseñador como el reseñado) deben existir y estar autenticados
