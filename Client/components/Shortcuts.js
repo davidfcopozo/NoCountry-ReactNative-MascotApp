@@ -5,7 +5,7 @@ const Shortcuts = () => {
   const { colors } = useTheme();
 
   return (
-    <View className="flex flex-wrap flex-row py-5 gap-4">
+    <View className="flex flex-wrap flex-row py-5 gap-4 justify-center">
       <View className="gap-y-2">
         <View className="bg-pink-200 items-center p-4 rounded-xl">
           <Image
