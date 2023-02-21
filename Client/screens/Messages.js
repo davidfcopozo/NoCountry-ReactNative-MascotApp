@@ -1,12 +1,22 @@
 import { Text, View, ScrollView, Image } from "react-native";
-import { Children } from "react";
+import { Children, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import CardsData from "../db/cards.json";
 import { Link, useTheme } from "@react-navigation/native";
 
+import { useSelector } from "react-redux";
+
 const Messages = () => {
   const { colors } = useTheme();
 
+  if (!CardsData)
+    return (
+      <View style={{ color: colors.text }} className="justify-center mx-auto flex-1">
+        <Text className="text-3xl font-bold align-center justify-center">
+          No tienes conversaciones
+        </Text>
+      </View>
+    );
   return (
     <ScrollView className="p-5 gap-y-5">
       <Text style={{ color: colors.text }} className="text-3xl font-bold">
