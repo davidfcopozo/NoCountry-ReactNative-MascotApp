@@ -2,6 +2,7 @@ const { User, Auth, Category, Favourite, JobOffer, Review, Request } = require("
 const { isValidString, isValidNumber } = require("./../validations/index");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
+const bcrypt = require("bcrypt");
 
 const getUsers = async (req, res) => {
   try {
@@ -32,18 +33,19 @@ const register = async (req, res) => {
     )
       return res.status(400).json({ errorMessage: "All fields must be string type" });
 
-    let [auth, created] = await Auth.findOrCreate({
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const [auth, created] = await Auth.findOrCreate({
       where: { id: fb_authId, email },
       defaults: {
         id: fb_authId,
         email,
-        password,
+        password: hashedPassword,
         isGoogle
       }
     });
 
     if (created) {
-      let newUser = await User.create({
+      const newUser = await User.create({
         name,
         surname,
         city,
