@@ -1,4 +1,4 @@
-const { User, Auth, Category, Favourite, JobOffer, Review } = require("../db");
+const { User, Auth, Category, Favourite, JobOffer, Review, Request } = require("../db");
 const { isValidString, isValidNumber } = require("./../validations/index");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
@@ -15,20 +15,7 @@ const getUsers = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  const {
-    name,
-    surname,
-    age,
-    city,
-    offers_services,
-    description,
-    rating,
-    profile_pic,
-    fb_authId,
-    email,
-    password,
-    isGoogle
-  } = req.body;
+  const { name, surname, city, fb_authId, email, password, isGoogle } = req.body;
 
   try {
     if (!name || !surname || !city || !fb_authId || !email || !password) {
@@ -46,7 +33,7 @@ const register = async (req, res) => {
       return res.status(400).json({ errorMessage: "All fields must be string type" });
 
     let [auth, created] = await Auth.findOrCreate({
-      where: { email },
+      where: { id: fb_authId, email },
       defaults: {
         id: fb_authId,
         email,
@@ -59,12 +46,7 @@ const register = async (req, res) => {
       let newUser = await User.create({
         name,
         surname,
-        age,
         city,
-        offers_services,
-        description,
-        rating,
-        profile_pic,
         authId: auth.id
       });
 
@@ -74,7 +56,9 @@ const register = async (req, res) => {
       });
     }
 
-    return res.status(400).json({ errorMessage: "There is already an account with that email" });
+    return res
+      .status(400)
+      .json({ errorMessage: "There is already an account with that authId or email" });
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
@@ -223,11 +207,10 @@ const addUserReview = async (req, res) => {
   const { reviewer_user_id, description, stars } = req.body;
 
   try {
+    // Validaciones varias
+
     if (isValidNumber(id))
       return res.status(400).json({ errorMessage: "The id type must be an integer" });
-
-    const userById = await User.findByPk(id);
-    if (!userById) return res.status(404).json({ errorMessage: "There is no user with that id" });
 
     if (!reviewer_user_id || isValidNumber(reviewer_user_id))
       return res
@@ -244,6 +227,38 @@ const addUserReview = async (req, res) => {
 
     if (description && isValidString(description))
       return res.status(400).json({ errorMessage: "Description field must be string type" });
+
+    // Los usuarios (tanto el reseñador como el reseñado) deben existir y estar autenticados
+
+    const userReviewed = await User.findByPk(id, { include: Auth });
+    const userReviewer = await User.findByPk(reviewer_user_id, { include: Auth });
+
+    if (!userReviewed || userReviewed?.dataValues.authId === null)
+      return res.status(404).json({
+        errorMessage: "The user you are trying to review does not exist or is not authenticated"
+      });
+
+    if (!userReviewer || userReviewer?.dataValues.authId === null)
+      return res.status(404).json({
+        errorMessage:
+          "The user that is trying to give the review does not exist or is not authenticated"
+      });
+
+    // Para dejar su reseña, el reseñador debe haber contratado previamente al reseñado
+
+    const userRequested = await Request.findOne({
+      where: {
+        hired_user_id: id,
+        userId: reviewer_user_id
+      }
+    });
+
+    if (!userRequested)
+      return res.status(404).json({
+        errorMessage: "The user that is trying to give the review has not hired the other user yet"
+      });
+
+    // Si todo va bien, y el proceso pasa todas las validaciones y chequeos de arriba, se emite finalmente la reseña
 
     const newReview = await Review.create({
       reviewer_user_id,
