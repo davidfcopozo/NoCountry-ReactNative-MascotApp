@@ -10,10 +10,6 @@ module.exports = sequelize => {
         autoIncrement: true,
         primaryKey: true
       },
-      user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
       fav_user_id: {
         type: DataTypes.INTEGER,
         allowNull: false
