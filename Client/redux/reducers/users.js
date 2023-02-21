@@ -5,7 +5,7 @@ import {
   fetchUserById,
   searchView,
   registerUser,
-  singInUser
+  loginUser
 } from "../actions";
 
 const initialState = {
@@ -49,14 +49,14 @@ const usersReducer = createSlice({
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.users = action.payload;
     });
-    builder.addCase(singInUser.pending, state => {
+    builder.addCase(loginUser.pending, state => {
       state.loading = true;
     });
-    builder.addCase(singInUser.fulfilled, (state, action) => {
+    builder.addCase(loginUser.fulfilled, (state, action) => {
       state.currentUser = action.payload;
       state.loading = false;
     });
-    builder.addCase(singInUser.rejected, state => {
+    builder.addCase(loginUser.rejected, state => {
       state.loading = false;
     });
   }
