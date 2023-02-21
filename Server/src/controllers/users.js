@@ -70,24 +70,40 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { id } = req.params;
+  const { email, password } = req.body;
 
   try {
-    if (isValidNumber(id))
-      return res.status(400).json({ errorMessage: "The id type must be a string" });
+    if (!email || !password)
+      return res.status(400).json({ errorMessage: "Missing email and password fields" });
 
-    const userByAuthId = await User.findOne({
+    if (!isValidString(email) || !isValidString(password))
+      return res.status(400).json({ errorMessage: "Email and password must be string type" });
+
+    const emailAuthenticated = await Auth.findOne({ where: { email } });
+    if (emailAuthenticated === null)
+      return res
+        .status(404)
+        .json({ errorMessage: "There is no account registered with that email" });
+
+    const passwordsMatch = await bcrypt.compare(
+      password,
+      emailAuthenticated.dataValues.password
+    );
+
+    if (!passwordsMatch) return res.status(400).json({ errorMessage: "Invalid password" });
+
+    const userLoggedIn = await User.findOne({
       include: {
         model: Auth,
         where: {
-          id
+          email
         }
       }
     });
 
-    !userByAuthId
-      ? res.status(404).json({ errorMessage: "There is no user with that authId" })
-      : res.status(200).json(userByAuthId);
+    return res
+      .status(200)
+      .json({ message: "A user has logged in successfully", user: userLoggedIn.dataValues });
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
