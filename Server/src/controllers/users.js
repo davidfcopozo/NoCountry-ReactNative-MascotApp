@@ -83,7 +83,7 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
 
   try {
     if (isValidString(id))
