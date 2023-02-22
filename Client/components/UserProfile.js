@@ -10,23 +10,46 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useTheme } from "@react-navigation/native";
-import { Children, useEffect } from "react";
+import { Children, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { actionLogin } from "../redux/reducers/users";
+import { AddFavorite, DelFavorite, fetchFavorites } from "../redux/actions";
 import { useDispatch } from "react-redux";
 import VisitorOptions from "./VisitorOptions";
 
-const UserProfile = () => {
+const UserProfile = ({route}) => {
   const colorScheme = "light";
-  const { colors } = useTheme();
+  const { dark,colors } = useTheme();
   const dispatch = useDispatch();
 
   const { currentUser } = useSelector(state => state.users);
-  const user = currentUser?.data;
+  const user = route?.params? route.params.user : currentUser?.data;
+  const favorited = useSelector(state => state.users.favouriteUsers);
+  const userActive = route?.params?.user? false : true
 
   const handleLogOut = () => {
     dispatch(actionLogin(false));
   };
+
+  const addFavorite = () => {
+    dispatch(AddFavorite({id: currentUser.data.auth.id, fav_id: user.id}))
+    dispatch(fetchFavorites(currentUser.data.auth.id));
+  }
+
+  const delFavorite = () => {
+    dispatch(DelFavorite({id: currentUser.data.auth.id, fav_id: user.id}))
+    dispatch(fetchFavorites(currentUser.data.auth.id));
+  }
+
+  const verifyFavorite = (id) => {
+    const res = favorited.filter((fav) => {
+      return fav.id === id
+    }).map(res =>{
+      return res.id
+    })
+
+    return +res === id
+  }
 
   if (!user)
     return (
@@ -51,62 +74,85 @@ const UserProfile = () => {
             }}
           />
         ) : (
-          <View className="rounded-full bg-white">
+          <View className="flex justify-center h-[105px] rounded-full bg-white">
             <Ionicons
               name="person-circle-outline"
               size={100}
-              fill={colorScheme === "dark" ? "#fff" : "#000"}
             />
           </View>
         )}
-        <View className="flex flex-col gap-y-2">
-          <Text style={{ color: colors.text }} className="text-2xl font-bold -mb-1">
-            {user.name} {user.surname}
-          </Text>
-          <Text numberOfLines={1} style={{ color: colors.textGray }} className="text-sm -mb-1">
-            {user.city}
-          </Text>
-          {user.rating ? (
-            <View className="flex flex-row items-center">
-              {Children.toArray(
-                Array.from(Array(user.rating)).map(star => (
-                  <Ionicons name="star" size={10} color="#ffe100" />
-                ))
-              )}
-              <Text style={{ color: colors.textGray }} className="text-xs ml-1">
-                {user.rating ? "(" + user.rating + ")" : undefined}
-              </Text>
-            </View>
-          ) : (
-            <Text className="text-xs text-white p-1 font-bold bg-violet-600 w-28 text-center rounded-sm">
-              Usuario Nuevo
-            </Text>
-          )}
 
-          {currentUser ? (
-            <View className="flex flex-row gap-x-2">
-              <Pressable
-                style={{ color: colors.text, borderColor: colors.text }}
-                className="border"
-              >
-                <Link to={{ screen: "Edit" }} style={{ padding: 8 }}>
-                  <Text style={{ color: colors.text }} className="text-sm font-bold">
-                    Editar perfil
-                  </Text>
-                </Link>
-              </Pressable>
-              <Pressable
-                style={{ color: colors.text, borderColor: colors.text }}
-                className="border"
-              >
-                <Link to={{ screen: "Favorites" }} style={{ padding: 8 }}>
-                  <Text style={{ color: colors.text }} className="text-sm font-bold">
-                    Favoritos
-                  </Text>
-                </Link>
-              </Pressable>
-            </View>
-          ) : undefined}
+        <View className="flex justify-between flex-row">
+          <View className="flex flex-col gap-y-2">
+            <Text style={{ color: colors.text }} className="text-2xl font-bold -mb-1">
+              {user.name} {user.surname}
+            </Text>
+            <Text numberOfLines={1} style={{ color: colors.textGray }} className="text-sm -mb-1">
+              {user.city}
+            </Text>
+            {user.rating ? (
+              <View className="flex flex-row items-center">
+                {Children.toArray(
+                  Array.from(Array(user.rating)).map(star => (
+                    <Ionicons name="star" size={10} color="#ffe100" />
+                  ))
+                )}
+                <Text style={{ color: colors.textGray }} className="text-xs ml-1">
+                  {user.rating ? "(" + user.rating + ")" : undefined}
+                </Text>
+              </View>
+            ) : (
+              <Text className="text-xs text-white p-1 font-bold bg-violet-600 w-28 text-center rounded-sm">
+                Usuario Nuevo
+              </Text>
+            )}
+
+            {userActive ? (
+              <View className="flex flex-row gap-x-2">
+                <Pressable
+                  style={{ color: colors.text, borderColor: colors.text }}
+                  className="border"
+                >
+                  <Link to={{ screen: "Edit" }} style={{ padding: 8 }}>
+                    <Text style={{ color: colors.text }} className="text-sm font-bold">
+                      Editar perfil
+                    </Text>
+                  </Link>
+                </Pressable>
+                <Pressable
+                  style={{ color: colors.text, borderColor: colors.text }}
+                  className="border"
+                >
+                  <Link to={{ screen: "Favorites" }} style={{ padding: 8 }}>
+                    <Text style={{ color: colors.text }} className="text-sm font-bold">
+                      Favoritos
+                    </Text>
+                  </Link>
+                </Pressable>
+              </View>
+            ) : undefined}
+          </View>
+
+          {
+            !userActive?
+            (
+              verifyFavorite(user.id)?
+              <Ionicons
+                onPress={() => delFavorite()}
+                name="heart"
+                size={30}
+              />
+              :
+              <Ionicons
+                onPress={() => addFavorite()}
+                name="heart-outline"
+                size={30}
+              />
+            )
+            :
+            undefined
+          }
+
         </View>
       </View>
 
@@ -131,7 +177,7 @@ const UserProfile = () => {
         </View>
       </View>
 
-      {currentUser ? (
+      {userActive ? (
         <View className="flex justify-center items-center">
           <TouchableOpacity onPress={handleLogOut} className="bg-violet-700 py-2 px-4 rounded-lg">
             <Text className="text-xl text-white">Cerrar sesion</Text>

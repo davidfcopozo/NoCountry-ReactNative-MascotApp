@@ -5,7 +5,8 @@ import {
   fetchUserById,
   searchView,
   registerUser,
-  loginUser
+  loginUser,
+  fetchFavorites
 } from "../actions";
 
 const initialState = {
@@ -59,8 +60,11 @@ const usersReducer = createSlice({
     builder.addCase(loginUser.rejected, state => {
       state.loading = false;
     });
+    builder.addCase(fetchFavorites.fulfilled, (state, action) => {
+      state.favouriteUsers = action.payload;
+    });
   }
 });
 
-export const { addFavouriteUser, removeFavouriteUser, actionLogin } = usersReducer.actions;
+export const { addFavouriteUser, removeFavouriteUser, actionLogin} = usersReducer.actions;
 export default usersReducer.reducer;

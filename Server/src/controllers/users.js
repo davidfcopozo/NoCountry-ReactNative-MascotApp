@@ -74,12 +74,18 @@ const login = async (req, res) => {
       return res.status(400).json({ errorMessage: "The id type must be a string" });
 
     const userByAuthId = await User.findOne({
-      include: {
+      include: [
+      {
         model: Auth,
         where: {
           id
         }
+      },
+      {
+        model: Favourite,
       }
+    ],
+      
     });
 
     !userByAuthId
@@ -99,7 +105,14 @@ const getUserById = async (req, res) => {
     if (isValidNumber(id))
       return res.status(400).json({ errorMessage: "The id type must be an integer" });
 
-    const userById = await User.findByPk(id);
+    const userById = await User.findOne({
+      include: {
+        model: Auth,
+        where: {
+          id
+        }
+      }
+    });
     !userById
       ? res.status(404).json({ errorMessage: "There is no user with that id" })
       : res.status(200).json(userById.dataValues);
@@ -310,10 +323,19 @@ const addUserFavourites = async (req, res) => {
   const { id, favorite } = req.params;
   console.log(id + favorite);
 
+  const found = await Favourite.findOne({
+    where:{
+      fav_user_id: favorite,
+      user_id_favs: id
+    }
+  })
+
+  if (found) return res.status(400).json({})
+
   try {
     await Favourite.create({
-      user_id: id,
-      fav_user_id: favorite
+      fav_user_id: favorite,
+      user_id_favs: id
     });
 
     return res.json({ message: favorite + " Added to favorites of User " + id });
@@ -335,13 +357,26 @@ const getUserFavourites = async (req, res) => {
   const { page, id } = req.params;
 
   try {
-    const favourites = await Favourite.findAll({
-      where: {
-        user_id: id
+
+    const fav_list = await Favourite.findAll({
+      where : {
+        user_id_favs: id
       },
-      offset: (page - 1) * 10,
-      limit: 10
-    });
+    })
+
+    let ids = fav_list.map(fav => fav.fav_user_id);
+
+    console.log(ids);
+
+    const favourites = await User.findAll({
+      where:{
+        id: {
+          [Op.and]: [ids]
+        }
+      }
+    })
+
+    //can you give me the code for filter just one property of each object in an array
 
     return res.json(favourites);
   } catch (error) {
@@ -399,8 +434,8 @@ const deleteFavourite = async (req, res) => {
   try {
     await Favourite.destroy({
       where: {
-        user_id: id,
-        fav_user_id: favorite
+        fav_user_id: favorite,
+        user_id_favs: id
       }
     });
 
@@ -493,6 +528,7 @@ const getSearch = async (req, res) => {
     });
   }
 };
+
 
 module.exports = {
   getUsersBestRating,
