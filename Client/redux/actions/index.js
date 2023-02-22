@@ -29,7 +29,7 @@ export const fetchUserById = createAsyncThunk("/users/fetchUserById", async user
   try {
     const userById = await axios.get(`/users/${userId}`);
     console.log(userById.data);
-    return [];
+    return userById.data;
   } catch (error) {
     console.log(error);
   }
@@ -79,7 +79,41 @@ export const loginUser = createAsyncThunk("users/loginUser", async loginCredenti
     await signInWithEmailAndPassword(auth, email, password);
     const firebaseId = auth.currentUser.uid;
     const currentUser = await axios.get(`/users/login/${firebaseId}`);
+    console.log(currentUser);
     return currentUser;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const AddFavorite = createAsyncThunk("users/AddFavorite", async (data) => {
+  try {
+    const {id, fav_id} = data
+
+    const save = await axios.post(`/users/favorites/${id}/${fav_id}`);
+    console.log("Favorito: "+save);
+    return save;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const DelFavorite = createAsyncThunk("users/DelFavorite", async (data) => {
+  try {
+    const {id, fav_id} = data
+
+    const deleteUser = await axios.delete(`/users/favorites/${id}/${fav_id}`);
+    console.log("Favorito: "+deleteUser);
+    return deleteUser;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const fetchFavorites = createAsyncThunk("/users/fetchFavorites", async (id) => {
+  try {
+    const users = await axios.get(`/users/favorites/${id}/1`);
+    return users.data;
   } catch (error) {
     console.log(error);
   }

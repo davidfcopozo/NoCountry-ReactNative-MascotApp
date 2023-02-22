@@ -16,8 +16,10 @@ const Highlights = ({ data }) => {
           {data?.length > 0 ? (
             Children.toArray(
               data.map(card => (
-                <Link to={{ screen: "Post", params: { user: card } }}>
-                  <View className="flex-1 flex items-center w-32 border border-black/5 rounded-lg overflow-hidden bg-white/10 pt-3">
+                <Link to={{ screen: "VisitProfile", params: { user: card, title: card.name, id : card.id } }}>
+                  <View
+                    className="flex-1 flex items-center w-32 border border-black/5 rounded-lg overflow-hidden bg-white/10 pt-3"
+                  >
                     {card.profile_pic ? (
                       <Image
                         style={{
