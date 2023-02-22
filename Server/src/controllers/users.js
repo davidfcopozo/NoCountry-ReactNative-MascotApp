@@ -2,6 +2,7 @@ const { User, Auth, Category, Favourite, JobOffer, Review, Request } = require("
 const { isValidString, isValidNumber } = require("./../validations/index");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
+const bcrypt = require("bcrypt");
 
 const getUsers = async (req, res) => {
   try {
@@ -23,27 +24,28 @@ const register = async (req, res) => {
     }
 
     if (
-      isValidString(name) ||
-      isValidString(surname) ||
-      isValidString(city) ||
-      isValidString(fb_authId) ||
-      isValidString(email) ||
-      isValidString(password)
+      !isValidString(name) ||
+      !isValidString(surname) ||
+      !isValidString(city) ||
+      !isValidString(fb_authId) ||
+      !isValidString(email) ||
+      !isValidString(password)
     )
       return res.status(400).json({ errorMessage: "All fields must be string type" });
 
-    let [auth, created] = await Auth.findOrCreate({
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const [auth, created] = await Auth.findOrCreate({
       where: { id: fb_authId, email },
       defaults: {
         id: fb_authId,
         email,
-        password,
+        password: hashedPassword,
         isGoogle
       }
     });
 
     if (created) {
-      let newUser = await User.create({
+      const newUser = await User.create({
         name,
         surname,
         city,
@@ -56,9 +58,10 @@ const register = async (req, res) => {
       });
     }
 
-    return res
-      .status(400)
-      .json({ errorMessage: "There is already an account with that authId or email" });
+    return res.status(400).json({
+      errorMessage: "There is already an account registered with that fb_authId or email",
+      data: auth.dataValues
+    });
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
@@ -67,36 +70,47 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { id } = req.params;
+  const { email, password } = req.body;
 
   try {
-    if (isValidString(id))
-      return res.status(400).json({ errorMessage: "The id type must be a string" });
+    if (!email || !password)
+      return res.status(400).json({ errorMessage: "Missing email and password fields" });
 
-    const userByAuthId = await User.findOne({
-      include: [
-      {
+    if (!isValidString(email) || !isValidString(password))
+      return res.status(400).json({ errorMessage: "Email and password must be string type" });
+
+    const emailAuthenticated = await Auth.findOne({ where: { email } });
+    if (emailAuthenticated === null)
+      return res
+        .status(404)
+        .json({ errorMessage: "There is no account registered with that email" });
+
+    const passwordsMatch = await bcrypt.compare(
+      password,
+      emailAuthenticated.dataValues.password
+    );
+
+    if (!passwordsMatch) return res.status(400).json({ errorMessage: "Invalid password" });
+
+    const userLoggedIn = await User.findOne({
+      include: {
         model: Auth,
         where: {
-          id
+          email
         }
-      },
-      {
-        model: Favourite,
       }
-    ],
-      
     });
 
-    !userByAuthId
-      ? res.status(404).json({ errorMessage: "There is no user with that authId" })
-      : res.status(200).json(userByAuthId);
+    return res
+      .status(200)
+      .json({ message: "A user has logged in successfully", user: userLoggedIn.dataValues });
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
     });
   }
 };
+
 
 const getUserById = async (req, res) => {
   const { id } = req.params;
