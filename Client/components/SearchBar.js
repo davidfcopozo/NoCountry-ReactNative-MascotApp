@@ -16,11 +16,11 @@ const SearchBar = () => {
   const dispatch = useDispatch();
 
   const handleInput = () => {
-    dispatch(searchView({search: input}));
+    dispatch(searchView({ search: input }));
   };
 
   return (
-    <View className="flex flex-row justify-center items-center pl-2 pr-14">
+    <View className="flex flex-row justify-center items-center pt-3 pl-2 pr-14">
       <View className="left-12">
         <SearchIcon color={colors.text}></SearchIcon>
       </View>
@@ -43,7 +43,11 @@ const SearchBar = () => {
       </View>
 
       <Modal animationType="slide" transparent={true} visible={openFilter}>
-        <Filter currentSearch={{search: input}} openFilter={openFilter} setOpenFilter={setOpenFilter}></Filter>
+        <Filter
+          currentSearch={{ search: input }}
+          openFilter={openFilter}
+          setOpenFilter={setOpenFilter}
+        ></Filter>
       </Modal>
     </View>
   );

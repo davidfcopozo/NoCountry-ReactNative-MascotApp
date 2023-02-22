@@ -31,11 +31,11 @@ const Cards = ({ Data }) => {
                 </Text>
 
                 <Text numberOfLines={1} style={{ color: colors.textGray }} className="text-sm">
-                  De {card.location}
+                  De {card.city}
                 </Text>
 
                 <View className="flex flex-row py-2 justify-left items-left gap-x-2">
-                  {card.user_picture ? (
+                  {card.profile_pic ? (
                     <Image
                       style={{
                         width: 35,
@@ -44,7 +44,7 @@ const Cards = ({ Data }) => {
                       }}
                       className="rounded-full"
                       source={{
-                        uri: card.user_picture
+                        uri: card.profile_pic
                       }}
                     />
                   ) : (
@@ -52,10 +52,10 @@ const Cards = ({ Data }) => {
                   )}
                   <View>
                     <Text style={{ color: colors.text }}>{card.name}</Text>
-                    {card.stars ? (
+                    {card.rating ? (
                       <View className="flex flex-row items-center">
                         {Children.toArray(
-                          Array.from(Array(card.stars)).map(star => (
+                          Array.from(Array(card.rating)).map(star => (
                             <Ionicons name="star" size={10} color="#ffe100" />
                           ))
                         )}
