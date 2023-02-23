@@ -8,6 +8,7 @@ import {
 
 import { auth } from "../../firebase";
 import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
 
 export const fetchUsers = createAsyncThunk("/users/fetchUsers", async () => {
   try {
@@ -31,7 +32,7 @@ export const fetchUserById = createAsyncThunk("/users/fetchUserById", async user
   try {
     const userById = await axios.get(`/users/${userId}`);
     console.log(userById.data);
-    return userById.data;
+    return [userById.data];
   } catch (error) {
     console.log(error);
   }
@@ -87,8 +88,8 @@ export const loginUser = createAsyncThunk("users/loginUser", async loginCredenti
     });
 
     const currentUser = {
-      data : currentUserData.data.user
-    }
+      data: currentUserData.data.user
+    };
 
     return currentUser;
   } catch (error) {
@@ -96,10 +97,9 @@ export const loginUser = createAsyncThunk("users/loginUser", async loginCredenti
   }
 });
 
-export const logOutUser = createAsyncThunk(async loginCredentials => {
+export const logOutUser = createAsyncThunk("users/logOutUser", async () => {
   try {
-    const { email, password } = loginCredentials;
-    await signOut(auth, email, password);
+    await signOut(auth);
   } catch (error) {
     console.log(error);
   }

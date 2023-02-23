@@ -44,10 +44,12 @@ const usersReducer = createSlice({
       state.search = action.payload;
     });
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
-      state.chatRecipients = action.payload;
+      const { payload } = action;
+      state.chatRecipients.push(payload);
     });
     builder.addCase(searchView.fulfilled, (state, action) => {
-      state.search = action.payload;
+      const { payload } = action;
+      state.search = [payload];
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.users = action.payload;
@@ -72,5 +74,6 @@ const usersReducer = createSlice({
   }
 });
 
-export const { addFavouriteUser, removeFavouriteUser, actionLogin } = usersReducer.actions;
+export const { addFavouriteUser, removeFavouriteUser, actionLogin, cleanCurrentUser } =
+  usersReducer.actions;
 export default usersReducer.reducer;

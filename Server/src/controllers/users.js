@@ -85,10 +85,7 @@ const login = async (req, res) => {
         .status(404)
         .json({ errorMessage: "There is no account registered with that email" });
 
-    const passwordsMatch = await bcrypt.compare(
-      password,
-      emailAuthenticated.dataValues.password
-    );
+    const passwordsMatch = await bcrypt.compare(password, emailAuthenticated.dataValues.password);
 
     if (!passwordsMatch) return res.status(400).json({ errorMessage: "Invalid password" });
 
@@ -111,7 +108,6 @@ const login = async (req, res) => {
   }
 };
 
-
 const getUserById = async (req, res) => {
   const { id } = req.params;
 
@@ -120,11 +116,8 @@ const getUserById = async (req, res) => {
       return res.status(400).json({ errorMessage: "The id type must be an integer" });
 
     const userById = await User.findOne({
-      include: {
-        model: Auth,
-        where: {
-          id
-        }
+      where: {
+        id
       }
     });
     !userById
@@ -338,13 +331,13 @@ const addUserFavourites = async (req, res) => {
   console.log(id + favorite);
 
   const found = await Favourite.findOne({
-    where:{
+    where: {
       fav_user_id: favorite,
       user_id_favs: id
     }
-  })
+  });
 
-  if (found) return res.status(400).json({})
+  if (found) return res.status(400).json({});
 
   try {
     await Favourite.create({
@@ -371,24 +364,23 @@ const getUserFavourites = async (req, res) => {
   const { page, id } = req.params;
 
   try {
-
     const fav_list = await Favourite.findAll({
-      where : {
+      where: {
         user_id_favs: id
-      },
-    })
+      }
+    });
 
     let ids = fav_list.map(fav => fav.fav_user_id);
 
     console.log(ids);
 
     const favourites = await User.findAll({
-      where:{
+      where: {
         id: {
           [Op.and]: [ids]
         }
       }
-    })
+    });
 
     //can you give me the code for filter just one property of each object in an array
 
@@ -542,7 +534,6 @@ const getSearch = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   getUsersBestRating,
