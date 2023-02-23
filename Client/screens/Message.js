@@ -33,11 +33,6 @@ const Message = ({ route }) => {
   const currentUser = useSelector(state => state.users.currentUser.data);
   let user1 = currentUser.authId;
 
-  /*   useEffect(() => {
-    console.log("Signed in user=>", currentUser);
-    console.log("Other user=>", user);
-  }, []); */
-
   const createConversation = async () => {
     setRecipient(user);
 
@@ -57,6 +52,7 @@ const Message = ({ route }) => {
       setMessages(msgs);
     });
 
+    //This is to get the last message (has not been implemented)
     const docSnap = await getDoc(doc(firebaseDb, "lastMsg", id));
     if (docSnap.data() && docSnap.data().from !== user1) {
       await updateDoc(doc(firebaseDb, "lastMsg", id), { unread: false });
@@ -69,18 +65,9 @@ const Message = ({ route }) => {
 
   const handleSubmit = async () => {
     const user2 = recipient.id;
-    /* console.log(typeof user1);
-    console.log(typeof user2); */
 
     const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`;
-
-    //Generate a collection for each peer in the conversation
-    /*     await setDoc(doc(firebaseDb, "users", `${user1}`), {
-      uid: `${user1}`
-    });
-    await setDoc(doc(firebaseDb, "users", `${user2}`), {
-      uid: `${user2}`
-    }); */
+    //On submit, create and add the chat id to both peers in the conversation/chat
     await setDoc(
       doc(firebaseDb, "users", `${user1}`, "chats", id),
       {
@@ -98,14 +85,16 @@ const Message = ({ route }) => {
       { merge: true }
     );
 
+    //This is to be able to upload images to the chat if an image is provided
     let url;
     if (img) {
       const imgRef = ref(storage, `images/${new Date().getTime()} - ${img.name}`);
       const snap = await uploadBytes(imgRef, img);
-      const dlUrl = await getDownloadURL(ref(storage, snap.ref.fullPath));
-      url = dlUrl;
+      const downloadUrl = await getDownloadURL(ref(storage, snap.ref.fullPath));
+      url = downloadUrl;
     }
 
+    //when the message is sent add the message object to its respective chatroom which is reference as the id below
     await addDoc(collection(firebaseDb, "chatrooms", id, "chat"), {
       message,
       from: user1,
@@ -114,6 +103,7 @@ const Message = ({ route }) => {
       media: url || ""
     });
 
+    //when the message is sent add the message object to the last send collection
     await setDoc(doc(firebaseDb, "lastMsg", id), {
       message,
       from: user1,
