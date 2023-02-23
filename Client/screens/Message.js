@@ -1,7 +1,7 @@
 import { Text, View, ScrollView, Pressable, KeyboardAvoidingView } from "react-native";
 import ChatHeader from "../components/ChatHeader";
 import ChatInput from "../components/ChatInput";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ChatMessages from "../components/ChatMessages";
 import { useSelector } from "react-redux";
 import {
@@ -15,7 +15,8 @@ import {
   setDoc,
   doc,
   getDoc,
-  updateDoc
+  updateDoc,
+  writeBatch
 } from "firebase/firestore";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { firebaseDb } from "../firebase";
@@ -44,17 +45,17 @@ const Message = ({ route }) => {
     const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`;
 
     //Reference to the conversation id with the selected user
-    const msgsRef = collection(firebaseDb, "conversations", id, "chat");
+    const msgsRef = collection(firebaseDb, "chatrooms", id, "chat");
     //Query to get the messages of the conversation
     const q = query(msgsRef, orderBy("createdAt", "asc"));
     onSnapshot(q, querySnapshot => {
       let msgs = [];
       querySnapshot.forEach(doc => {
+        console.log(doc.data());
         msgs.push(doc.data());
       });
       setMessages(msgs);
     });
-    console.log(messages);
 
     const docSnap = await getDoc(doc(firebaseDb, "lastMsg", id));
     if (docSnap.data() && docSnap.data().from !== user1) {
@@ -68,8 +69,34 @@ const Message = ({ route }) => {
 
   const handleSubmit = async () => {
     const user2 = recipient.id;
+    /* console.log(typeof user1);
+    console.log(typeof user2); */
 
     const id = user1 > user2 ? `${user1 + user2}` : `${user2 + user1}`;
+
+    //Generate a collection for each peer in the conversation
+    /*     await setDoc(doc(firebaseDb, "users", `${user1}`), {
+      uid: `${user1}`
+    });
+    await setDoc(doc(firebaseDb, "users", `${user2}`), {
+      uid: `${user2}`
+    }); */
+    await setDoc(
+      doc(firebaseDb, "users", `${user1}`, "chats", id),
+      {
+        chatroomId: id,
+        recipient: `${user2}`
+      },
+      { merge: true }
+    );
+    await setDoc(
+      doc(firebaseDb, "users", `${user2}`, "chats", id),
+      {
+        chatroomId: id,
+        recipient: `${user1}`
+      },
+      { merge: true }
+    );
 
     let url;
     if (img) {
@@ -79,7 +106,7 @@ const Message = ({ route }) => {
       url = dlUrl;
     }
 
-    await addDoc(collection(firebaseDb, "conversations", id, "chat"), {
+    await addDoc(collection(firebaseDb, "chatrooms", id, "chat"), {
       message,
       from: user1,
       to: user2,
