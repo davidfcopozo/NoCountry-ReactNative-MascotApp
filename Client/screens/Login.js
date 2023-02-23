@@ -30,6 +30,7 @@ const Login = ({ openLogin, setOpenLogin }) => {
     setErrors(prevState => ({ ...prevState, [input]: error }));
   };
 
+  
   async function handleSignin() {
     try {
       const loginCredentials = { email, password };
