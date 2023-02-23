@@ -17,6 +17,7 @@ const initialState = {
   userDetail: {},
   favouriteUsers: [],
   search: [],
+  chatRecipients: [],
   isLogin: false
 };
 
@@ -43,7 +44,7 @@ const usersReducer = createSlice({
       state.search = action.payload;
     });
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
-      state.userDetail = action.payload;
+      state.chatRecipients = action.payload;
     });
     builder.addCase(searchView.fulfilled, (state, action) => {
       state.search = action.payload;
