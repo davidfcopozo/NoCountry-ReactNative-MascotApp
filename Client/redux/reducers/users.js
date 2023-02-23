@@ -15,7 +15,8 @@ const initialState = {
   userDetail: {},
   favouriteUsers: [],
   search: [],
-  isLogin: false
+  isLogin: false,
+  fbError: {}
 };
 
 const usersReducer = createSlice({
@@ -31,6 +32,9 @@ const usersReducer = createSlice({
     },
     actionLogin: (state, action) => {
       state.isLogin = action.payload;
+    },
+    clearFbErrorState: (state, action) => {
+      state.fbError = {};
     }
   },
   extraReducers: builder => {
@@ -49,6 +53,9 @@ const usersReducer = createSlice({
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.users = action.payload;
     });
+    builder.addCase(registerUser.rejected, (state, action) => {
+      state.fbError = action.error;
+    });
     builder.addCase(loginUser.pending, state => {
       state.loading = true;
     });
@@ -62,5 +69,6 @@ const usersReducer = createSlice({
   }
 });
 
-export const { addFavouriteUser, removeFavouriteUser, actionLogin } = usersReducer.actions;
+export const { addFavouriteUser, removeFavouriteUser, actionLogin, clearFbErrorState } =
+  usersReducer.actions;
 export default usersReducer.reducer;

@@ -67,9 +67,11 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
     };
 
     const response = await axios.post("/users/register", userData);
+
+    // showMessage(`Welcome ${userData.name} ${userData.surname}`);
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error.code;
   }
 });
 
@@ -81,6 +83,12 @@ export const loginUser = createAsyncThunk("users/loginUser", async loginCredenti
     const currentUser = await axios.get(`/users/login/${firebaseId}`);
     return currentUser;
   } catch (error) {
-    console.log(error);
+    // if (error.code === "auth/wrong-password") {
+    //   showMessage("Contraseña incorrecta", "error");
+    // } else if (error.code === "auth/user-not-found") {
+    //   showMessage("No existe una cuenta registrada con ese email", "error");
+    // } else {
+    //   showMessage("Algo ha salido mal. Por favor inténtelo nuevamente", "error");
+    // }
   }
 });
