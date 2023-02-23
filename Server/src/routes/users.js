@@ -25,7 +25,7 @@ router.get("/", decodeToken, getUsers);
 router.get("/rating", getUsersBestRating);
 router.get("/category", getUsersByCategory);
 router.post("/register", register);
-router.get("/login/:id", login);
+router.post("/login", login);
 router.get("/filter", getUsersByFilter);
 router.get("/search", getSearch);
 router.get("/jobOffers", getUserJobOffers);
