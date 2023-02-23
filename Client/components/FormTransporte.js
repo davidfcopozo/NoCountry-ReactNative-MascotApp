@@ -1,58 +1,44 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView, Alert } from "react-native";
 import React from "react";
 import { Formik } from "formik";
-import { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
-import axios from "axios";
-import { useSelector } from "react-redux";
 
-const FormEditProfile = () => {
+const FormTransporte = () => {
   const colorScheme = "light";
   const { colors } = useTheme();
-  const { currentUser } = useSelector(state => state.users);
-  const user = currentUser?.data;
-
-  const [loading, setLoading] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [image, setImage] = useState("");
-
-  const uploadImage = async e => {
-    const files = e.target.files;
-    const data = new FormData();
-    data.append("file", files[0]);
-    data.append("upload_preset", "Donde-Suena-Artists");
-    setLoading(true);
-    const res = await axios.post("https://api.cloudinary.com/v1_1/ds41xxspf/image/upload", data);
-    res.data.secure_url ? setSuccess(true) : setSuccess(false);
-    setImage(res.data.secure_url);
-    setLoading(false);
-  };
 
   return (
-    <View>
+    <ScrollView>
       <Formik
         initialValues={{
-          name: `${user.name} ${user.surname}`,
-          email: user.email,
-          city: user.city,
-          description: user.description,
-          service: user.service,
-          profile_pic: user.profile_pic
+          confirmation: "",
+          searchDate: "",
+          ubicationSearch: "",
+          ubicationGoTo: "",
+          question: "",
+          infoAditional: ""
         }}
         validate={values => {
           const errors = {};
-          if (!values.name) {
-            errors.name = "Completa el campo por favor";
-          } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-            errors.email = "Invalid email address";
-          } else if (!values.location) {
-            errors.location = "Completa el campo por favor";
-          } else if (!values.about) {
-            errors.about = "Completa el campo por favor";
-          } else if (!values.service) {
-            errors.service = "Completa el campo por favor";
+          if (!values.confirmation) {
+            errors.confirmation = "Completa el campo por favor";
           }
+          if (!values.searchDate) {
+            errors.searchDate = "Completa el campo por favor";
+          }
+          if (!values.ubicationSearch) {
+            errors.ubicationSearch = "Completa el campo por favor";
+          }
+          if (!values.ubicationGoTo) {
+            errors.ubicationGoTo = "Completa el campo por favor";
+          }
+          if (!values.question) {
+            errors.question = "Completa el campo por favor";
+          }
+          if (!values.infoAditional) {
+            errors.infoAditional = "Completa el campo por favor";
+          }
+
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
@@ -66,75 +52,45 @@ const FormEditProfile = () => {
           values,
           errors,
           touched,
+          handleSubmit,
           handleChange,
           handleBlur,
-          handleSubmit,
+
           isSubmitting
-          /* and other goodies */
         }) => (
           <form className="flex flex-col justify-center items-center" onSubmit={handleSubmit}>
             <View className="p-5">
-              <View className="flex items-center">
-                {user.profile_pic ? (
-                  <View>
-                    <Image
-                      style={{
-                        width: 100,
-                        height: 100,
-                        resizeMode: "contain"
-                      }}
-                      className="rounded-full"
-                      source={{
-                        uri: user.profile_pic
-                      }}
-                    />
-                  </View>
-                ) : (
-                  <View className="rounded-full bg-white flex items-center">
-                    <Ionicons
-                      name="person-circle-outline"
-                      size={100}
-                      fill={colorScheme === "dark" ? "#fff" : "#000"}
-                    />
-                  </View>
-                )}
-                <View className="flex justify-center items-center pt-3">
-                  <input
-                    style={{ color: colors.text }}
-                    type="file"
-                    accept="image/png, image/jpeg, image/jpg"
-                    onChange={uploadImage}
-                    value={values.profile_pic}
-                  ></input>
-                </View>
-              </View>
-              <View className="pt-4 pb-5 gap-y-2">
+              <View className="pb-5 gap-y-2">
                 <View className="gap-y-1">
-                  <Text style={{ color: colors.text }} className="text-xl pb-1 font-bold">
-                    Nombre
-                  </Text>
-                  <View>
-                    <input
-                      style={{
-                        height: "30px",
-                        fontSize: 17,
-                        border: "0.5px solid",
-                        paddingLeft: "10px",
-                        borderRadius: "6px"
-                      }}
-                      type="text"
-                      name="name"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.name}
-                    />
-                  </View>
-                </View>
-                <View className="gap-y-1">
-                  <Text style={{ color: colors.text }} className="text-xl pb-1 font-bold">
-                    Email
+                  <Text style={{ color: colors.text }} className="text-xl mb-1 font-bold">
+                    Confirmar mascota
                   </Text>
                   <View className="">
+                    <select
+                      style={{
+                        height: "30px",
+                        fontSize: 17,
+                        border: "0.5px solid",
+                        paddingLeft: "10px",
+                        borderRadius: "6px"
+                      }}
+                      defaultValue="default"
+                      name="confirmation"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    >
+                      <option value="default">Seleccionar</option>
+                      <option>Si</option>
+                      <option>No</option>
+                    </select>
+                  </View>
+                  <Text className="text-red-600 font-bold">{errors.confirmation}</Text>
+                </View>
+                <View className="gap-y-1">
+                  <Text style={{ color: colors.text }} className="text-xl pb-1 font-bold">
+                    Fecha que hay que buscar a la mascota
+                  </Text>
+                  <View>
                     <input
                       style={{
                         height: "30px",
@@ -143,17 +99,17 @@ const FormEditProfile = () => {
                         paddingLeft: "10px",
                         borderRadius: "6px"
                       }}
-                      type="email"
-                      name="email"
+                      type="date"
+                      name="searchDate"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.email}
                     />
                   </View>
+                  <Text className="text-red-600 font-bold">{errors.searchDate}</Text>
                 </View>
                 <View className="gap-y-1">
                   <Text style={{ color: colors.text }} className="text-xl pb-1 font-bold">
-                    Ubicación
+                    Donde hay que buscarlo?
                   </Text>
                   <View className="">
                     <input
@@ -165,16 +121,62 @@ const FormEditProfile = () => {
                         borderRadius: "6px"
                       }}
                       type="text"
-                      name="location"
+                      name="ubicationSearch"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.city}
                     />
                   </View>
+                  <Text className="text-red-600 font-bold">{errors.ubicationSearch}</Text>
+                </View>
+                <View className="gap-y-1">
+                  <Text style={{ color: colors.text }} className="text-xl pb-1 font-bold">
+                    Donde hay que llevarlo?
+                  </Text>
+                  <View className="">
+                    <input
+                      style={{
+                        height: "30px",
+                        fontSize: 17,
+                        border: "0.5px solid",
+                        paddingLeft: "10px",
+                        borderRadius: "6px"
+                      }}
+                      type="text"
+                      name="ubicationGoTo"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  </View>
+                  <Text className="text-red-600 font-bold">{errors.ubicationGoTo}</Text>
                 </View>
                 <View className="gap-y-1">
                   <Text style={{ color: colors.text }} className="text-xl mb-1 font-bold">
-                    Sobre mi
+                    Hay que devolverlo al mismo lugar?
+                  </Text>
+                  <View className="">
+                    <select
+                      style={{
+                        height: "30px",
+                        fontSize: 17,
+                        border: "0.5px solid",
+                        paddingLeft: "10px",
+                        borderRadius: "6px"
+                      }}
+                      defaultValue="default"
+                      name="question"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    >
+                      <option value="default">Seleccionar</option>
+                      <option>Si</option>
+                      <option>No</option>
+                    </select>
+                  </View>
+                  <Text className="text-red-600 font-bold">{errors.question}</Text>
+                </View>
+                <View className="gap-y-1">
+                  <Text style={{ color: colors.text }} className="text-xl font-bold">
+                    Informacion adicional
                   </Text>
                   <View className="">
                     <textarea
@@ -186,39 +188,17 @@ const FormEditProfile = () => {
                         borderRadius: "6px"
                       }}
                       type="text"
-                      name="about"
+                      name="infoAditional"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.description}
                     />
                   </View>
-                </View>
-                <View className="gap-y-1">
-                  <Text style={{ color: colors.text }} className="text-xl font-bold">
-                    Servicios
-                  </Text>
-
-                  <View className="">
-                    <input
-                      style={{
-                        height: "30px",
-                        fontSize: 17,
-                        border: "0.5px solid",
-                        paddingLeft: "10px",
-                        borderRadius: "6px"
-                      }}
-                      type="text"
-                      name="service"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.service}
-                    />
-                  </View>
+                  <Text className="text-red-600 font-bold">{errors.infoAditional}</Text>
                 </View>
               </View>
             </View>
 
-            <View className="flex justify-center items-center">
+            <View className="flex justify-center items-center pb-7">
               <button
                 style={{
                   padding: 10,
@@ -237,8 +217,8 @@ const FormEditProfile = () => {
           </form>
         )}
       </Formik>
-    </View>
+    </ScrollView>
   );
 };
 
-export default FormEditProfile;
+export default FormTransporte;

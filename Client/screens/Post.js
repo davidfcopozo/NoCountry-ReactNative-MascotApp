@@ -12,7 +12,7 @@ const Post = ({ route }) => {
     <ScrollView className="relative">
       <View className="p-5">
         <View className="flex flex-row gap-x-4 items-center">
-          {user.user_picture ? (
+          {user.profile_pic ? (
             <Image
               style={{
                 width: 100,
@@ -21,7 +21,7 @@ const Post = ({ route }) => {
               }}
               className="rounded-full"
               source={{
-                uri: user.user_picture
+                uri: user.profile_pic
               }}
             />
           ) : (
@@ -38,17 +38,17 @@ const Post = ({ route }) => {
               {user.name} {user.surname}
             </Text>
             <Text numberOfLines={1} style={{ color: colors.textGray }} className="text-sm mb-1">
-              {user.location}
+              {user.city}
             </Text>
-            {user.stars ? (
+            {user.rating ? (
               <View className="flex flex-row items-center">
                 {Children.toArray(
-                  Array.from(Array(user.stars)).map(star => (
+                  Array.from(Array(user.rating)).map(star => (
                     <Ionicons name="star" size={10} color="#ffe100" />
                   ))
                 )}
                 <Text style={{ color: colors.textGray }} className="text-xs ml-1">
-                  {user.clients ? "(" + user.clients + ")" : undefined}
+                  {user.rating ? "(" + user.rating + ")" : undefined}
                 </Text>
               </View>
             ) : (
@@ -64,15 +64,14 @@ const Post = ({ route }) => {
             Acerca de {user.name}
           </Text>
           <Text style={{ color: colors.text }} className="text-lg">
-            {user.about}
+            {user.description}
           </Text>
         </View>
-      </View>
-
-      <View className="p-5">
-        <Text style={{ color: colors.text }} className="text-2xl mb-3 font-bold">
-          Servicios
-        </Text>
+        <View className="mt-4">
+          <Text style={{ color: colors.text }} className="text-2xl mb-3 font-bold">
+            Servicios
+          </Text>
+        </View>
       </View>
     </ScrollView>
   );

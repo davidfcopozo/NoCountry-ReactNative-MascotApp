@@ -95,7 +95,7 @@ const Messages = () => {
         CardsData.map(user => (
           <Link to={{ screen: "Message", params: { user: user, title: user.name } }}>
             <View className="flex flex-row items-center gap-x-5">
-              {user.user_picture ? (
+              {user.profile_pic ? (
                 <Image
                   style={{
                     width: 85,
@@ -103,7 +103,7 @@ const Messages = () => {
                     resizeMode: "contain"
                   }}
                   source={{
-                    uri: user.user_picture
+                    uri: user.profile_pic
                   }}
                   className="rounded-full"
                 />

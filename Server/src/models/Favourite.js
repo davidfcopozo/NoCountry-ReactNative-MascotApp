@@ -13,10 +13,14 @@ module.exports = sequelize => {
       fav_user_id: {
         type: DataTypes.INTEGER,
         allowNull: false
+      },
+      user_id_favs: {
+        type: DataTypes.STRING,
+        allowNull: false
       }
     },
     {
-      timestamps: false
+      timestamps: true
     }
   );
 };

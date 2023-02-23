@@ -134,7 +134,7 @@ const Message = ({ route }) => {
         behavior="padding"
         style={{ flex: 1 }}
       >
-        <ChatHeader username={user.name} picture={user.user_picture} />
+        <ChatHeader username={user.name} picture={user.profile_pic} />
         <ScrollView
           className="h-full flex-1"
           ref={scrollView}

@@ -1,0 +1,90 @@
+[
+    {
+        "id" : 1,
+        "profile_pic" : "https://randomuser.me/api/portraits/men/75.jpg",
+        "name" : "Jose",
+        "surname": "Joaquin",
+        "age": 25,
+        "offers_services": true,
+        "description": "Traslados de mascotas por el territorio nacional haciendo posible que las familias se reúnan en cualquier lugar sin tener que moverse de sus lugares.",
+        "rating" : 4,
+        "city" : "Buenos Aires"
+    },
+    {
+        "id" : 2,
+        "profile_pic" : "https://randomuser.me/api/portraits/women/15.jpg",
+        "name" : "Juana",
+        "surname": "Perez",
+        "age": 27,
+        "offers_services": false,
+        "description": "Refugio a distintos animales, proporcionando atención básica a las mascotas del hogar.",
+        "rating" : 5,
+        "city" : "Santa Fe"
+    },
+    {
+        "id" : 3,
+        "profile_pic" : "https://randomuser.me/api/portraits/men/11.jpg",
+        "name" : "Lucas",
+        "surname": "Garcia",
+        "age": 33,
+        "offers_services": true,
+        "description": "Me gusta pasar el tiempo con las mascotas, especialmente los gatos y los perros. Ofrezco paseos diarios y/o semanales",
+        "rating" : 3,
+        "city" : "Buenos Aires"
+    },
+    {
+        "id" : 4,
+        "profile_pic" : "https://randomuser.me/api/portraits/women/66.jpg",
+        "name" : "Micaela",
+        "surname": "Romero",
+        "age": 23,
+        "offers_services": true,
+        "description": "Peluquera canina con 4 años de experiencia en el sector, brindando un trato especial y dándole el mejor look a tus mascotas.",
+        "rating" : 0,
+        "city" : "Cordoba"
+    },
+    {
+        "id" : 5,
+        "profile_pic" : "https://randomuser.me/api/portraits/men/33.jpg",
+        "name" : "Mariano",
+        "surname": "Santos",
+        "age": 29,
+        "offers_services": true,
+        "description": "Estoy buscando servicios relacionados al paseo y el cuidado de mis dos amores; mi perro Tito y mi gata Lola. En Avellaneda y alrededores.",
+        "rating" : 4,
+        "city" : "Corrientes"
+    },
+    {
+        "id" : 6,
+        "profile_pic" : "https://randomuser.me/api/portraits/women/45.jpg",
+        "name" : "Julieta",
+        "surname": "Ramos",
+        "age": 44,
+        "offers_services": true,
+        "description": "Brindo mi hogar como residencia canina. Además, ofrezco paseos diarios y traslados con una distancia máxima de 500km.",
+        "rating" : 3,
+        "city" : "La Plata"
+    },
+    {
+        "id" : 7,
+        "profile_pic" : "https://randomuser.me/api/portraits/men/66.jpg",
+        "name" : "Julio",
+        "surname": "Martinez",
+        "age": 24,
+        "offers_services": false,
+        "description": "Entrenadora profesional de perros, ampliamente reconocida en ciudad de Salta y alrededores.",
+        "rating" : 4,
+        "city" : "Buenos Aires"
+    },
+    {
+        "id" : 8,
+        "profile_pic" : "https://randomuser.me/api/portraits/men/86.jpg",
+        "name" : "Marcelo",
+        "surname": "Pereira",
+        "age": 31,
+        "offers_services": true,
+        "description": "Servicio completo de peluquería y transporte para tus mejores amigos caninos.",
+        "rating" : 5,
+        "city" : "Santa Fe"
+    }
+]
