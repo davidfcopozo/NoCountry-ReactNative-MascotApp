@@ -70,7 +70,7 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, id } = req.body;
 
   try {
     if (!email || !password)
@@ -96,7 +96,7 @@ const login = async (req, res) => {
       include: {
         model: Auth,
         where: {
-          email
+          id
         }
       }
     });

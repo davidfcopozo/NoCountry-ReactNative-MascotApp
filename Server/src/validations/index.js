@@ -1,5 +1,5 @@
 const isValidString = input => {
-  return typeof input === "string" ? true : false;
+  return typeof input === "string";
 };
 
 const isValidNumber = input => {
