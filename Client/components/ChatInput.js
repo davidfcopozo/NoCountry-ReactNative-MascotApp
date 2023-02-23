@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Pressable } from "react-native";
 
-const ChatInput = ({ reply, isReceived, username }) => {
-  const [message, setMessage] = useState("");
+const ChatInput = ({ reply, isReceived, username, handleSubmit, message, setMessage, setImg }) => {
+  /* const [message, setMessage] = useState(""); */
   return (
     <View className="justify-center bg-white w-[80%] rounded-bl-full rounded-tl-full border border-gray-500/30">
       {reply ? (
@@ -12,7 +12,7 @@ const ChatInput = ({ reply, isReceived, username }) => {
           <Text className="mt-1">{reply}</Text>
         </View>
       ) : null}
-      <View className="w-full h-full -auto px-2 mx-2 flex-row ">
+      <View className="w-full h-full -auto px-2 mx-2 flex-row w-[90%] justify-center align-center">
         <TextInput
           multiline
           placeholder={"Escribe algo..."}
@@ -20,6 +20,12 @@ const ChatInput = ({ reply, isReceived, username }) => {
           value={message}
           onChangeText={text => setMessage(text)}
         />
+        <Pressable
+          className="bg-violet-700 w-[20%] rounded-br-full rounded-tr-full "
+          onPress={handleSubmit}
+        >
+          <Text className="m-auto text-white font-bold border border-gray-500/30">Enviar</Text>
+        </Pressable>
       </View>
     </View>
   );

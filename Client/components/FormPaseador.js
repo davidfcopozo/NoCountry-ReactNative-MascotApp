@@ -4,7 +4,6 @@ import { Formik } from "formik";
 import { useTheme } from "@react-navigation/native";
 
 const FormPaseador = () => {
-  const colorScheme = "light";
   const { colors } = useTheme();
 
   return (

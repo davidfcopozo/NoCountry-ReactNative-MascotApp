@@ -1,12 +1,101 @@
 import { Text, View, ScrollView, Image } from "react-native";
-import { Children } from "react";
+import { Children, useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import CardsData from "../db/cards.json";
 import { Link, useTheme } from "@react-navigation/native";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  addDoc,
+  Timestamp,
+  orderBy,
+  setDoc,
+  doc,
+  getDoc,
+  updateDoc,
+  getDocs,
+  getFirestore,
+  collectionGroup
+} from "firebase/firestore";
+import { firebaseDb } from "../firebase";
+
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserById } from "../redux/actions";
 
 const Messages = () => {
   const { colors } = useTheme();
+  const currentUser = useSelector(state => state.users.currentUser.data);
+  let user1 = currentUser.authId;
+  const [chats, setChats] = useState([]);
+  const [recipients, setRecipients] = useState([]);
+  const dispatch = useDispatch();
 
+  const getChats = async () => {
+    //Query to get all chats from user1
+    const chatsRef = collection(firebaseDb, "users", user1, "chats");
+    const q = query(chatsRef);
+
+    //Get snapshot of the given query (all chats)
+    onSnapshot(q, querySnapshot => {
+      let chts = [],
+        recpts = [];
+      querySnapshot.forEach(doc => {
+        //console.log(doc.data());
+        //Store the chats id and recipients id in its respective variable
+        chts.push(doc.data().chatroomId);
+        recpts.push(doc.data().recipient);
+      });
+      setChats(chts);
+      setRecipients(recpts);
+      // console.log(chts);
+      console.log(recpts);
+
+      //Fetch each recipient by id and store them in chat recipient in the reducers
+      recpts.forEach(recipient => {
+        dispatch(fetchUserById(recipient));
+        console.log(recipient);
+      });
+    });
+
+    /* ******************************** */
+    /*     onSnapshot(q, querySnapshot => {
+      let users = [];
+      //console.log(querySnapshot);
+      querySnapshot.forEach(doc => {
+        //  console.log("FROM DOCS", doc);
+        //console.log(doc.data());
+        users.push(doc.data());
+      });
+    }); */
+  };
+
+  useEffect(() => {
+    getChats();
+    /*     const msgsRef = collection(firebaseDb, "conversations");
+    //Query to get the messages of the conversation
+    //where("chat", "in", ["to", "from"]),
+    const q = query(msgsRef);
+    onSnapshot(q, querySnapshot => {
+      let chts = [];
+      querySnapshot.forEach(doc => {
+        console.log("FROM DOCS", doc);
+        console.log(doc.data());
+        msgs.push(doc.data());
+      });
+      setChats(chts);
+    }); */
+  }, []);
+
+  if (!CardsData)
+    return (
+      <View style={{ color: colors.text }} className="justify-center mx-auto flex-1">
+        <Text className="text-3xl font-bold align-center justify-center">
+          No tienes conversaciones
+        </Text>
+      </View>
+    );
   return (
     <ScrollView className="p-5 gap-y-5">
       <Text style={{ color: colors.text }} className="text-3xl font-bold">
