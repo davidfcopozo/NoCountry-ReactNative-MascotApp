@@ -3,7 +3,7 @@ const isValidString = input => {
 };
 
 const isValidNumber = input => {
-  return isNaN(parseInt(input));
+  return !isNaN(parseInt(input));
 };
 
 module.exports = { isValidString, isValidNumber };
