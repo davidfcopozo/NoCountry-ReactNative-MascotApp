@@ -80,8 +80,16 @@ export const loginUser = createAsyncThunk("users/loginUser", async loginCredenti
     const { email, password } = loginCredentials;
     await signInWithEmailAndPassword(auth, email, password);
     const firebaseId = auth.currentUser.uid;
-    const currentUser = await axios.get(`/users/login/${firebaseId}`);
-    console.log(currentUser);
+    const currentUserData = await axios.post(`/users/login`, {
+      id: firebaseId,
+      email,
+      password
+    });
+
+    const currentUser = {
+      data : currentUserData.data.user
+    }
+
     return currentUser;
   } catch (error) {
     console.log(error);
