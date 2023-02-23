@@ -1,13 +1,81 @@
 import { Text, View, ScrollView, Image } from "react-native";
-import { Children, useEffect } from "react";
+import { Children, useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import CardsData from "../db/cards.json";
 import { Link, useTheme } from "@react-navigation/native";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  addDoc,
+  Timestamp,
+  orderBy,
+  setDoc,
+  doc,
+  getDoc,
+  updateDoc,
+  getDocs,
+  getFirestore,
+  collectionGroup
+} from "firebase/firestore";
+import { firebaseDb } from "../firebase";
 
 import { useSelector } from "react-redux";
 
 const Messages = () => {
   const { colors } = useTheme();
+  const currentUser = useSelector(state => state.users.currentUser.data);
+  let user1 = currentUser.authId;
+  const [chats, setChats] = useState([]);
+  const [recipients, setRecipients] = useState([]);
+
+  const getChats = async () => {
+    const chatsRef = collection(firebaseDb, "users", user1, "chats");
+    const q = query(chatsRef);
+
+    onSnapshot(q, querySnapshot => {
+      let chts = [],
+        recpts = [];
+      querySnapshot.forEach(doc => {
+        console.log(doc.data());
+        chts.push(doc.data().chatroomId);
+        recpts.push(doc.data().recipient);
+      });
+      setChats(chts);
+      setRecipients(recpts);
+      console.log(chts);
+      console.log(recpts);
+    });
+
+    /* ******************************** */
+    /*     onSnapshot(q, querySnapshot => {
+      let users = [];
+      //console.log(querySnapshot);
+      querySnapshot.forEach(doc => {
+        //  console.log("FROM DOCS", doc);
+        //console.log(doc.data());
+        users.push(doc.data());
+      });
+    }); */
+  };
+
+  useEffect(() => {
+    getChats();
+    /*     const msgsRef = collection(firebaseDb, "conversations");
+    //Query to get the messages of the conversation
+    //where("chat", "in", ["to", "from"]),
+    const q = query(msgsRef);
+    onSnapshot(q, querySnapshot => {
+      let chts = [];
+      querySnapshot.forEach(doc => {
+        console.log("FROM DOCS", doc);
+        console.log(doc.data());
+        msgs.push(doc.data());
+      });
+      setChats(chts);
+    }); */
+  }, []);
 
   if (!CardsData)
     return (
