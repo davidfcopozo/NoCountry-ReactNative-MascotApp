@@ -36,6 +36,7 @@ import FormCuidado from "./components/FormCuidado";
 import FormEntrenamiento from "./components/FormEntrenamiento";
 import ServicesContracted from "./components/ServicesContracted";
 import ServicesProvided from "./components/ServicesProvided";
+import UserProfile from "./components/UserProfile";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
@@ -63,7 +64,7 @@ const CustomLight = {
   dark: false,
   colors: {
     background: lightColor,
-    border: "#d8d8d8",
+    border: "#d8d8d8a0",
     card: lightColor,
     notification: "#ff3b30",
     primary: "#007aff",
@@ -77,7 +78,7 @@ const CustomDark = {
   dark: true,
   colors: {
     background: darkColor,
-    border: "#272729",
+    border: "#272729ab",
     card: darkColor,
     notification: "#ff453a",
     primary: "#0a84ff",
@@ -322,6 +323,14 @@ function App() {
                   component={ServicesProvided}
                   options={{
                     title: "Servicios brindados"
+                  }}
+                />
+
+                <Stack.Screen
+                  name="VisitProfile"
+                  component={UserProfile}
+                  options={{
+                    title: "Visitando"
                   }}
                 />
               </Stack.Navigator>

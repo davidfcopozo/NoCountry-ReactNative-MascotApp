@@ -6,7 +6,8 @@ import {
   searchView,
   registerUser,
   loginUser,
-  logOutUser
+  logOutUser,
+  fetchFavorites
 } from "../actions";
 
 const initialState = {
@@ -63,6 +64,9 @@ const usersReducer = createSlice({
     builder.addCase(logOutUser.fulfilled, (state, action) => {
       state.currentUser = [];
       state.isLogin = false;
+    });
+    builder.addCase(fetchFavorites.fulfilled, (state, action) => {
+      state.favouriteUsers = action.payload;
     });
   }
 });
