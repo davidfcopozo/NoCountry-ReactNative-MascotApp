@@ -21,7 +21,8 @@ import {
 } from "firebase/firestore";
 import { firebaseDb } from "../firebase";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserById } from "../redux/actions";
 
 const Messages = () => {
   const { colors } = useTheme();
@@ -29,23 +30,33 @@ const Messages = () => {
   let user1 = currentUser.authId;
   const [chats, setChats] = useState([]);
   const [recipients, setRecipients] = useState([]);
+  const dispatch = useDispatch();
 
   const getChats = async () => {
+    //Query to get all chats from user1
     const chatsRef = collection(firebaseDb, "users", user1, "chats");
     const q = query(chatsRef);
 
+    //Get snapshot of the given query (all chats)
     onSnapshot(q, querySnapshot => {
       let chts = [],
         recpts = [];
       querySnapshot.forEach(doc => {
-        console.log(doc.data());
+        //console.log(doc.data());
+        //Store the chats id and recipients id in its respective variable
         chts.push(doc.data().chatroomId);
         recpts.push(doc.data().recipient);
       });
       setChats(chts);
       setRecipients(recpts);
-      console.log(chts);
+      // console.log(chts);
       console.log(recpts);
+
+      //Fetch each recipient by id and store them in chat recipient in the reducers
+      recpts.forEach(recipient => {
+        dispatch(fetchUserById(recipient));
+        console.log(recipient);
+      });
     });
 
     /* ******************************** */
