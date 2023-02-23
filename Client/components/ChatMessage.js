@@ -1,6 +1,7 @@
 import { View, Text } from "react-native";
 
 const ChatMessage = ({ time, isReceived, message }) => {
+  console.log(time, isReceived, message);
   const isOnReceived = type => {
     if (isReceived && type === "messageContainer") {
       return {

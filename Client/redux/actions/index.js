@@ -31,7 +31,7 @@ export const fetchUserById = createAsyncThunk("/users/fetchUserById", async user
   try {
     const userById = await axios.get(`/users/${userId}`);
     console.log(userById.data);
-    return userById.data;
+    return [userById.data];
   } catch (error) {
     console.log(error);
   }
@@ -87,8 +87,8 @@ export const loginUser = createAsyncThunk("users/loginUser", async loginCredenti
     });
 
     const currentUser = {
-      data : currentUserData.data.user
-    }
+      data: currentUserData.data.user
+    };
 
     return currentUser;
   } catch (error) {
