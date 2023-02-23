@@ -87,20 +87,11 @@ function BottomNavigation({ isDarkMode, setDarkMode, colors }) {
     <Tab.Navigator
       screenOptions={{
         headerLeft: () => (
-          <View className="flex flex-row items-center gap-2">
-            <Image
-              resizeMode="contain"
-              style={{ width: 40, height: 40 }}
-              source={require("./assets/logo.png")}
-            />
-            <View className="pt-1">
-              <Image
-                resizeMode="contain"
-                style={{ width: 120, height: 40 }}
-                source={require("./assets/MascotApp.png")}
-              />
-            </View>
-          </View>
+          <Image
+            resizeMode="contain"
+            style={{ width: 40, height: 40}}
+            source={require("./assets/logo.png")}
+          />
         ),
         headerRight: () => (
           <Ionicons
