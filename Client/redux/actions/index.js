@@ -8,6 +8,7 @@ import {
 
 import { auth } from "../../firebase";
 import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
 
 export const fetchUsers = createAsyncThunk("/users/fetchUsers", async () => {
   try {
@@ -96,10 +97,9 @@ export const loginUser = createAsyncThunk("users/loginUser", async loginCredenti
   }
 });
 
-export const logOutUser = createAsyncThunk(async loginCredentials => {
+export const logOutUser = createAsyncThunk("users/logOutUser", async () => {
   try {
-    const { email, password } = loginCredentials;
-    await signOut(auth, email, password);
+    await signOut(auth);
   } catch (error) {
     console.log(error);
   }

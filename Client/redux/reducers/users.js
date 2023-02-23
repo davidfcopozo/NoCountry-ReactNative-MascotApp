@@ -74,5 +74,6 @@ const usersReducer = createSlice({
   }
 });
 
-export const { addFavouriteUser, removeFavouriteUser, actionLogin } = usersReducer.actions;
+export const { addFavouriteUser, removeFavouriteUser, actionLogin, cleanCurrentUser } =
+  usersReducer.actions;
 export default usersReducer.reducer;
