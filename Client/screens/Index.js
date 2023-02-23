@@ -12,7 +12,7 @@ const Index = () => {
   return (
     <ScrollView>
       <View className="text-left w-full p-3 px-6 gap-y-2">
-        <Shortcuts />
+        <Shortcuts navigate={false} />
 
         <Text style={{ color: colors.text }} className="font-bold text-2xl mb-2">
           Mascoteros cerca de tí
