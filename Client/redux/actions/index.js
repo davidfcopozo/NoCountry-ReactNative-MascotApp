@@ -2,8 +2,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  sendEmailVerification
+  sendEmailVerification,
+  signOut
 } from "firebase/auth";
+
 import { auth } from "../../firebase";
 import axios from "axios";
 
@@ -80,6 +82,15 @@ export const loginUser = createAsyncThunk("users/loginUser", async loginCredenti
     const firebaseId = auth.currentUser.uid;
     const currentUser = await axios.get(`/users/login/${firebaseId}`);
     return currentUser;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const logOutUser = createAsyncThunk(async loginCredentials => {
+  try {
+    const { email, password } = loginCredentials;
+    await signOut(auth, email, password);
   } catch (error) {
     console.log(error);
   }

@@ -30,6 +30,7 @@ const SearchBar = () => {
         placeholder="Buscar en MascotApp"
         onChange={e => setInput(e.nativeEvent.text)}
         onSubmitEditing={handleInput}
+        keyboardType="web-search"
         placeholderTextColor={colors.textGray}
       ></TextInput>
 

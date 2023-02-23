@@ -5,7 +5,8 @@ import {
   fetchUserById,
   searchView,
   registerUser,
-  loginUser
+  loginUser,
+  logOutUser
 } from "../actions";
 
 const initialState = {
@@ -58,6 +59,10 @@ const usersReducer = createSlice({
     });
     builder.addCase(loginUser.rejected, state => {
       state.loading = false;
+    });
+    builder.addCase(logOutUser.fulfilled, (state, action) => {
+      state.currentUser = [];
+      state.isLogin = false;
     });
   }
 });
