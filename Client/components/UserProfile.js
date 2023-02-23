@@ -141,12 +141,14 @@ const UserProfile = ({route}) => {
                 onPress={() => delFavorite()}
                 name="heart"
                 size={30}
+                color={colors.text}
               />
               :
               <Ionicons
                 onPress={() => addFavorite()}
                 name="heart-outline"
                 size={30}
+                color={colors.text}
               />
             )
             :
