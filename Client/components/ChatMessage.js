@@ -1,51 +1,20 @@
 import { View, Text } from "react-native";
+import { useTheme } from "@react-navigation/native";
 
-const ChatMessage = ({ time, isReceived, message }) => {
-  console.log(time, isReceived, message);
-  const isOnReceived = type => {
-    if (isReceived && type === "messageContainer") {
-      return {
-        alignSelf: "flex-start",
-        backgroundColor: "#f0f0f0",
-        borderTopLeftRadius: 0,
-        fontWeight: "bold"
-      };
-    } else if (isReceived && type === "message") {
-      return {
-        color: "#000",
-        fontWeight: "bold"
-      };
-    } else if (isReceived && type === "time") {
-      return {
-        color: "grey"
-      };
-    } else {
-      return {
-        borderTopRightRadius: 0
-      };
-    }
-  };
-  return message ? (
-    <View className="flex-1">
-      <View
-        className=" bg-violet-700 max-w-[90%] self-end flex-row mx-8 mt-8 rounded-lg pt-3 px-4 pb-1"
-        style={isOnReceived("messageContainer")}
-      >
-        <View className="max-w-[80%] ">
-          <Text
-            className="self-start text-sm mr-4 text-white font-bold"
-            style={isOnReceived("message")}
-          >
-            {message}
-          </Text>
-        </View>
-        <View className=" justify-end mr-none mt-4 text-slate-400">
-          <Text className="text-gray-400 text-xs" style={isOnReceived("time")}>
-            {time}
-          </Text>
-        </View>
-      </View>
-    </View>
+const ChatMessage = ({ sender, messages }) => {
+
+  const { dark } = useTheme();
+
+  function formatDate(dateString){
+    let date = new Date(dateString * 1000).toLocaleTimeString([],{hour: '2-digit', minute: '2-digit', hour12: false})
+    return date
+  }
+
+  return messages ? (
+  <View className={"py-2 px-2.5 rounded-md my-0.5 relative "+(sender !== +messages.messages.messageUserId? dark? "bg-gray-700 mr-auto" : "bg-gray-200 mr-auto" : "bg-indigo-500 ml-auto")}>
+    <Text style={{color: (sender !== +messages.messages.messageUserId? dark? "#fff" : "#29232e" : "#fff" )}} className="text-md font-medium" key={messages.id}>{messages.messages.message}</Text>
+    <Text style={{color: (sender !== +messages.messages.messageUserId? dark? "#fff" : "#29232e" : "#fff" )}} className="text-[9px] mt-1 ml-auto">{formatDate(messages.messages.timestamp.seconds)}</Text>
+  </View>
   ) : null;
 };
 

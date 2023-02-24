@@ -5,10 +5,10 @@ import {
   sendEmailVerification,
   signOut
 } from "firebase/auth";
-
+import { doc, setDoc } from "firebase/firestore";
+import { firebaseDb as db } from "../../firebase";
 import { auth } from "../../firebase";
 import axios from "axios";
-import { useAuth } from "../../context/AuthContext";
 
 export const fetchUsers = createAsyncThunk("/users/fetchUsers", async () => {
   try {
@@ -70,6 +70,18 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
     };
 
     const response = await axios.post("/users/register", userData);
+
+    //Registra el usuario en la coleccion de users en firestore
+
+    const userid = (response.data.user.id).toString();
+
+    setDoc(doc(db, "users", userid), {
+      username: name+" "+surname,
+      email: email,
+      userId: userid,
+      timestamp: new Date(),
+    });
+
     return response.data;
   } catch (error) {
     console.log(error);
@@ -81,6 +93,7 @@ export const loginUser = createAsyncThunk("users/loginUser", async loginCredenti
     const { email, password } = loginCredentials;
     await signInWithEmailAndPassword(auth, email, password);
     const firebaseId = auth.currentUser.uid;
+    const firebaseToken = auth.currentUser.accessToken;
     const currentUserData = await axios.post(`/users/login`, {
       id: firebaseId,
       email,
@@ -88,7 +101,8 @@ export const loginUser = createAsyncThunk("users/loginUser", async loginCredenti
     });
 
     const currentUser = {
-      data: currentUserData.data.user
+      data: currentUserData.data.user,
+      token: firebaseToken
     };
 
     return currentUser;
@@ -105,11 +119,16 @@ export const logOutUser = createAsyncThunk("users/logOutUser", async () => {
   }
 });
 
-export const AddFavorite = createAsyncThunk("users/AddFavorite", async data => {
+export const addFavourite = createAsyncThunk("users/addFavorite", async data => {
   try {
-    const { id, fav_id } = data;
+    const { currentUser, id } = data;
 
-    const save = await axios.post(`/users/favorites/${id}/${fav_id}`);
+    const save = await axios.post(`/users/favourites/${currentUser.data.id}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${currentUser.token}`
+      }
+    });
+
     console.log("Favorito: " + save);
     return save;
   } catch (error) {
@@ -117,11 +136,16 @@ export const AddFavorite = createAsyncThunk("users/AddFavorite", async data => {
   }
 });
 
-export const DelFavorite = createAsyncThunk("users/DelFavorite", async data => {
+export const deleteFavourite = createAsyncThunk("users/deleteFavourite", async data => {
   try {
-    const { id, fav_id } = data;
+    const { currentUser, id } = data;
 
-    const deleteUser = await axios.delete(`/users/favorites/${id}/${fav_id}`);
+    const deleteUser = await axios.delete(`/users/favourites/${currentUser.data.id}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${currentUser.token}`
+      }
+    });
+
     console.log("Favorito: " + deleteUser);
     return deleteUser;
   } catch (error) {
@@ -129,9 +153,13 @@ export const DelFavorite = createAsyncThunk("users/DelFavorite", async data => {
   }
 });
 
-export const fetchFavorites = createAsyncThunk("/users/fetchFavorites", async id => {
+export const fetchFavourites = createAsyncThunk("/users/fetchFavourites", async currentUser => {
   try {
-    const users = await axios.get(`/users/favorites/${id}/1`);
+    const users = await axios.get(`/users/favourites/${currentUser.data.id}`, {
+      headers: {
+        Authorization: `Bearer ${currentUser.token}`
+      }
+    });
     return users.data;
   } catch (error) {
     console.log(error);

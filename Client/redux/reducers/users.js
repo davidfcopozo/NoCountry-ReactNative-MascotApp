@@ -7,7 +7,9 @@ import {
   registerUser,
   loginUser,
   logOutUser,
-  fetchFavorites
+  fetchFavourites,
+  addFavourite,
+  deleteFavourite
 } from "../actions";
 
 const initialState = {
@@ -25,13 +27,6 @@ const usersReducer = createSlice({
   name: "users",
   initialState,
   reducers: {
-    addFavouriteUser: (state, action) => {
-      state.favouriteUsers.push(action.payload);
-    },
-    removeFavouriteUser: (state, action) => {
-      const newArray = state.favouriteUsers.filter(favUser => favUser.imdbID !== action.payload);
-      state.favouriteUsers = newArray;
-    },
     actionLogin: (state, action) => {
       state.isLogin = action.payload;
     }
@@ -68,12 +63,20 @@ const usersReducer = createSlice({
       state.currentUser = [];
       state.isLogin = false;
     });
-    builder.addCase(fetchFavorites.fulfilled, (state, action) => {
+    builder.addCase(fetchFavourites.fulfilled, (state, action) => {
       state.favouriteUsers = action.payload;
     });
+    // builder.addCase(addFavourite.fulfilled, (state, action) => {
+    //   state.favouriteUsers.push(action.payload);
+    // });
+    // builder.addCase(deleteFavourite.fulfilled, (state, action) => {
+    //   const newArray = state.favouriteUsers.filter(
+    //     favUser => favUser.fav_user_id !== action.payload
+    //   );
+    //   state.favouriteUsers = newArray;
+    // });
   }
 });
 
-export const { addFavouriteUser, removeFavouriteUser, actionLogin, cleanCurrentUser } =
-  usersReducer.actions;
+export const { addFavouriteUser, removeFavouriteUser, actionLogin } = usersReducer.actions;
 export default usersReducer.reducer;

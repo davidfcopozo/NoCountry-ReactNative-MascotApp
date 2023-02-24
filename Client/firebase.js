@@ -21,6 +21,7 @@ import {
 
 // Your web app's Firebase configuration
 // Initialize Firebase
+
 const firebaseConfig = {
   apiKey: FB_API_KEY,
   authDomain: FB_AUTH_DOMAIN,
