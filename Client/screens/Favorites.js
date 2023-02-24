@@ -15,21 +15,22 @@ const Favorites = () => {
   const favorites = useSelector(state => state.users.favouriteUsers);
 
   useEffect(() => {
-    dispatch(fetchFavourites(currentUser.data.auth.id));
+    dispatch(fetchFavourites(currentUser));
   }, []);
 
-  if (favorites.length < 1) return <Text className="mx-auto text-2xl font-bold py-10">No tenes favoritos.</Text>
+  if (favorites?.length < 1)
+    return <Text className="mx-auto text-2xl font-bold py-10">No tenes favoritos.</Text>;
 
   const delFavorite = id => {
-    dispatch(deleteFavourite({ id: currentUser.data.auth.id, fav_id: id }));
-    dispatch(fetchFavourites(currentUser.data.auth.id));
+    dispatch(deleteFavourite({ currentUser, id }));
+    dispatch(fetchFavourites(currentUser));
   };
 
   return (
     <View className="pt-3 pb-10 w-full">
       <ScrollView className="h-full" showsVerticalScrollIndicator="false">
         {Children.toArray(
-          favorites.map(favorite => (
+          favorites?.map(favorite => (
             <View
               style={{ borderColor: colors.border }}
               className="flex flex-row gap-x-2 border my-1 overflow-hidden relative"
