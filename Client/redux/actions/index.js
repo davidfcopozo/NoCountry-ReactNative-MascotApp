@@ -73,13 +73,13 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
 
     //Registra el usuario en la coleccion de users en firestore
 
-    const userid = (response.data.user.id).toString();
+    const userid = response.data.user.id.toString();
 
     setDoc(doc(db, "users", userid), {
-      username: name+" "+surname,
+      username: name + " " + surname,
       email: email,
       userId: userid,
-      timestamp: new Date(),
+      timestamp: new Date()
     });
 
     return response.data;
@@ -122,14 +122,11 @@ export const logOutUser = createAsyncThunk("users/logOutUser", async () => {
 export const addFavourite = createAsyncThunk("users/addFavorite", async data => {
   try {
     const { currentUser, id } = data;
-
     const save = await axios.post(`/users/favourites/${currentUser.data.id}/${id}`, {
       headers: {
         Authorization: `Bearer ${currentUser.token}`
       }
     });
-
-    console.log("Favorito: " + save);
     return save;
   } catch (error) {
     console.log(error);
@@ -139,14 +136,11 @@ export const addFavourite = createAsyncThunk("users/addFavorite", async data => 
 export const deleteFavourite = createAsyncThunk("users/deleteFavourite", async data => {
   try {
     const { currentUser, id } = data;
-
     const deleteUser = await axios.delete(`/users/favourites/${currentUser.data.id}/${id}`, {
       headers: {
         Authorization: `Bearer ${currentUser.token}`
       }
     });
-
-    console.log("Favorito: " + deleteUser);
     return deleteUser;
   } catch (error) {
     console.log(error);
