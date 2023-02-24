@@ -13,43 +13,46 @@ import { Link, useTheme } from "@react-navigation/native";
 import { Children, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { actionLogin } from "../redux/reducers/users";
-import { AddFavorite, DelFavorite, fetchFavorites } from "../redux/actions";
+import { AddFavorite, DelFavorite, fetchFavorites, logOutUser } from "../redux/actions";
 import { useDispatch } from "react-redux";
 import VisitorOptions from "./VisitorOptions";
 
-const UserProfile = ({route}) => {
+const UserProfile = ({ route }) => {
   const colorScheme = "light";
-  const { dark,colors } = useTheme();
+  const { dark, colors } = useTheme();
   const dispatch = useDispatch();
 
   const { currentUser } = useSelector(state => state.users);
-  const user = route?.params? route.params.user : currentUser?.data;
+  const user = route?.params ? route.params.user : currentUser?.data;
   const favorited = useSelector(state => state.users.favouriteUsers);
-  const userActive = route?.params?.user? false : true
+  const userActive = route?.params?.user ? false : true;
 
   const handleLogOut = () => {
     dispatch(actionLogin(false));
+    dispatch(logOutUser());
   };
 
   const addFavorite = () => {
-    dispatch(AddFavorite({id: currentUser.data.auth.id, fav_id: user.id}))
+    dispatch(AddFavorite({ id: currentUser.data.auth.id, fav_id: user.id }));
     dispatch(fetchFavorites(currentUser.data.auth.id));
-  }
+  };
 
   const delFavorite = () => {
-    dispatch(DelFavorite({id: currentUser.data.auth.id, fav_id: user.id}))
+    dispatch(DelFavorite({ id: currentUser.data.auth.id, fav_id: user.id }));
     dispatch(fetchFavorites(currentUser.data.auth.id));
-  }
+  };
 
-  const verifyFavorite = (id) => {
-    const res = favorited.filter((fav) => {
-      return fav.id === id
-    }).map(res =>{
-      return res.id
-    })
+  const verifyFavorite = id => {
+    const res = favorited
+      .filter(fav => {
+        return fav.id === id;
+      })
+      .map(res => {
+        return res.id;
+      });
 
-    return +res === id
-  }
+    return +res === id;
+  };
 
   if (!user)
     return (
@@ -75,10 +78,7 @@ const UserProfile = ({route}) => {
           />
         ) : (
           <View className="flex justify-center h-[105px] rounded-full bg-white">
-            <Ionicons
-              name="person-circle-outline"
-              size={100}
-            />
+            <Ionicons name="person-circle-outline" size={100} />
           </View>
         )}
 
@@ -133,17 +133,10 @@ const UserProfile = ({route}) => {
             ) : undefined}
           </View>
 
-          {
-            !userActive?
-            (
-              verifyFavorite(user.id)?
-              <Ionicons
-                onPress={() => delFavorite()}
-                name="heart"
-                size={30}
-                color={colors.text}
-              />
-              :
+          {!userActive ? (
+            verifyFavorite(user.id) ? (
+              <Ionicons onPress={() => delFavorite()} name="heart" size={30} color={colors.text} />
+            ) : (
               <Ionicons
                 onPress={() => addFavorite()}
                 name="heart-outline"
@@ -151,10 +144,7 @@ const UserProfile = ({route}) => {
                 color={colors.text}
               />
             )
-            :
-            undefined
-          }
-
+          ) : undefined}
         </View>
       </View>
 

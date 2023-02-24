@@ -1,5 +1,5 @@
 import { Text, View, ScrollView, Image } from "react-native";
-import { Children, useEffect, useState } from "react";
+import { Children, useEffect, useLayoutEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import CardsData from "../db/cards.json";
 import { Link, useTheme } from "@react-navigation/native";
@@ -27,7 +27,9 @@ import { fetchUserById } from "../redux/actions";
 const Messages = () => {
   const { colors } = useTheme();
   const currentUser = useSelector(state => state.users.currentUser.data);
-  let user1 = currentUser.authId;
+  const chatRecipients = useSelector(state => state.users.chatRecipients);
+  console.log(chatRecipients);
+  let user1 = currentUser?.authId;
   const [chats, setChats] = useState([]);
   const [recipients, setRecipients] = useState([]);
   const dispatch = useDispatch();
@@ -58,37 +60,13 @@ const Messages = () => {
         console.log(recipient);
       });
     });
-
-    /* ******************************** */
-    /*     onSnapshot(q, querySnapshot => {
-      let users = [];
-      //console.log(querySnapshot);
-      querySnapshot.forEach(doc => {
-        //  console.log("FROM DOCS", doc);
-        //console.log(doc.data());
-        users.push(doc.data());
-      });
-    }); */
   };
 
-  useEffect(() => {
-    getChats();
-    /*     const msgsRef = collection(firebaseDb, "conversations");
-    //Query to get the messages of the conversation
-    //where("chat", "in", ["to", "from"]),
-    const q = query(msgsRef);
-    onSnapshot(q, querySnapshot => {
-      let chts = [];
-      querySnapshot.forEach(doc => {
-        console.log("FROM DOCS", doc);
-        console.log(doc.data());
-        msgs.push(doc.data());
-      });
-      setChats(chts);
-    }); */
+  useLayoutEffect(() => {
+    /*  getChats(); */
   }, []);
 
-  if (!CardsData)
+  if (!chatRecipients)
     return (
       <View style={{ color: colors.text }} className="justify-center mx-auto flex-1">
         <Text className="text-3xl font-bold align-center justify-center">
@@ -103,10 +81,10 @@ const Messages = () => {
       </Text>
 
       {Children.toArray(
-        CardsData.map(user => (
-          <Link to={{ screen: "Message", params: { user: user, title: user.name } }}>
+        chatRecipients.map((user, i) => (
+          <Link to={{ screen: "Message", params: { user: user[0], title: user[0]?.name } }}>
             <View className="flex flex-row items-center gap-x-5">
-              {user.profile_pic ? (
+              {user[0]?.profile_pic ? (
                 <Image
                   style={{
                     width: 85,
@@ -114,7 +92,7 @@ const Messages = () => {
                     resizeMode: "contain"
                   }}
                   source={{
-                    uri: user.profile_pic
+                    uri: user[0]?.profile_pic
                   }}
                   className="rounded-full"
                 />
@@ -124,7 +102,7 @@ const Messages = () => {
 
               <View className="gap-y-2 items-start">
                 <Text style={{ color: colors.text }} className="font-bold text-xl">
-                  {user.name}
+                  {user[0]?.name}
                 </Text>
                 <Text style={{ color: colors.textGray }}>Ultimo Mensaje</Text>
               </View>

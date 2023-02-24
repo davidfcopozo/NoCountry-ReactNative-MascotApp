@@ -62,6 +62,9 @@ const Message = ({ route }) => {
   useEffect(() => {
     createConversation();
   }, []);
+  useEffect(() => {
+    console.log(messages);
+  }, [messages]);
 
   const handleSubmit = async () => {
     const user2 = recipient.id;
@@ -135,7 +138,7 @@ const Message = ({ route }) => {
             scrollView.current.scrollToEnd({ animated: true });
           }}
         >
-          <ChatMessages />
+          <ChatMessages messages={messages} />
         </ScrollView>
 
         {/* <View className="flex-row w-[90%] h-full"> */}
