@@ -1,4 +1,4 @@
-const { User, Auth, Category, Favourite, JobOffer, Review, Request, Chat} = require("../db");
+const { User, Auth, Category, Favourite, JobOffer, Review, Request, Chat } = require("../db");
 const { isValidString, isValidNumber } = require("./../validations/index");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
