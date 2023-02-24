@@ -322,7 +322,7 @@ const getUserFavourites = async (req, res) => {
 
       return res.status(200).json(favourites);
     }
-    return res.status(404).json({ errorMessage: "The user has no favourites to show" });
+    return res.status(200).json([]);
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
