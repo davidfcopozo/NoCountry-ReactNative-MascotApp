@@ -1,4 +1,29 @@
-const { JobOffer } = require("../db");
+const { JobOffer, User } = require("../db");
+const { isValidNumber } = require("./../validations/index");
+
+const getUserJobOffers = async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    if (!userId) return res.status(400).json({ errorMessage: "UserId missing" });
+    if (!isValidNumber(userId))
+      return res.status(400).json({ errorMessage: "The userId type must be an integer" });
+
+    const user = await User.findByPk(userId, { include: JobOffer });
+    if (user === null)
+      return res.status(404).json({ errorMessage: "There is no user with that id" });
+
+    !user.dataValues.jobOffers.length
+      ? res.status(404).json({
+          errorMessage: `${user.dataValues.name} ${user.dataValues.surname} has no jobOffers to show`
+        })
+      : res.status(200).send(user.dataValues.jobOffers);
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original ? error.original : error
+    });
+  }
+};
 
 const createJobOffer = async (req, res) => {
   const { name, description, price, img, categoryId, userId } = req.body;
@@ -62,4 +87,4 @@ const deleteJobOffer = async (req, res) => {
     return res.status(500).json({ errorMessage: error.original ? error.original : error });
   }
 };
-module.exports = { createJobOffer, updateJobOffer, deleteJobOffer };
+module.exports = { getUserJobOffers, createJobOffer, updateJobOffer, deleteJobOffer };
