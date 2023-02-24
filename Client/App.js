@@ -328,7 +328,7 @@ function App() {
                   name="VisitProfile"
                   component={UserProfile}
                   options={{
-                    title: "Visitando"
+                    title: ""
                   }}
                 />
               </Stack.Navigator>

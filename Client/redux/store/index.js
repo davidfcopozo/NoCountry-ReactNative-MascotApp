@@ -4,11 +4,11 @@ import usersReducer from "../reducers/users";
 
 import { combineReducers } from "@reduxjs/toolkit";
 import persistReducer from "redux-persist/es/persistReducer";
-import storage from "redux-persist/lib/storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 let persistConfig = {
   key: "root",
-  storage
+  storage: AsyncStorage
 };
 
 let rootReducer = combineReducers({

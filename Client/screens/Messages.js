@@ -1,79 +1,73 @@
-import { Text, View, ScrollView, Image } from "react-native";
+import { Text, View, ScrollView, Image, Pressable } from "react-native";
 import { Children, useEffect, useLayoutEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import CardsData from "../db/cards.json";
 import { Link, useTheme } from "@react-navigation/native";
 import {
   collection,
   query,
   where,
   onSnapshot,
+  listDocuments,
   addDoc,
   Timestamp,
   orderBy,
   setDoc,
   doc,
+  get,
   getDoc,
+  deleteDoc,
   updateDoc,
   getDocs,
   getFirestore,
-  collectionGroup
+  collectionGroup,
+  listCollections
 } from "firebase/firestore";
-import { firebaseDb } from "../firebase";
-
-import { useDispatch, useSelector } from "react-redux";
-import { fetchUserById } from "../redux/actions";
+import { firebaseDb as db } from "../firebase";
+import { useSelector } from "react-redux";
 
 const Messages = () => {
-  const { colors } = useTheme();
-  const currentUser = useSelector(state => state.users.currentUser.data);
-  const chatRecipients = useSelector(state => state.users.chatRecipients);
-  console.log(chatRecipients);
-  let user1 = currentUser?.authId;
-  const [chats, setChats] = useState([]);
-  const [recipients, setRecipients] = useState([]);
-  const dispatch = useDispatch();
+  const { dark, colors } = useTheme();
+  const { currentUser, search } = useSelector(state => state.users);
+  const user = currentUser?.data;
+  const userID = user? (user?.id).toString() : undefined;
+  const [chatList, setChatList] = useState([]);
 
-  const getChats = async () => {
-    //Query to get all chats from user1
-    const chatsRef = collection(firebaseDb, "users", user1, "chats");
-    const q = query(chatsRef);
+  useEffect(() => {
+    const unsub = onSnapshot(
+      query(
+      collectionGroup(
+        db,
+        "messages",
+      ),
+      where('messageUserId', "in" ,[userID]),
+      ),
+      (snapshot) => {
+        let list = snapshot.docs.map((doc) => doc.data())
+        list = list.map(e => e.messageReceiverId)
 
-    //Get snapshot of the given query (all chats)
-    onSnapshot(q, querySnapshot => {
-      let chts = [],
-        recpts = [];
-      querySnapshot.forEach(doc => {
-        //console.log(doc.data());
-        //Store the chats id and recipients id in its respective variable
-        chts.push(doc.data().chatroomId);
-        recpts.push(doc.data().recipient);
-      });
-      setChats(chts);
-      setRecipients(recpts);
-      // console.log(chts);
-      console.log(recpts);
+        list = search.filter(item => list.includes(item.id.toString()));
 
-      //Fetch each recipient by id and store them in chat recipient in the reducers
-      recpts.forEach(recipient => {
-        dispatch(fetchUserById(recipient));
-        console.log(recipient);
-      });
-    });
-  };
+        setChatList(list);
+      }
+    );
 
-  useLayoutEffect(() => {
-    /*  getChats(); */
-  }, []);
 
-  if (!chatRecipients)
+    return unsub;
+  } , []);
+
+  function deleteChat(){
+    console.log("deleted");
+  }
+
+  if (chatList.length < 1)
     return (
-      <View style={{ color: colors.text }} className="justify-center mx-auto flex-1">
-        <Text className="text-3xl font-bold align-center justify-center">
+      <View className="justify-center mx-auto flex-1">
+        <Text style={{ color: colors.text }}  className="text-3xl font-bold align-center justify-center">
           No tienes conversaciones
         </Text>
       </View>
     );
+
   return (
     <ScrollView className="p-5 gap-y-5">
       <Text style={{ color: colors.text }} className="text-3xl font-bold">
@@ -81,10 +75,11 @@ const Messages = () => {
       </Text>
 
       {Children.toArray(
-        chatRecipients.map((user, i) => (
-          <Link to={{ screen: "Message", params: { user: user[0], title: user[0]?.name } }}>
+        chatList?.map(user => (
+          <View className="flex flex-row justify-between">
+            <Link to={{ screen: "Message", params: { user: user } }}>
             <View className="flex flex-row items-center gap-x-5">
-              {user[0]?.profile_pic ? (
+              {user?.profile_pic ? (
                 <Image
                   style={{
                     width: 85,
@@ -92,7 +87,7 @@ const Messages = () => {
                     resizeMode: "contain"
                   }}
                   source={{
-                    uri: user[0]?.profile_pic
+                    uri: user?.profile_pic
                   }}
                   className="rounded-full"
                 />
@@ -102,12 +97,18 @@ const Messages = () => {
 
               <View className="gap-y-2 items-start">
                 <Text style={{ color: colors.text }} className="font-bold text-xl">
-                  {user[0]?.name}
+                  {user?.name+" "+user?.surname}
                 </Text>
                 <Text style={{ color: colors.textGray }}>Ultimo Mensaje</Text>
               </View>
             </View>
-          </Link>
+            </Link>
+            <Ionicons
+              name="trash-outline"
+              size={26}
+              color={dark? "#fff" : "#000"}
+            />
+          </View>
         ))
       )}
     </ScrollView>

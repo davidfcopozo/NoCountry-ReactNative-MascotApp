@@ -1,4 +1,4 @@
-const { User, Auth, Category, Favourite, JobOffer, Review, Request } = require("../db");
+const { User, Auth, Category, Favourite, JobOffer, Review, Request, Chat} = require("../db");
 const { isValidString, isValidNumber } = require("./../validations/index");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
@@ -381,8 +381,6 @@ const getUserFavourites = async (req, res) => {
         }
       }
     });
-
-    //can you give me the code for filter just one property of each object in an array
 
     return res.json(favourites);
   } catch (error) {

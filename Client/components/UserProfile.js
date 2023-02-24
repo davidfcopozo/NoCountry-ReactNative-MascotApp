@@ -13,13 +13,12 @@ import { Link, useTheme } from "@react-navigation/native";
 import { Children, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { actionLogin } from "../redux/reducers/users";
-import { AddFavorite, DelFavorite, fetchFavorites, logOutUser } from "../redux/actions";
+import { AddFavorite, fetchFavorites, logOutUser } from "../redux/actions";
 import { useDispatch } from "react-redux";
 import VisitorOptions from "./VisitorOptions";
 
 const UserProfile = ({ route }) => {
-  const colorScheme = "light";
-  const { dark, colors } = useTheme();
+  const { colors } = useTheme();
   const dispatch = useDispatch();
 
   const { currentUser } = useSelector(state => state.users);
@@ -34,11 +33,6 @@ const UserProfile = ({ route }) => {
 
   const addFavorite = () => {
     dispatch(AddFavorite({ id: currentUser.data.auth.id, fav_id: user.id }));
-    dispatch(fetchFavorites(currentUser.data.auth.id));
-  };
-
-  const delFavorite = () => {
-    dispatch(DelFavorite({ id: currentUser.data.auth.id, fav_id: user.id }));
     dispatch(fetchFavorites(currentUser.data.auth.id));
   };
 
@@ -130,7 +124,15 @@ const UserProfile = ({ route }) => {
                   </Link>
                 </Pressable>
               </View>
-            ) : undefined}
+            ) : (
+            <Link to={{ screen: "Message", params: { user } }}>
+              <View style={{borderColor: colors.border}} className="flex justify-center items-center border mr-auto">
+                <Text style={{color: colors.text}} className="py-2 px-5 font-medium">
+                  Chatear
+                </Text>
+              </View>
+            </Link>
+            )}
           </View>
 
           {!userActive ? (
@@ -157,17 +159,22 @@ const UserProfile = ({ route }) => {
         </Text>
       </View>
 
-      <View>
-        <Text style={{ color: colors.text }} className="text-xl font-bold mb-1">
-          Servicios
-        </Text>
-
-        <View className="flex justify-start flex-row items-center gap-x-3">
-          <Text className="text-base p-2 text-white bg-violet-700 rounded-2xl">
-            {user?.service}
+      {
+        user?.service?
+        <View>
+          <Text style={{ color: colors.text }} className="text-xl font-bold mb-1">
+            Servicios
           </Text>
+
+          <View className="flex justify-start flex-row items-center gap-x-3">
+            <Text className="text-base p-2 text-white bg-violet-700 rounded-2xl">
+              {user?.service}
+            </Text>
+          </View>
         </View>
-      </View>
+        :
+        undefined
+      }
 
       {userActive ? (
         <View className="flex justify-center items-center">
@@ -175,7 +182,9 @@ const UserProfile = ({ route }) => {
             <Text className="text-xl text-white">Cerrar sesion</Text>
           </TouchableOpacity>
         </View>
-      ) : undefined}
+      ) : (
+        undefined
+      )}
     </View>
   );
 };
