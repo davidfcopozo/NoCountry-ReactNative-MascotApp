@@ -5,6 +5,8 @@ import {
   sendEmailVerification,
   signOut
 } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { firebaseDb as db } from "../../firebase";
 import { auth } from "../../firebase";
 import axios from "axios";
 
@@ -68,6 +70,18 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
     };
 
     const response = await axios.post("/users/register", userData);
+
+    //Registra el usuario en la coleccion de users en firestore
+
+    const userid = (response.data.user.id).toString();
+
+    setDoc(doc(db, "users", userid), {
+      username: name+" "+surname,
+      email: email,
+      userId: userid,
+      timestamp: new Date(),
+    });
+
     return response.data;
   } catch (error) {
     console.log(error);

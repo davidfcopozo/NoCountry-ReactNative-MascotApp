@@ -18,7 +18,7 @@ const Favorites = () => {
     dispatch(fetchFavourites(currentUser.data.auth.id));
   }, []);
 
-  if (!favorites) return <Text>Cargando...</Text>;
+  if (favorites.length < 1) return <Text className="mx-auto text-2xl font-bold py-10">No tenes favoritos.</Text>
 
   const delFavorite = id => {
     dispatch(deleteFavourite({ id: currentUser.data.auth.id, fav_id: id }));
