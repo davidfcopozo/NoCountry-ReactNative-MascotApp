@@ -12,12 +12,12 @@ const ChatMessages = ({ allMessages }) => {
     <ScrollView style={{flex: 1, paddingHorizontal: 10}}>
       {
         Children.toArray(
-        allMessages.map((messages) => (
-          <ChatMessage 
-            sender={currentUser.id}
-            messages={messages}
-          />
-        ))
+          allMessages.map((messages) => (
+            <ChatMessage 
+              sender={currentUser.id}
+              messages={messages}
+            />
+          ))
         )
       }
     </ScrollView>
