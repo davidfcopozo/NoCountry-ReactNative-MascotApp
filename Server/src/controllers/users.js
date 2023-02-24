@@ -412,7 +412,6 @@ const deleteUserFavourites = async (req, res) => {
     });
 
     return res.sendStatus(204);
-    
   } catch (error) {
     return res.status(500).json({ errorMessage: error.original ? error.original : error });
   }
