@@ -10,7 +10,7 @@ const {
   getUsersByCategory,
   getUsersByFilter,
   getUserFavourites,
-  deleteFavourite,
+  deleteUserFavourites,
   addUserFavourites,
   getSearch,
   addUserReview
@@ -27,9 +27,9 @@ router.post("/register", register);
 router.post("/login", login);
 router.get("/filter", getUsersByFilter);
 router.get("/search", getSearch);
-router.get("/favorites/:id/:page", getUserFavourites); // ,decodeToken
-router.post("/favorites/:id/:favorite", addUserFavourites); // ,decodeToken
-router.delete("/favorites/:id/:favorite", deleteFavourite); // ,decodeToken
+router.get("/favourites/:id", getUserFavourites); // ,decodeToken
+router.post("/favourites/:id/:favourite", addUserFavourites); // ,decodeToken
+router.delete("/favourites/:id/:favourite", deleteUserFavourites); // ,decodeToken
 router.patch("/:id", updateUser); // ,decodeToken
 router.delete("/:id", deleteUser); // ,decodeToken
 router.get("/:id", getUserById); // ,decodeToken
