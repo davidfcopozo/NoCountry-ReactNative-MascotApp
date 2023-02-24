@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 const ChatHeader = ({ user }) => {
   const navigation = useNavigation();
   const { colors } = useTheme();
+  
   return (
     <View className="h-15 flex-row bg-white-500 dark:black-500 pt-10 lg:pt-2 pb-1 mb-1 w-full align-center">
       <Pressable
