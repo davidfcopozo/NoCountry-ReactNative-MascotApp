@@ -9,7 +9,6 @@ import { doc, setDoc } from "firebase/firestore";
 import { firebaseDb as db } from "../../firebase";
 import { auth } from "../../firebase";
 import axios from "axios";
-import { useAuth } from "../../context/AuthContext";
 
 export const fetchUsers = createAsyncThunk("/users/fetchUsers", async () => {
   try {
@@ -118,11 +117,11 @@ export const logOutUser = createAsyncThunk("users/logOutUser", async () => {
   }
 });
 
-export const AddFavorite = createAsyncThunk("users/AddFavorite", async data => {
+export const addFavourite = createAsyncThunk("users/addFavorite", async data => {
   try {
     const { id, fav_id } = data;
 
-    const save = await axios.post(`/users/favorites/${id}/${fav_id}`);
+    const save = await axios.post(`/users/favourites/${id}/${fav_id}`);
     console.log("Favorito: " + save);
     return save;
   } catch (error) {
@@ -130,11 +129,11 @@ export const AddFavorite = createAsyncThunk("users/AddFavorite", async data => {
   }
 });
 
-export const DelFavorite = createAsyncThunk("users/DelFavorite", async data => {
+export const deleteFavourite = createAsyncThunk("users/deleteFavourite", async data => {
   try {
     const { id, fav_id } = data;
 
-    const deleteUser = await axios.delete(`/users/favorites/${id}/${fav_id}`);
+    const deleteUser = await axios.delete(`/users/favourites/${id}/${fav_id}`);
     console.log("Favorito: " + deleteUser);
     return deleteUser;
   } catch (error) {
@@ -142,9 +141,9 @@ export const DelFavorite = createAsyncThunk("users/DelFavorite", async data => {
   }
 });
 
-export const fetchFavorites = createAsyncThunk("/users/fetchFavorites", async id => {
+export const fetchFavourites = createAsyncThunk("/users/fetchFavourites", async id => {
   try {
-    const users = await axios.get(`/users/favorites/${id}/1`);
+    const users = await axios.get(`/users/favourites/${id}`);
     return users.data;
   } catch (error) {
     console.log(error);

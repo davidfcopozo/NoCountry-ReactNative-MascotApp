@@ -13,7 +13,7 @@ import { Link, useTheme } from "@react-navigation/native";
 import { Children, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { actionLogin } from "../redux/reducers/users";
-import { AddFavorite, fetchFavorites, logOutUser } from "../redux/actions";
+import { addFavourite, deleteFavourite, fetchFavourites, logOutUser } from "../redux/actions";
 import { useDispatch } from "react-redux";
 import VisitorOptions from "./VisitorOptions";
 
@@ -32,8 +32,13 @@ const UserProfile = ({ route }) => {
   };
 
   const addFavorite = () => {
-    dispatch(AddFavorite({ id: currentUser.data.auth.id, fav_id: user.id }));
-    dispatch(fetchFavorites(currentUser.data.auth.id));
+    dispatch(addFavourite({ id: currentUser.data.auth.id, fav_id: user.id }));
+    dispatch(fetchFavourites(currentUser.data.auth.id));
+  };
+
+  const delFavorite = () => {
+    dispatch(deleteFavourite({ id: currentUser.data.auth.id, fav_id: user.id }));
+    dispatch(fetchFavourites(currentUser.data.auth.id));
   };
 
   const verifyFavorite = id => {
