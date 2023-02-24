@@ -12,7 +12,6 @@ const {
   getUserFavourites,
   deleteUserFavourites,
   addUserFavourites,
-  getUserJobOffers,
   getSearch,
   addUserReview
 } = require("../controllers/users");
@@ -28,7 +27,6 @@ router.post("/register", register);
 router.post("/login", login);
 router.get("/filter", getUsersByFilter);
 router.get("/search", getSearch);
-router.get("/jobOffers", getUserJobOffers); // ,decodeToken
 router.get("/favourites/:id", getUserFavourites); // ,decodeToken
 router.post("/favourites/:id/:favourite", addUserFavourites); // ,decodeToken
 router.delete("/favourites/:id/:favourite", deleteUserFavourites); // ,decodeToken
