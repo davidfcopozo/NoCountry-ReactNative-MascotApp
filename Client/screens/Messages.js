@@ -33,26 +33,27 @@ const Messages = () => {
   const [chatList, setChatList] = useState([]);
 
   useEffect(() => {
-    const unsub = onSnapshot(
-      query(
-      collectionGroup(
-        db,
-        "messages",
-      ),
-      where('messageUserId', "in" ,[userID]),
-      ),
-      (snapshot) => {
-        let list = snapshot.docs.map((doc) => doc.data())
-        list = list.map(e => e.messageReceiverId)
+    if (userID) {
+      const unsub = onSnapshot(
+        query(
+        collectionGroup(
+          db,
+          "messages",
+        ),
+        where('messageUserId', "in" ,[userID]),
+        ),
+        (snapshot) => {
+          let list = snapshot.docs.map((doc) => doc.data())
+          list = list.map(e => e.messageReceiverId)
+  
+          list = search.filter(item => list.includes(item.id.toString()));
+  
+          setChatList(list);
+        }
+      ); 
 
-        list = search.filter(item => list.includes(item.id.toString()));
-
-        setChatList(list);
-      }
-    );
-
-
-    return unsub;
+      return unsub;
+    }
   } , []);
 
   function deleteChat(){
