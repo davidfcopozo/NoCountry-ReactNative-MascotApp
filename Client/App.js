@@ -97,7 +97,7 @@ function BottomNavigation({ isDarkMode, setDarkMode, colors }) {
         headerLeft: () => (
           <Image
             resizeMode="contain"
-            style={{ width: 40, height: 40}}
+            style={{ width: 40, height: 40 }}
             source={require("./assets/logo.png")}
           />
         ),

@@ -33,18 +33,18 @@ const UserProfile = ({ route }) => {
   };
 
   const addFavorite = () => {
-    dispatch(addFavourite({ id: currentUser.data.auth.id, fav_id: user.id }));
-    dispatch(fetchFavourites(currentUser.data.auth.id));
+    dispatch(addFavourite({ currentUser, id: user.id }));
+    dispatch(fetchFavourites(currentUser));
   };
 
   const delFavorite = () => {
-    dispatch(deleteFavourite({ id: currentUser.data.auth.id, fav_id: user.id }));
-    dispatch(fetchFavourites(currentUser.data.auth.id));
+    dispatch(deleteFavourite({ currentUser, id: user.id }));
+    dispatch(fetchFavourites(currentUser));
   };
 
   const verifyFavorite = id => {
     const res = favorited
-      .filter(fav => {
+      ?.filter(fav => {
         return fav.id === id;
       })
       .map(res => {
