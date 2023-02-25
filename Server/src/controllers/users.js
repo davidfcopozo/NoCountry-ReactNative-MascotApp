@@ -73,11 +73,11 @@ const login = async (req, res) => {
   const { email, password, id } = req.body;
 
   try {
-    if (!email || !password)
-      return res.status(400).json({ errorMessage: "Missing email and password fields" });
+    if (!email || !password || !id)
+      return res.status(400).json({ errorMessage: "Missing required fields" });
 
-    if (!isValidString(email) || !isValidString(password))
-      return res.status(400).json({ errorMessage: "Email and password must be string type" });
+    if (!isValidString(email) || !isValidString(password) || !isValidString(id))
+      return res.status(400).json({ errorMessage: "All fields must be string type" });
 
     const emailAuthenticated = await Auth.findOne({ where: { email } });
     if (emailAuthenticated === null)
