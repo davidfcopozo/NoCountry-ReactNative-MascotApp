@@ -93,6 +93,7 @@ const Message = ({ route }) => {
       {
         username: user.name+" "+user.surname,
         messageUserId: userID,
+        messageReceiverId: receiverID,
         message: chatMessage,
         timestamp: new Date(),
       }

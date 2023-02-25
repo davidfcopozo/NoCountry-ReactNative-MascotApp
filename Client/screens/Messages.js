@@ -31,30 +31,70 @@ const Messages = () => {
   const user = currentUser?.data;
   const userID = user? (user?.id).toString() : undefined;
   const [chatList, setChatList] = useState([]);
+  const [incoming, setIncoming] = useState([]);
+  const [outgoing, setOutgoing] = useState([]);
+  const [chatLists, setChatLists] = useState([]);
+
+  function getStartedMsgs(){
+
+    const unsub = onSnapshot(
+      query(
+      collectionGroup(
+        db,
+        "messages",
+      ),
+      where('messageUserId', "in" ,[userID]),
+      ),
+      (snapshot) => {
+        let listIn = snapshot.docs.map((doc) => doc.data())
+        listIn = listIn.map(e => e.messageReceiverId)
+        listIn = search.filter(item => listIn.includes(item.id.toString()));
+        listIn= chatList.concat(listIn)
+        console.log("aca envio "+listIn.length);
+        if (listIn.length > 0) {
+          setChatList(listIn)
+        }
+        
+      }
+    )
+    return unsub
+  }
+
+  function getNewMsgs(){
+    const unsub = onSnapshot(
+      query(
+      collectionGroup(
+        db,
+        "messages",
+      ),
+      where('messageReceiverId', "in" ,[userID]),
+      ),
+      (snapshot) => {
+        let list = snapshot.docs.map((doc) => doc.data())
+        list = list.map(e => e.messageUserId)
+        list = search.filter(item => list.includes(item.id.toString()));
+        list = chatList.concat(list)
+        console.log("aca recibo "+list.length);
+        if (list.length > 0) {
+          setChatList(list)
+        }
+      }
+    ); 
+    return unsub
+  }
+
+  //continuar guardando en firebase en lugar de estados
 
   useEffect(() => {
     if (userID) {
-      const unsub = onSnapshot(
-        query(
-        collectionGroup(
-          db,
-          "messages",
-        ),
-        where('messageUserId', "in" ,[userID]),
-        ),
-        (snapshot) => {
-          let list = snapshot.docs.map((doc) => doc.data())
-          list = list.map(e => e.messageReceiverId)
-  
-          list = search.filter(item => list.includes(item.id.toString()));
-  
-          setChatList(list);
-        }
-      ); 
-
-      return unsub;
+      getNewMsgs()
     }
-  } , []);
+
+    if (userID) {
+      getStartedMsgs()
+    }
+    
+  } , [userID]);
 
   function deleteChat(){
     console.log("deleted");
@@ -65,6 +105,7 @@ const Messages = () => {
       <View className="justify-center mx-auto flex-1">
         <Text style={{ color: colors.text }}  className="text-3xl font-bold align-center justify-center">
           No tienes conversaciones
+          {JSON.stringify(chatList)}
         </Text>
       </View>
     );
@@ -74,6 +115,8 @@ const Messages = () => {
       <Text style={{ color: colors.text }} className="text-3xl font-bold">
         Mensajes
       </Text>
+
+      <Text>{JSON.stringify(chatList)}</Text>
 
       {Children.toArray(
         chatList?.map(user => (
