@@ -7,7 +7,7 @@ const COLORS = {
   black: "#1A1A1A",
   blue: "#5D5FEE",
   grey: "#BABBC3",
-  light: "#F3F4FB",
+  light: "#d8d8d8",
   darkBlue: "#7978B5",
   red: "#ff0000"
 };
@@ -30,7 +30,7 @@ const InputField = ({ label, error, password, placeholder, onFocus = () => {}, .
         {label}
       </Text>
       <View
-        className="w-full"
+        className="w-full rounded-md overflow-hidden"
         style={[
           style.inputContainer,
           {
@@ -47,7 +47,7 @@ const InputField = ({ label, error, password, placeholder, onFocus = () => {}, .
           }}
           onBlur={() => setIsFocused(false)}
           secureTextEntry={hidePassword}
-          className={"flex w-full justify-center mb-2 p-2 px-3 h-full "+(dark? "color-[#BABBC3]" : "color-[#7978B5]")}
+          className={"flex w-full justify-center mb-2 py-2 px-3 h-full rounded-md "+(dark? "color-[#BABBC3]" : "color-[#7978B5]")}
           placeholder={placeholder}
           placeholderTextColor="grey"
           {...props}
