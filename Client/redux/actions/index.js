@@ -9,6 +9,8 @@ import { doc, setDoc } from "firebase/firestore";
 import { firebaseDb as db } from "../../firebase";
 import { auth } from "../../firebase";
 import axios from "axios";
+// import { toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 export const fetchUsers = createAsyncThunk("/users/fetchUsers", async () => {
   try {
@@ -71,6 +73,8 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
 
     const response = await axios.post("/users/register", userData);
 
+    // toast.success(`Welcome ${userData.name} ${userData.surname}`, { position: toast.POSITION.BOTTOM_CENTER });
+
     //Registra el usuario en la coleccion de users en firestore
 
     const userid = response.data.user.id.toString();
@@ -84,7 +88,7 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
 
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error.code;
   }
 });
 
@@ -107,7 +111,13 @@ export const loginUser = createAsyncThunk("users/loginUser", async loginCredenti
 
     return currentUser;
   } catch (error) {
-    console.log(error);
+    // if (error.code === "auth/wrong-password") {
+    //   showMessage("Contraseña incorrecta", "error");
+    // } else if (error.code === "auth/user-not-found") {
+    //   showMessage("No existe una cuenta registrada con ese email", "error");
+    // } else {
+    //   showMessage("Algo ha salido mal. Por favor inténtelo nuevamente", "error");
+    // }
   }
 });
 

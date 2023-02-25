@@ -11,18 +11,21 @@ import {
 import InputField from "../components/InputField";
 import { useState } from "react";
 import { useTheme, useNavigation } from "@react-navigation/native";
-import { useAuth } from "../context/AuthContext";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "./../redux/actions/index";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const FormSecondScreen = ({ formData, setFormData, setScreen }) => {
   const { colors } = useTheme();
 
+  const firebaseError = useSelector(state => state.users.fbError);
+  console.log("fb_error: ", firebaseError);
+
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [valid, setValid] = useState(false);
-  const { signup } = useAuth();
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -46,14 +49,36 @@ const FormSecondScreen = ({ formData, setFormData, setScreen }) => {
       handleError("Por favor, introduzca su nombre", "name");
       setValid(false);
     }
-
     if (!formData.surname) {
-      handleError("Por favor, introduzca sus apellidos", "surname");
+      handleError("Por favor, introduzca su apellido", "surname");
       setValid(false);
     }
     if (!formData.city) {
-      handleError("Por favor, introduzca sus apellidos", "surname");
+      handleError("Por favor, introduzca su ciudad", "city");
       setValid(false);
+    }
+
+    switch (firebaseError?.message) {
+      case "auth/email-already-in-use":
+        toast.error("Ya existe una cuenta con ese email", {
+          position: toast.POSITION.BOTTOM_CENTER
+        });
+        setValid(false);
+        break;
+      case "auth/invalid-email":
+        toast.error("Email inválido", { position: toast.POSITION.BOTTOM_CENTER });
+        setValid(false);
+        break;
+      case "auth/weak-password":
+        toast.error("La contraseña es demasiado débil", { position: toast.POSITION.BOTTOM_CENTER });
+        setValid(false);
+        break;
+      default:
+        toast.error("Algo ha salido mal. Por favor, inténtelo nuevamente", {
+          position: toast.POSITION.BOTTOM_CENTER
+        });
+        setValid(false);
+        break;
     }
 
     if (valid) {
@@ -71,15 +96,15 @@ const FormSecondScreen = ({ formData, setFormData, setScreen }) => {
       <ScrollView className="w-full ">
         <View className="w-full ">
           <InputField
-            label="Nombres"
-            placeholder="Tus nombres"
+            label="Nombre"
+            placeholder="Tu nombre"
             onChangeText={text => setFormData({ ...formData, name: text })}
             error={errors.name}
             value={formData.name}
           />
           <InputField
-            label="Apellidos"
-            placeholder="Tus apellidos"
+            label="Apellido"
+            placeholder="Tu apellido"
             onChangeText={text => setFormData({ ...formData, surname: text })}
             /* onChangeText={text => setSurname(text)} */
             error={errors.surname}
@@ -87,7 +112,7 @@ const FormSecondScreen = ({ formData, setFormData, setScreen }) => {
           />
           <InputField
             label="Ciudad"
-            placeholder="Ciudad"
+            placeholder="Tu ciudad"
             onChangeText={text => setFormData({ ...formData, city: text })}
             /* onChangeText={text => setCity(text)} */
             error={errors.city}
@@ -97,7 +122,7 @@ const FormSecondScreen = ({ formData, setFormData, setScreen }) => {
           <View className=" gap-2 flex-row justify-center w-full">
             <View className="rounded-lg bg-violet-700 m-2 flex-[0.5]">
               <Pressable onPress={() => setScreen(0)} className=" p-3 rounded-lg">
-                <Text className="text-white text-center font-bold text-lg">Atras</Text>
+                <Text className="text-white text-center font-bold text-lg">Atrás</Text>
               </Pressable>
             </View>
             <View className="rounded-lg bg-violet-700 m-2 flex-[0.5]">
@@ -106,6 +131,8 @@ const FormSecondScreen = ({ formData, setFormData, setScreen }) => {
               </Pressable>
             </View>
           </View>
+
+          <ToastContainer />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

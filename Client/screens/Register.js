@@ -5,8 +5,7 @@ import {
   Pressable,
   ScrollView,
   Keyboard,
-  KeyboardAvoidingView,
-  Alert
+  KeyboardAvoidingView
 } from "react-native";
 import InputField from "../components/InputField";
 import { useState } from "react";
@@ -36,24 +35,16 @@ const Register = () => {
     if (!formData.email) {
       handleError("Por favor, introduzca su correo electrónico", "email");
       setValid(false);
-    } else if (!formData.email.match(/\S+@\S+\.\S+/)) {
-      handleError("Por favor, introduzca un correo válido", "email");
-
-      setValid(false);
     }
-
     if (!formData.password) {
       handleError("Por favor, introduzca su contraseña", "password");
-      setValid(false);
-    } else if (formData.password.length < 5) {
-      handleError("Por favor, introduzca una contraseña con al menos 5 caracteres", "password");
       setValid(false);
     }
     if (!formData.confirmPassword) {
       handleError("Por favor, confirme su contraseña", "confirmPassword");
       setValid(false);
     } else if (formData.password !== formData.confirmPassword) {
-      handleError("Las contraseñas no conincide, intentelo de nuevo", "confirmPassword");
+      handleError("Las contraseñas no coninciden, por favor inténtelo de nuevo", "confirmPassword");
       setValid(false);
     }
 
@@ -85,7 +76,7 @@ const Register = () => {
             <InputField
               className="my-1"
               label="E-Mail"
-              placeholder="Correo electrónico"
+              placeholder="Tu correo electrónico"
               onChangeText={text => setFormData({ ...formData, email: text })}
               error={errors.email}
               value={formData.email}
