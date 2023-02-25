@@ -5,7 +5,11 @@ import {
   fetchUserById,
   searchView,
   registerUser,
-  loginUser
+  loginUser,
+  logOutUser,
+  fetchFavourites,
+  addFavourite,
+  deleteFavourite
 } from "../actions";
 
 const initialState = {
@@ -15,6 +19,7 @@ const initialState = {
   userDetail: {},
   favouriteUsers: [],
   search: [],
+  chatRecipients: [],
   isLogin: false,
   fbError: {}
 };
@@ -23,13 +28,6 @@ const usersReducer = createSlice({
   name: "users",
   initialState,
   reducers: {
-    addFavouriteUser: (state, action) => {
-      state.favouriteUsers.push(action.payload);
-    },
-    removeFavouriteUser: (state, action) => {
-      const newArray = state.favouriteUsers.filter(favUser => favUser.imdbID !== action.payload);
-      state.favouriteUsers = newArray;
-    },
     actionLogin: (state, action) => {
       state.isLogin = action.payload;
     },
@@ -45,10 +43,12 @@ const usersReducer = createSlice({
       state.search = action.payload;
     });
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
-      state.userDetail = action.payload;
+      const { payload } = action;
+      state.chatRecipients.push(payload);
     });
     builder.addCase(searchView.fulfilled, (state, action) => {
-      state.search = action.payload;
+      const { payload } = action;
+      state.search = [payload];
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.users = action.payload;
@@ -66,6 +66,22 @@ const usersReducer = createSlice({
     builder.addCase(loginUser.rejected, state => {
       state.loading = false;
     });
+    builder.addCase(logOutUser.fulfilled, (state, action) => {
+      state.currentUser = [];
+      state.isLogin = false;
+    });
+    builder.addCase(fetchFavourites.fulfilled, (state, action) => {
+      state.favouriteUsers = action.payload;
+    });
+    // builder.addCase(addFavourite.fulfilled, (state, action) => {
+    //   state.favouriteUsers.push(action.payload);
+    // });
+    // builder.addCase(deleteFavourite.fulfilled, (state, action) => {
+    //   const newArray = state.favouriteUsers.filter(
+    //     favUser => favUser.fav_user_id !== action.payload
+    //   );
+    //   state.favouriteUsers = newArray;
+    // });
   }
 });
 

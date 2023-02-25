@@ -13,7 +13,6 @@ Client/.env
 Client/yarn.lock
 Server/node_modules/
 Server/.env
-Server/package-lock.json
 Server/firebase/ServiceAccount.json
 
 # macOS

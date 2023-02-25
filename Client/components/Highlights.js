@@ -3,9 +3,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { Children } from "react";
 import { Link, useTheme } from "@react-navigation/native";
 import LoadingGif from "./LoadingGif";
+import { useSelector } from "react-redux";
 
 const Highlights = ({ data }) => {
   const { colors } = useTheme();
+  const { currentUser } = useSelector(state => state.users);
 
   if (!data) return <LoadingGif />;
 
@@ -16,8 +18,10 @@ const Highlights = ({ data }) => {
           {data?.length > 0 ? (
             Children.toArray(
               data.map(card => (
-                <Link to={{ screen: "Post", params: { user: card } }}>
-                  <View className="flex-1 flex items-center w-32 border border-black/5 rounded-lg overflow-hidden bg-white/10 pt-3">
+                <Link to={currentUser?.data?.id === card.id? { screen: "Perfil"} : { screen: "VisitProfile", params: {user: card, title: card.name, id : card.id} }}>
+                  <View
+                    className="flex-1 flex items-center w-32 border border-black/5 rounded-lg overflow-hidden bg-white/10 pt-3"
+                  >
                     {card.profile_pic ? (
                       <Image
                         style={{

@@ -30,6 +30,7 @@ const Login = ({ openLogin, setOpenLogin }) => {
     setErrors(prevState => ({ ...prevState, [input]: error }));
   };
 
+  
   async function handleSignin() {
     try {
       const loginCredentials = { email, password };
@@ -76,7 +77,7 @@ const Login = ({ openLogin, setOpenLogin }) => {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
+    <>
       <View className="flex gap-y-2 p-8 w-full">
         {loading ? (
           <View className="absolute bottom-0  top-[-60] left-[-20] right-0 justify-center  align-center w-[100vw] bg-gray-100 opacity-25 h-[100vh] m-0 z-10">
@@ -99,6 +100,7 @@ const Login = ({ openLogin, setOpenLogin }) => {
         <Text style={{ color: colors.text }} className="text-2xl mb-4 font-bold text-center">
           Bienvenido a MascotApp
         </Text>
+        
         <InputField
           label="E-Mail"
           placeholder="Correo electrónico"
@@ -125,7 +127,7 @@ const Login = ({ openLogin, setOpenLogin }) => {
           <Text className="text-violet-500/80 font-bold">No tenes cuenta? Registrate aca</Text>
         </View>
       </View>
-    </KeyboardAvoidingView>
+    </>
   );
 };
 

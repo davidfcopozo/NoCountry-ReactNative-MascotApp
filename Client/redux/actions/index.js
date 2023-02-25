@@ -2,8 +2,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  sendEmailVerification
+  sendEmailVerification,
+  signOut
 } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { firebaseDb as db } from "../../firebase";
 import { auth } from "../../firebase";
 import axios from "axios";
 
@@ -29,7 +32,7 @@ export const fetchUserById = createAsyncThunk("/users/fetchUserById", async user
   try {
     const userById = await axios.get(`/users/${userId}`);
     console.log(userById.data);
-    return [];
+    return [userById.data];
   } catch (error) {
     console.log(error);
   }
@@ -68,7 +71,19 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
 
     const response = await axios.post("/users/register", userData);
 
-    // showMessage(`Welcome ${userData.name} ${userData.surname}`);
+    // toast.success(`Welcome ${userData.name} ${userData.surname}`, { position: toast.POSITION.BOTTOM_CENTER });
+
+    //Registra el usuario en la coleccion de users en firestore
+
+    const userid = response.data.user.id.toString();
+
+    setDoc(doc(db, "users", userid), {
+      username: name + " " + surname,
+      email: email,
+      userId: userid,
+      timestamp: new Date()
+    });
+
     return response.data;
   } catch (error) {
     throw error.code;
@@ -80,7 +95,18 @@ export const loginUser = createAsyncThunk("users/loginUser", async loginCredenti
     const { email, password } = loginCredentials;
     await signInWithEmailAndPassword(auth, email, password);
     const firebaseId = auth.currentUser.uid;
-    const currentUser = await axios.get(`/users/login/${firebaseId}`);
+    const firebaseToken = auth.currentUser.accessToken;
+    const currentUserData = await axios.post(`/users/login`, {
+      id: firebaseId,
+      email,
+      password
+    });
+
+    const currentUser = {
+      data: currentUserData.data.user,
+      token: firebaseToken
+    };
+
     return currentUser;
   } catch (error) {
     // if (error.code === "auth/wrong-password") {
@@ -90,5 +116,54 @@ export const loginUser = createAsyncThunk("users/loginUser", async loginCredenti
     // } else {
     //   showMessage("Algo ha salido mal. Por favor inténtelo nuevamente", "error");
     // }
+  }
+});
+
+export const logOutUser = createAsyncThunk("users/logOutUser", async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const addFavourite = createAsyncThunk("users/addFavorite", async data => {
+  try {
+    const { currentUser, id } = data;
+    const save = await axios.post(`/users/favourites/${currentUser.data.id}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${currentUser.token}`
+      }
+    });
+    return save;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const deleteFavourite = createAsyncThunk("users/deleteFavourite", async data => {
+  try {
+    const { currentUser, id } = data;
+    const deleteUser = await axios.delete(`/users/favourites/${currentUser.data.id}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${currentUser.token}`
+      }
+    });
+    return deleteUser;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const fetchFavourites = createAsyncThunk("/users/fetchFavourites", async currentUser => {
+  try {
+    const users = await axios.get(`/users/favourites/${currentUser.data.id}`, {
+      headers: {
+        Authorization: `Bearer ${currentUser.token}`
+      }
+    });
+    return users.data;
+  } catch (error) {
+    console.log(error);
   }
 });

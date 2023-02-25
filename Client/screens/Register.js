@@ -58,58 +58,59 @@ const Register = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
-      <ScrollView>
-        <View className="gap-y-2 p-8 w-full ">
-          <Image
-            style={{
-              resizeMode: "contain"
-            }}
-            className="mb-4 h-28 w-56 mx-auto"
-            source={require("../assets/logo.png")}
-          />
-          <Text style={{ color: colors.text }} className="text-2xl mb-4 font-bold text-center">
-            Unite a MascotApp
-          </Text>
+    <>
+      <View className="gap-y-2 p-8 w-full ">
+        <Image
+          style={{
+            resizeMode: "contain"
+          }}
+          className="mb-4 h-28 w-56 mx-auto"
+          source={require("../assets/logo.png")}
+        />
+        <Text style={{ color: colors.text }} className="text-2xl mb-4 font-bold text-center">
+          Unite a MascotApp
+        </Text>
 
-          {screen === 0 ? (
-            <View>
-              <InputField
-                label="Email"
-                placeholder="Tu correo electrónico"
-                onChangeText={text => setFormData({ ...formData, email: text })}
-                error={errors.email}
-                value={formData.email}
-              />
-              <InputField
-                label="Contraseña"
-                placeholder="Tu contraseña"
-                /*  onChangeText={text => setPassword(text)} */
-                onChangeText={text => setFormData({ ...formData, password: text })}
-                error={errors.password}
-                password
-                value={formData.password}
-              />
-              <InputField
-                label="Confirma tu contraseña"
-                placeholder="Repite tu contraseña"
-                onChangeText={text => setFormData({ ...formData, confirmPassword: text })}
-                error={errors.confirmPassword}
-                password
-                value={formData.confirmPassword}
-              />
-              <View className=" bg-violet-700 rounded-lg">
-                <Pressable onPress={handleValidation} className=" p-3 rounded-lg">
-                  <Text className="text-white text-center font-bold text-lg">Continuar</Text>
-                </Pressable>
-              </View>
+        {screen === 0 ? (
+          <View>
+            <InputField
+              className="my-1"
+              label="E-Mail"
+              placeholder="Tu correo electrónico"
+              onChangeText={text => setFormData({ ...formData, email: text })}
+              error={errors.email}
+              value={formData.email}
+            />
+            <InputField
+              className="my-1"
+              label="Contraseña"
+              placeholder="Tu contraseña"
+              /*  onChangeText={text => setPassword(text)} */
+              onChangeText={text => setFormData({ ...formData, password: text })}
+              error={errors.password}
+              password
+              value={formData.password}
+            />
+            <InputField
+              className="my-1"
+              label="Confirma tu contraseña"
+              placeholder="Repite tu contraseña"
+              onChangeText={text => setFormData({ ...formData, confirmPassword: text })}
+              error={errors.confirmPassword}
+              password
+              value={formData.confirmPassword}
+            />
+            <View className=" bg-violet-700 rounded-lg">
+              <Pressable onPress={handleValidation} className=" p-3 rounded-lg">
+                <Text className="text-white text-center font-bold text-lg">Continuar</Text>
+              </Pressable>
             </View>
-          ) : (
-            <FormSecondScreen formData={formData} setFormData={setFormData} setScreen={setScreen} />
-          )}
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+          </View>
+        ) : (
+          <FormSecondScreen formData={formData} setFormData={setFormData} setScreen={setScreen} />
+        )}
+      </View>
+    </>
   );
 };
 

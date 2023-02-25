@@ -1,25 +1,25 @@
-import { useTheme } from "@react-navigation/native";
-import React, { useState, useRef } from "react";
-import { ScrollView } from "react-native";
+import { useState, useRef, Children } from "react";
+import { ScrollView, Text, View } from "react-native";
+import { useSelector } from "react-redux";
 import ChatMessage from "./ChatMessage";
-import Messages from "../db/messages.json";
 
-const ChatMessages = () => {
-  const { colors } = useTheme();
-  const [messages, setMessages] = useState(Messages);
+const ChatMessages = ({ allMessages }) => {
+  const currentUser = useSelector(state => state.users.currentUser.data);
 
-  const user = useRef(1);
+  if (!allMessages) return <Text className="text-2xl mx-auto">Cargando..</Text>
 
   return (
-    <ScrollView style={{ backgroundColor: colors.background, flex: 1 }}>
-      {messages.map((message, index) => (
-        <ChatMessage
-          key={index}
-          time={message.time}
-          isReceived={message.user !== user.current}
-          message={message.content}
-        />
-      ))}
+    <ScrollView style={{flex: 1, paddingHorizontal: 10}}>
+      {
+        Children.toArray(
+          allMessages.map((messages) => (
+            <ChatMessage 
+              sender={currentUser.id}
+              messages={messages}
+            />
+          ))
+        )
+      }
     </ScrollView>
   );
 };

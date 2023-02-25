@@ -45,6 +45,7 @@ function AuthProvider({ children }) {
   }
 
   function logout() {
+    setCurrentUser("");
     return signOut(auth);
   }
 
@@ -73,11 +74,11 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     setCurrentUser(auth.currentUser);
-  }, [signup]);
+  }, []);
 
   useEffect(() => {
     console.log(currentUser);
-  }, [currentUser, signup]);
+  }, [currentUser]);
 
   //Context value to provide
   const value = {
@@ -88,7 +89,8 @@ function AuthProvider({ children }) {
     resetPassword,
     emailUpdate,
     passwordUpdate,
-    googleSingIn
+    googleSingIn,
+    setCurrentUser
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
