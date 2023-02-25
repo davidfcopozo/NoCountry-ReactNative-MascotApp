@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Text, View, Modal, ScrollView, Pressable } from "react-native";
+import { Text, View, Modal, ScrollView, Pressable, KeyboardAvoidingView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useTheme } from "@react-navigation/native";
 
@@ -15,47 +15,45 @@ const VisitorOptions = () => {
     <View>
       <Modal
         animationType="slide"
-        transparent={false}
+        transparent={true}
         visible={openLogin}
         onRequestClose={() => {
           setOpenLogin(!openLogin);
         }}
       >
-        <ScrollView>
-          <View className="flex justify-center w-full">
-            <View
-              style={{ color: colors.text, backgroundColor: colors.background }}
-              className="pt-5 px-5 h-full border-t border-black/10"
-            >
-              <View className="flex justify-between flex-row items-center">
-                <Ionicons
-                  onPress={() => setOpenLogin(!openLogin)}
-                  name="md-close-sharp"
-                  size={34}
-                  color={colors.text}
-                />
-                <Text className="font-bold">Iniciar Sesión</Text>
-                <Text className="w-10"></Text>
-              </View>
-              <Login openLogin={openLogin} setOpenLogin={setOpenLogin} />
+        <ScrollView className="h-full" style={{ backgroundColor: colors.background }}>
+        <View className="flex justify-center h-full w-full mt-auto">
+          <View
+            className="pt-20 lg:pt-10 px-5 h-full w-full lg:max-w-3xl mx-auto"
+          >
+            <View className="flex justify-between flex-row items-center">
+              <Ionicons
+                onPress={() => setOpenLogin(!openLogin)}
+                name="md-close-sharp"
+                size={34}
+                color={colors.text}
+              />
+              <Text style={{color: colors.text}} className="font-bold">Iniciar Sesión</Text>
+              <Text className="w-10"></Text>
             </View>
+            <Login openLogin={openLogin} setOpenLogin={setOpenLogin} />
           </View>
+        </View>
         </ScrollView>
       </Modal>
 
       <Modal
         animationType="slide"
-        transparent={false}
+        transparent={true}
         visible={openRegister}
         onRequestClose={() => {
           setOpenRegister(!openRegister);
         }}
       >
-        <ScrollView>
-          <View className="flex justify-center w-full">
+        <ScrollView className="h-full" style={{ backgroundColor: colors.background }}>
+          <View className="flex justify-center h-full w-full mt-auto">
             <View
-              style={{ color: colors.text, backgroundColor: colors.background }}
-              className="pt-5 px-5 h-full border-t border-black/10"
+              className="pt-20 lg:pt-10 px-5 h-full w-full lg:max-w-3xl mx-auto"
             >
               <View className="flex justify-between flex-row items-center">
                 <Ionicons
