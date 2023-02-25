@@ -9,6 +9,8 @@ import { doc, setDoc } from "firebase/firestore";
 import { firebaseDb as db } from "../../firebase";
 import { auth } from "../../firebase";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const fetchUsers = createAsyncThunk("/users/fetchUsers", async () => {
   try {
