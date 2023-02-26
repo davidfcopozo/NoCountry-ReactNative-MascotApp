@@ -82,7 +82,7 @@ const UserProfile = ({ route}) => {
           </View>
         )}
 
-        <View className="flex justify-between flex-row">
+        <View className="flex justify-between flex-row w-full flex-shrink">
           <View className="flex flex-col gap-y-2">
             <Text style={{ color: colors.text }} className="text-2xl font-bold -mb-1">
               {user.name} {user.surname}
@@ -161,7 +161,21 @@ const UserProfile = ({ route}) => {
           Sobre mi
         </Text>
         <Text style={{ color: colors.text }} className="text-base">
-          {user.description}
+          {
+            !userActive?
+              user.description?
+                user.description
+                :
+                user.name+" todavia no completo este campo."
+              :
+            currentUser?.data?.id?
+              user.description?
+                user.description
+                :
+                "Aun no completaste este campo."
+            :
+            ""
+          }
         </Text>
       </View>
 

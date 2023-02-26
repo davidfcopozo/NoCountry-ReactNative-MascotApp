@@ -80,17 +80,31 @@ const Messages = () => {
   useEffect(() => {
     if (userID) {
       getNewMsgs()
-    }
-
-    if (userID) {
       getStartedMsgs()
     }
     
   } , [userID]);
 
-  function deleteChat(){
-    console.log("deleted");
-  }
+  const deleteChat = (userDelete) => {
+
+    const chatID = userDelete.toString()
+
+    if (userDelete) {
+      const chatRef = collection(db, "users", userID, "chatusers", chatID, "messages");
+      return getDocs(chatRef).then((querySnapshot) => {
+        const deletePromises = [];
+        querySnapshot.forEach((doc) => {
+          deletePromises.push(deleteDoc(doc.ref));
+        });
+
+        console.log("Mensaje Borrado del User "+chatID);
+
+        return Promise.all(deletePromises);
+      }).catch((error) => {
+        console.error("Error deleting chat:", error);
+      });
+    }
+  };
 
   if (chatList.length < 1)
     return (
@@ -136,7 +150,7 @@ const Messages = () => {
               </View>
             </View>
             </Link>
-            <Pressable>
+            <Pressable onPress={() => deleteChat(user?.id)}>
               <Ionicons
                 name="trash-outline"
                 size={26}

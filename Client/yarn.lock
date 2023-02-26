@@ -5435,6 +5435,11 @@ graphql@15.8.0:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.8.0.tgz#33410e96b012fa3bdb1091cc99a94769db212b38"
   integrity sha512-5gghUc24tP9HRznNpV2+FIoq3xKkj5dTQqf4v0CpdPbFVwFkWoxOM+o+2OC9ZSvjEMTjfmG9QT+gcvggTwW1zw==
 
+grid-flatlist-react-native@^0.1.8:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/grid-flatlist-react-native/-/grid-flatlist-react-native-0.1.8.tgz#9e961e2a30cafe733a2f4ac390bf56e41008b84b"
+  integrity sha512-MO0JzdIRjxtvlvwFPAtIoSNti/2+vh4bKOQ7CwRLVIUL+Uts9CuFoBb9h3wnUUk0cbLaiZdBVK8Hi7+Ql44SPw==
+
 handle-thing@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/handle-thing/-/handle-thing-2.0.1.tgz#857f79ce359580c340d43081cc648970d0bb234e"
