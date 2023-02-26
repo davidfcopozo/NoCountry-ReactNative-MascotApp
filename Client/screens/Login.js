@@ -12,10 +12,9 @@ import { useDispatch, useSelector } from "react-redux";
 import InputField from "../components/InputField";
 import { useTheme, useNavigation } from "@react-navigation/native";
 import { loginUser } from "./../redux/actions/index";
-import { useAuth } from "../context/AuthContext";
 import { actionLogin } from "../redux/reducers/users";
 
-const Login = ({ openLogin, setOpenLogin }) => {
+const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
   const { colors } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -76,6 +75,11 @@ const Login = ({ openLogin, setOpenLogin }) => {
     }
   };
 
+  function goRegister(){
+    setOpenLogin(false);
+    setOpenRegister(true);
+  }
+
   return (
     <>
       <View className="flex gap-y-2 p-8 w-full">
@@ -102,12 +106,14 @@ const Login = ({ openLogin, setOpenLogin }) => {
         </Text>
         
         <InputField
+          className="my-2"
           label="E-Mail"
           placeholder="Correo electrónico"
           onChangeText={text => setEmail(text)}
           error={errors.email}
         />
         <InputField
+          className="my-2"
           label="Contraseña"
           placeholder="Tu contraseña"
           onChangeText={text => setPassword(text)}
@@ -124,7 +130,7 @@ const Login = ({ openLogin, setOpenLogin }) => {
         <View className="flex gap-y-2">
           <Text className="text-violet-500/80 font-bold">Me Olvide la Contraseña</Text>
           <Text className="text-violet-500/80 font-bold">Politica de Privacidad</Text>
-          <Text className="text-violet-500/80 font-bold">No tenes cuenta? Registrate aca</Text>
+          <Text onPress={() => goRegister()} className="text-violet-500/80 font-bold">No tenes cuenta? Registrate aca</Text>
         </View>
       </View>
     </>
