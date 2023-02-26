@@ -15,12 +15,13 @@ import { useSelector } from "react-redux";
 import { actionLogin } from "../redux/reducers/users";
 import { addFavourite, deleteFavourite, fetchFavourites, logOutUser } from "../redux/actions";
 import { useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 import VisitorOptions from "./VisitorOptions";
 
-const UserProfile = ({ route }) => {
+const UserProfile = ({ route}) => {
   const { colors } = useTheme();
   const dispatch = useDispatch();
-
+  const navigation = useNavigation();
   const { currentUser } = useSelector(state => state.users);
   const user = route?.params ? route.params.user : currentUser?.data;
   const favorited = useSelector(state => state.users.favouriteUsers);
@@ -130,7 +131,7 @@ const UserProfile = ({ route }) => {
                 </Pressable>
               </View>
             ) : (
-            <Link to={{ screen: "Message", params: { user } }}>
+            <Link to={currentUser?.data?.id? { screen: "Message", params: { user } } : {screen: "Perfil"}}>
               <View style={{borderColor: colors.border}} className="flex justify-center items-center border mr-auto">
                 <Text style={{color: colors.text}} className="py-2 px-5 font-medium">
                   Chatear
@@ -145,7 +146,7 @@ const UserProfile = ({ route }) => {
               <Ionicons onPress={() => delFavorite()} name="heart" size={30} color={colors.text} />
             ) : (
               <Ionicons
-                onPress={() => addFavorite()}
+                onPress={() => currentUser?.data?.id? addFavorite() : navigation.navigate("Perfil")}
                 name="heart-outline"
                 size={30}
                 color={colors.text}
