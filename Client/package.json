@@ -23,7 +23,6 @@
     "expo-status-bar": "~1.4.2",
     "firebase": "^9.17.1",
     "formik": "^2.2.9",
-    "grid-flatlist-react-native": "^0.1.8",
     "nativewind": "^2.0.11",
     "postcss-loader": "4.2.0",
     "react": "18.1.0",
