@@ -20,8 +20,7 @@ const initialState = {
   favouriteUsers: [],
   search: [],
   chatRecipients: [],
-  isLogin: false,
-  fbError: {}
+  isLogin: false
 };
 
 const usersReducer = createSlice({
@@ -30,9 +29,6 @@ const usersReducer = createSlice({
   reducers: {
     actionLogin: (state, action) => {
       state.isLogin = action.payload;
-    },
-    clearFbErrorState: (state, action) => {
-      state.fbError = {};
     }
   },
   extraReducers: builder => {
@@ -85,6 +81,5 @@ const usersReducer = createSlice({
   }
 });
 
-export const { addFavouriteUser, removeFavouriteUser, actionLogin, clearFbErrorState } =
-  usersReducer.actions;
+export const { addFavouriteUser, removeFavouriteUser, actionLogin } = usersReducer.actions;
 export default usersReducer.reducer;

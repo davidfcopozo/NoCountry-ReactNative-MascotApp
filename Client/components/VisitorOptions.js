@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Text, View, Modal, ScrollView, Pressable, KeyboardAvoidingView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useTheme } from "@react-navigation/native";
-
 import Register from "../screens/Register";
 import Login from "../screens/Login";
 
@@ -22,23 +21,25 @@ const VisitorOptions = () => {
         }}
       >
         <ScrollView className="h-full" style={{ backgroundColor: colors.background }}>
-        <View className="flex justify-center h-full w-full mt-auto">
-          <View
-            className="pt-20 lg:pt-10 px-5 h-full w-full lg:max-w-3xl mx-auto"
-          >
-            <View className="flex justify-between flex-row items-center">
-              <Ionicons
-                onPress={() => setOpenLogin(!openLogin)}
-                name="md-close-sharp"
-                size={34}
-                color={colors.text}
+          <View className="flex justify-center h-full w-full mt-auto">
+            <View className="pt-20 lg:pt-10 px-5 h-full w-full lg:max-w-3xl mx-auto">
+              <View className="flex justify-between flex-row items-center">
+                <Ionicons
+                  onPress={() => setOpenLogin(!openLogin)}
+                  name="md-close-sharp"
+                  size={34}
+                  color={colors.text}
+                />
+                <Text style={{ color: colors.text }} className="font-bold"></Text>
+                <Text className="w-10"></Text>
+              </View>
+              <Login
+                openLogin={openLogin}
+                setOpenLogin={setOpenLogin}
+                setOpenRegister={setOpenRegister}
               />
-              <Text style={{color: colors.text}} className="font-bold"></Text>
-              <Text className="w-10"></Text>
             </View>
-            <Login openLogin={openLogin} setOpenLogin={setOpenLogin} setOpenRegister={setOpenRegister}/>
           </View>
-        </View>
         </ScrollView>
       </Modal>
 
@@ -52,9 +53,7 @@ const VisitorOptions = () => {
       >
         <ScrollView className="h-full" style={{ backgroundColor: colors.background }}>
           <View className="flex justify-center h-full w-full mt-auto">
-            <View
-              className="pt-20 lg:pt-10 px-5 h-full w-full lg:max-w-3xl mx-auto"
-            >
+            <View className="pt-20 lg:pt-10 px-5 h-full w-full lg:max-w-3xl mx-auto">
               <View className="flex justify-between flex-row items-center">
                 <Ionicons
                   onPress={() => setOpenRegister(!openRegister)}
