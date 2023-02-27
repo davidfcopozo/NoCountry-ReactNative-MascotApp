@@ -59,7 +59,7 @@ const Register = () => {
 
   return (
     <>
-      <View className="gap-y-2 p-8 w-full ">
+      <View className="flex gap-y-2 px-4 pb-8 lg:px-8 lg:py-8 w-full">
         <Image
           style={{
             resizeMode: "contain"
@@ -85,7 +85,6 @@ const Register = () => {
               className="my-1"
               label="Contraseña"
               placeholder="Tu contraseña"
-              /*  onChangeText={text => setPassword(text)} */
               onChangeText={text => setFormData({ ...formData, password: text })}
               error={errors.password}
               password

@@ -38,6 +38,7 @@ import ServicesContracted from "./components/ServicesContracted";
 import ServicesProvided from "./components/ServicesProvided";
 import UserProfile from "./components/UserProfile";
 import ForgotPassword from "./screens/ForgotPassword";
+import Privacy from "./screens/Privacy";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
@@ -332,11 +333,20 @@ function App() {
                     title: ""
                   }}
                 />
+
                 <Stack.Screen
                   name="ForgotPassword"
                   component={ForgotPassword}
                   options={{
                     title: "Olvidé mi contraseña"
+                  }}
+                />
+
+                <Stack.Screen
+                  name="Privacy"
+                  component={Privacy}
+                  options={{
+                    title: "Politicas de Privacidad"
                   }}
                 />
               </Stack.Navigator>

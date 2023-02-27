@@ -81,7 +81,7 @@ const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
 
   return (
     <>
-      <View className="flex gap-y-2 p-8 w-full">
+      <View className="flex gap-y-2 px-4 pb-8 lg:px-8 lg:py-8 w-full">
         {loading ? (
           <View className="absolute bottom-0  top-[-60] left-[-20] right-0 justify-center  align-center w-[100vw] bg-gray-100 opacity-25 h-[100vh] m-0 z-10">
             <ActivityIndicator
@@ -126,12 +126,12 @@ const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
           </Pressable>
         </View>
 
-        <View className="flex gap-y-2">
+        <View className="flex gap-y-2 justify-start items-start">
           <Link to={{ screen: "ForgotPassword", params: { emailFromLogin: email, setOpenLogin } }}>
             <Text className="text-violet-500/80 font-bold">Me Olvide la Contraseña</Text>
           </Link>
-          <Text className="text-violet-500/80 font-bold">No tenes cuenta? Registrate aca</Text>
-          <Text className="text-violet-500/80 font-bold">Politica de Privacidad</Text>
+          <Text onPress={() => {setOpenLogin(false), navigation.navigate("Privacy")}} className="text-violet-500/80 font-bold">Politica de Privacidad</Text>
+          <Text onPress={() => goRegister()} className="text-violet-500/80 font-bold">No tenes cuenta? Registrate aca</Text>
         </View>
       </View>
     </>
