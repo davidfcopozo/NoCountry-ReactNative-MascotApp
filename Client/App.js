@@ -37,6 +37,7 @@ import FormEntrenamiento from "./components/FormEntrenamiento";
 import ServicesContracted from "./components/ServicesContracted";
 import ServicesProvided from "./components/ServicesProvided";
 import UserProfile from "./components/UserProfile";
+import Review from "./screens/Review";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
@@ -104,7 +105,7 @@ function BottomNavigation({ isDarkMode, setDarkMode, colors }) {
         headerRight: () => (
           <Ionicons
             onPress={() => setDarkMode(!isDarkMode)}
-            name={isDarkMode? "sunny-outline" : "moon-outline"}
+            name={isDarkMode ? "sunny-outline" : "moon-outline"}
             size={30}
             color={isDarkMode ? "#fff" : "#000"}
           />
@@ -329,6 +330,14 @@ function App() {
                   component={UserProfile}
                   options={{
                     title: ""
+                  }}
+                />
+
+                <Stack.Screen
+                  name="Review"
+                  component={Review}
+                  options={{
+                    title: "Calificar"
                   }}
                 />
               </Stack.Navigator>
