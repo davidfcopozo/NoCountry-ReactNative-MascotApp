@@ -95,6 +95,7 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
 export const loginUser = createAsyncThunk("users/loginUser", async loginCredentials => {
   try {
     const { email, password } = loginCredentials;
+    console.log(email, password);
     await signInWithEmailAndPassword(auth, email, password);
     const firebaseId = auth.currentUser.uid;
     const firebaseToken = auth.currentUser.accessToken;
