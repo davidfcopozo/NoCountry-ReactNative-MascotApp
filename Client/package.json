@@ -23,7 +23,6 @@
     "expo-status-bar": "~1.4.2",
     "firebase": "^9.17.1",
     "formik": "^2.2.9",
-    "grid-flatlist-react-native": "^0.1.8",
     "nativewind": "^2.0.11",
     "postcss-loader": "4.2.0",
     "react": "18.1.0",
@@ -39,7 +38,6 @@
     "react-native-web": "^0.18.12",
     "react-redux": "^8.0.5",
     "react-router-native": "^6.8.1",
-    "react-toastify": "^9.1.1",
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {

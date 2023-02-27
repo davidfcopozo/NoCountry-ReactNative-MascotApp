@@ -33,7 +33,7 @@ const VisitorOptions = () => {
                 size={34}
                 color={colors.text}
               />
-              <Text style={{color: colors.text}} className="font-bold">Iniciar Sesión</Text>
+              <Text style={{color: colors.text}} className="font-bold"></Text>
               <Text className="w-10"></Text>
             </View>
             <Login openLogin={openLogin} setOpenLogin={setOpenLogin} setOpenRegister={setOpenRegister}/>
@@ -62,7 +62,7 @@ const VisitorOptions = () => {
                   size={34}
                   color={colors.text}
                 />
-                <Text className="font-bold">Registrarme</Text>
+                <Text className="font-bold"></Text>
                 <Text className="w-10"></Text>
               </View>
               <Register />
