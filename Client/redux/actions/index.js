@@ -75,14 +75,16 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
 
     //Registra el usuario en la coleccion de users en firestore
 
-    const userid = response.data.user.id.toString();
+    if (auth.currentUser.uid) {
+      const userid = response.data.user.id.toString();
 
-    setDoc(doc(db, "users", userid), {
-      username: name + " " + surname,
-      email: email,
-      userId: userid,
-      timestamp: new Date()
-    });
+      setDoc(doc(db, "users", userid), {
+        username: name + " " + surname,
+        email: email,
+        userId: userid,
+        timestamp: new Date()
+      }); 
+    }
 
     return response.data;
   } catch (error) {
@@ -93,7 +95,6 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
 export const loginUser = createAsyncThunk("users/loginUser", async loginCredentials => {
   try {
     const { email, password } = loginCredentials;
-    console.log(email, password);
     await signInWithEmailAndPassword(auth, email, password);
     const firebaseId = auth.currentUser.uid;
     const firebaseToken = auth.currentUser.accessToken;
