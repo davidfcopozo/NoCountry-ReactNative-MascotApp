@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import InputField from "../components/InputField";
-import { useTheme, useNavigation } from "@react-navigation/native";
+import { useTheme, useNavigation, Link } from "@react-navigation/native";
 import { loginUser } from "./../redux/actions/index";
 import { actionLogin } from "../redux/reducers/users";
 
@@ -29,7 +29,6 @@ const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
     setErrors(prevState => ({ ...prevState, [input]: error }));
   };
 
-  
   async function handleSignin() {
     try {
       const loginCredentials = { email, password };
@@ -75,7 +74,7 @@ const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
     }
   };
 
-  function goRegister(){
+  function goRegister() {
     setOpenLogin(false);
     setOpenRegister(true);
   }
@@ -104,7 +103,7 @@ const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
         <Text style={{ color: colors.text }} className="text-2xl mb-4 font-bold text-center">
           Bienvenido a MascotApp
         </Text>
-        
+
         <InputField
           className="my-2"
           label="E-Mail"
@@ -128,9 +127,11 @@ const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
         </View>
 
         <View className="flex gap-y-2">
-          <Text className="text-violet-500/80 font-bold">Me Olvide la Contraseña</Text>
+          <Link to={{ screen: "ForgotPassword", params: { emailFromLogin: email, setOpenLogin } }}>
+            <Text className="text-violet-500/80 font-bold">Me Olvide la Contraseña</Text>
+          </Link>
+          <Text className="text-violet-500/80 font-bold">No tenes cuenta? Registrate aca</Text>
           <Text className="text-violet-500/80 font-bold">Politica de Privacidad</Text>
-          <Text onPress={() => goRegister()} className="text-violet-500/80 font-bold">No tenes cuenta? Registrate aca</Text>
         </View>
       </View>
     </>
