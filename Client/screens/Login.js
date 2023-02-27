@@ -130,8 +130,17 @@ const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
           <Link to={{ screen: "ForgotPassword", params: { emailFromLogin: email, setOpenLogin } }}>
             <Text className="text-violet-500/80 font-bold">Me Olvide la Contraseña</Text>
           </Link>
-          <Text onPress={() => {setOpenLogin(false), navigation.navigate("Privacy")}} className="text-violet-500/80 font-bold">Politica de Privacidad</Text>
-          <Text onPress={() => goRegister()} className="text-violet-500/80 font-bold">No tenes cuenta? Registrate aca</Text>
+          <Text
+            onPress={() => {
+              setOpenLogin(false), navigation.navigate("Privacy");
+            }}
+            className="text-violet-500/80 font-bold"
+          >
+            Politica de Privacidad
+          </Text>
+          <Text onPress={() => goRegister()} className="text-violet-500/80 font-bold">
+            No tenes cuenta? Registrate aca
+          </Text>
         </View>
       </View>
     </>
