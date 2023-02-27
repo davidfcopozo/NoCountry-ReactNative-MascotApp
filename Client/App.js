@@ -38,10 +38,15 @@ import ServicesContracted from "./components/ServicesContracted";
 import ServicesProvided from "./components/ServicesProvided";
 import UserProfile from "./components/UserProfile";
 import Review from "./screens/Review";
+import ForgotPassword from "./screens/ForgotPassword";
+import Privacy from "./screens/Privacy";
+
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
-axios.defaults.baseURL = REACT_APP_BACK_URL; // cuando querramos trabajar y/o probar nuestro proyecto de forma local
+axios.defaults.baseURL = REACT_APP_BACK_URL;
+
+//axios.defaults.baseURL = REACT_APP_BACK_URL; // cuando querramos trabajar y/o probar nuestro proyecto de forma local
 // axios.defaults.baseURL = process.env.REACT_APP_DEPLOY_BACK_URL; // cuando querramos pushear o actualizar nuestro deploy del front
 
 // Habilita Tailwind en React Native Web
@@ -337,7 +342,23 @@ function App() {
                   name="Review"
                   component={Review}
                   options={{
-                    title: "Calificar"
+                    title: "Calificar"             
+                  }}
+                />
+                
+                <Stack.Screen
+                  name="ForgotPassword"
+                  component={ForgotPassword}
+                  options={{
+                    title: "Olvidé mi contraseña"
+                  }}
+                />
+
+                <Stack.Screen
+                  name="Privacy"
+                  component={Privacy}
+                  options={{
+                    title: "Politicas de Privacidad"
                   }}
                 />
               </Stack.Navigator>

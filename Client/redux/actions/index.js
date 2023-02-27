@@ -9,8 +9,6 @@ import { doc, setDoc } from "firebase/firestore";
 import { firebaseDb as db } from "../../firebase";
 import { auth } from "../../firebase";
 import axios from "axios";
-// import { toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 
 export const fetchUsers = createAsyncThunk("/users/fetchUsers", async () => {
   try {
@@ -77,14 +75,16 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
 
     //Registra el usuario en la coleccion de users en firestore
 
-    const userid = response.data.user.id.toString();
+    if (auth.currentUser.uid) {
+      const userid = response.data.user.id.toString();
 
-    setDoc(doc(db, "users", userid), {
-      username: name + " " + surname,
-      email: email,
-      userId: userid,
-      timestamp: new Date()
-    });
+      setDoc(doc(db, "users", userid), {
+        username: name + " " + surname,
+        email: email,
+        userId: userid,
+        timestamp: new Date()
+      }); 
+    }
 
     return response.data;
   } catch (error) {
@@ -95,6 +95,7 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
 export const loginUser = createAsyncThunk("users/loginUser", async loginCredentials => {
   try {
     const { email, password } = loginCredentials;
+    console.log(email, password);
     await signInWithEmailAndPassword(auth, email, password);
     const firebaseId = auth.currentUser.uid;
     const firebaseToken = auth.currentUser.accessToken;
@@ -111,13 +112,7 @@ export const loginUser = createAsyncThunk("users/loginUser", async loginCredenti
 
     return currentUser;
   } catch (error) {
-    // if (error.code === "auth/wrong-password") {
-    //   showMessage("Contraseña incorrecta", "error");
-    // } else if (error.code === "auth/user-not-found") {
-    //   showMessage("No existe una cuenta registrada con ese email", "error");
-    // } else {
-    //   showMessage("Algo ha salido mal. Por favor inténtelo nuevamente", "error");
-    // }
+    throw error.code;
   }
 });
 

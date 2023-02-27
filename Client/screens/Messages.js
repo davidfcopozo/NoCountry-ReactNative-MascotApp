@@ -109,7 +109,7 @@ const Messages = () => {
   if (chatList.length < 1)
     return (
       <View className="justify-center mx-auto flex-1">
-        <Text style={{ color: colors.text }}  className="text-3xl font-bold align-center justify-center">
+        <Text style={{ color: colors.text }}  className="text-3xl font-bold align-center justify-center text-center">
           No tienes conversaciones
         </Text>
       </View>
