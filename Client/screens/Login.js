@@ -35,12 +35,13 @@ const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
       handleError("");
       dispatch(loginUser(loginCredentials));
     } catch (error) {
+      console.log(error);
       if (error.code === "auth/wrong-password") {
-        handleError("Contraseña incorrecta, por favor intentelo de nuevo", "password");
+        handleError("Contraseña incorrecta", "password");
       } else if (error.code === "auth/user-not-found") {
-        handleError("Usuario no encontrado", "password");
+        handleError("No existe una cuenta registrada con ese email", "password");
       } else if (error.code) {
-        handleError("Algo salió mal, por favor intentelo de nuevo", "password");
+        handleError("Algo ha salido mal. Por favor inténtelo nuevamente", "password");
       }
     }
   }
@@ -130,8 +131,17 @@ const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
           <Link to={{ screen: "ForgotPassword", params: { emailFromLogin: email, setOpenLogin } }}>
             <Text className="text-violet-500/80 font-bold">Me Olvide la Contraseña</Text>
           </Link>
-          <Text onPress={() => {setOpenLogin(false), navigation.navigate("Privacy")}} className="text-violet-500/80 font-bold">Politica de Privacidad</Text>
-          <Text onPress={() => goRegister()} className="text-violet-500/80 font-bold">No tenes cuenta? Registrate aca</Text>
+          <Text
+            onPress={() => {
+              setOpenLogin(false), navigation.navigate("Privacy");
+            }}
+            className="text-violet-500/80 font-bold"
+          >
+            Politica de Privacidad
+          </Text>
+          <Text onPress={() => goRegister()} className="text-violet-500/80 font-bold">
+            No tenes cuenta? Registrate aca
+          </Text>
         </View>
       </View>
     </>
