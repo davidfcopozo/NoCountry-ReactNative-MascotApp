@@ -12,7 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import persistStore from "redux-persist/es/persistStore";
 import store from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
-
+import Constants from "expo-constants";
 import { HomeIcon, MessageIcon, PawIcon, ProfileIcon, SearchIcon } from "./components/Icons";
 
 import Index from "./screens/Index";
@@ -44,9 +44,9 @@ import Privacy from "./screens/Privacy";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
-axios.defaults.baseURL = REACT_APP_BACK_URL;
+axios.defaults.baseURL = Constants.expoConfig.extra.api;
+//axios.defaults.baseURL = "http://localhost:3001";
 
-//axios.defaults.baseURL = REACT_APP_BACK_URL; // cuando querramos trabajar y/o probar nuestro proyecto de forma local
 // axios.defaults.baseURL = process.env.REACT_APP_DEPLOY_BACK_URL; // cuando querramos pushear o actualizar nuestro deploy del front
 
 // Habilita Tailwind en React Native Web
