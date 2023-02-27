@@ -2,33 +2,37 @@ const { Router } = require("express");
 const {
   getUsersBestRating,
   getUsers,
-  addUser,
+  register,
+  login,
   updateUser,
   deleteUser,
   getUserById,
   getUsersByCategory,
   getUsersByFilter,
   getUserFavourites,
-  deleteFavourite,
+  deleteUserFavourites,
   addUserFavourites,
-  getUserJobOffers,
-  getSearch
+  getSearch,
+  addUserReview
 } = require("../controllers/users");
+const decodeToken = require("../middleware");
 
 const router = Router();
 
-router.get("/", getUsers);
+// El middleware decodeToken se aplica a determinadas rutas (son las que se necesita estar logueado para poder acceder)
+router.get("/", getUsers); // ,decodeToken
 router.get("/rating", getUsersBestRating);
 router.get("/category", getUsersByCategory);
-router.post("/register", addUser);
+router.post("/register", register);
+router.post("/login", login);
 router.get("/filter", getUsersByFilter);
 router.get("/search", getSearch);
-router.get("/jobOffers", getUserJobOffers);
-router.get("/favorites/:id/:page", getUserFavourites);
-router.post("/favorites/:id/:favorite", addUserFavourites);
-router.delete("/favorites/:id/:favorite", deleteFavourite);
-router.patch("/:id", updateUser);
-router.delete("/:id", deleteUser);
-router.get("/:id", getUserById);
+router.get("/favourites/:id", getUserFavourites); // ,decodeToken
+router.post("/favourites/:id/:favourite", addUserFavourites); // ,decodeToken
+router.delete("/favourites/:id/:favourite", deleteUserFavourites); // ,decodeToken
+router.patch("/:id", updateUser); // ,decodeToken
+router.delete("/:id", deleteUser); // ,decodeToken
+router.get("/:id", getUserById); // ,decodeToken
+router.post("/review/:id", addUserReview); // ,decodeToken
 
 module.exports = router;

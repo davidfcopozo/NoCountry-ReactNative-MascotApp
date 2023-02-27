@@ -1,7 +1,8 @@
-const { User, Auth, Category, Favourite, JobOffer } = require("../db");
+const { User, Auth, Category, Favourite, JobOffer, Review, Request, Chat } = require("../db");
 const { isValidString, isValidNumber } = require("./../validations/index");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
+const bcrypt = require("bcrypt");
 
 const getUsers = async (req, res) => {
   try {
@@ -14,14 +15,111 @@ const getUsers = async (req, res) => {
   }
 };
 
+const register = async (req, res) => {
+  const { name, surname, city, fb_authId, email, password, isGoogle } = req.body;
+
+  try {
+    if (!name || !surname || !city || !fb_authId || !email || !password) {
+      return res.status(400).json({ errorMessage: "Missing required fields" });
+    }
+
+    if (
+      !isValidString(name) ||
+      !isValidString(surname) ||
+      !isValidString(city) ||
+      !isValidString(fb_authId) ||
+      !isValidString(email) ||
+      !isValidString(password)
+    )
+      return res.status(400).json({ errorMessage: "All fields must be string type" });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const [auth, created] = await Auth.findOrCreate({
+      where: { id: fb_authId, email },
+      defaults: {
+        id: fb_authId,
+        email,
+        password: hashedPassword,
+        isGoogle
+      }
+    });
+
+    if (created) {
+      const newUser = await User.create({
+        name,
+        surname,
+        city,
+        authId: auth.id
+      });
+
+      return res.status(201).json({
+        message: "A new user has been authenticated and created successfully",
+        user: newUser.dataValues
+      });
+    }
+
+    return res.status(400).json({
+      errorMessage: "There is already an account registered with that fb_authId or email",
+      data: auth.dataValues
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original ? error.original : error
+    });
+  }
+};
+
+const login = async (req, res) => {
+  const { email, password, id } = req.body;
+
+  try {
+    if (!email || !password || !id)
+      return res.status(400).json({ errorMessage: "Missing required fields" });
+
+    if (!isValidString(email) || !isValidString(password) || !isValidString(id))
+      return res.status(400).json({ errorMessage: "All fields must be string type" });
+
+    const emailAuthenticated = await Auth.findOne({ where: { email } });
+    if (emailAuthenticated === null)
+      return res
+        .status(404)
+        .json({ errorMessage: "There is no account registered with that email" });
+
+    const passwordsMatch = await bcrypt.compare(password, emailAuthenticated.dataValues.password);
+
+    if (!passwordsMatch) return res.status(400).json({ errorMessage: "Invalid password" });
+
+    const userLoggedIn = await User.findOne({
+      include: {
+        model: Auth,
+        where: {
+          id
+        }
+      }
+    });
+
+    return res
+      .status(200)
+      .json({ message: "A user has logged in successfully", user: userLoggedIn.dataValues });
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original ? error.original : error
+    });
+  }
+};
+
 const getUserById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    if (isValidNumber(id))
+    if (!isValidNumber(id))
       return res.status(400).json({ errorMessage: "The id type must be an integer" });
 
-    const userById = await User.findByPk(id);
+    const userById = await User.findOne({
+      where: {
+        id
+      }
+    });
     !userById
       ? res.status(404).json({ errorMessage: "There is no user with that id" })
       : res.status(200).json(userById.dataValues);
@@ -59,7 +157,7 @@ const getUsersByCategory = async (req, res) => {
 
   try {
     if (!categoryId) return res.status(400).json({ errorMessage: "CategoryId missing" });
-    if (isValidNumber(categoryId))
+    if (!isValidNumber(categoryId))
       return res.status(400).json({ errorMessage: "The categoryId type must be an integer" });
 
     const category = await Category.findByPk(categoryId);
@@ -100,23 +198,72 @@ const getUsersByCategory = async (req, res) => {
   }
 };
 
-const getUserJobOffers = async (req, res) => {
-  const { userId } = req.body;
+const addUserReview = async (req, res) => {
+  const { id } = req.params;
+  const { reviewer_user_id, stars, description } = req.body;
 
   try {
-    if (!userId) return res.status(400).json({ errorMessage: "UserId missing" });
-    if (isValidNumber(userId))
-      return res.status(400).json({ errorMessage: "The userId type must be an integer" });
+    // Validaciones varias
 
-    const user = await User.findByPk(userId, { include: JobOffer });
-    if (user === null)
-      return res.status(404).json({ errorMessage: "There is no user with that id" });
+    if (!isValidNumber(id))
+      return res.status(400).json({ errorMessage: "The id type must be an integer" });
 
-    !user.dataValues.jobOffers.length
-      ? res.status(404).json({
-          errorMessage: `${user.dataValues.name} ${user.dataValues.surname} has no jobOffers to show`
-        })
-      : res.status(200).send(user.dataValues.jobOffers);
+    if (!reviewer_user_id || !isValidNumber(reviewer_user_id))
+      return res
+        .status(400)
+        .json({ errorMessage: "The rewiewer_user_id is required and must be an integer" });
+
+    if (reviewer_user_id === parseInt(id))
+      return res.status(400).json({ errorMessage: "A user cannot be self-reviewed" });
+
+    if (!stars || !isValidNumber(stars) || stars < 1 || stars > 5)
+      return res.status(400).json({
+        errorMessage: "The stars are required and must be an integer between 1 and 5 included"
+      });
+
+    if (description && !isValidString(description))
+      return res.status(400).json({ errorMessage: "Description field must be string type" });
+
+    // Los usuarios (tanto el reseñador como el reseñado) deben existir y estar autenticados
+
+    const userReviewed = await User.findByPk(id, { include: Auth });
+    const userReviewer = await User.findByPk(reviewer_user_id, { include: Auth });
+
+    if (!userReviewed || userReviewed?.dataValues.authId === null)
+      return res.status(404).json({
+        errorMessage: "The user you are trying to review does not exist or is not authenticated"
+      });
+
+    if (!userReviewer || userReviewer?.dataValues.authId === null)
+      return res.status(404).json({
+        errorMessage:
+          "The user that is trying to give the review does not exist or is not authenticated"
+      });
+
+    // Para dejar su reseña, el reseñador debe haber contratado previamente al reseñado
+
+    const userRequested = await Request.findOne({
+      where: {
+        hired_user_id: id,
+        userId: reviewer_user_id
+      }
+    });
+
+    if (!userRequested)
+      return res.status(404).json({
+        errorMessage: "The user that is trying to give the review has not hired the other user yet"
+      });
+
+    // Si todo va bien, y el proceso pasa todas las validaciones y chequeos de arriba, se emite finalmente la reseña
+
+    const newReview = await Review.create({
+      reviewer_user_id,
+      description,
+      stars,
+      userId: id
+    });
+
+    return res.status(201).json(newReview.dataValues);
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
@@ -148,24 +295,34 @@ const getUsersByFilter = async (req, res) => {
   }
 };
 
-/**
- * STATUS : Testing
- * MESSAGE : is not finished yet, requires a session manager to manage the request to the database
- * Add Favorite to the current user favorites
- * @returns favorite
- */
-
-const addUserFavourites = async (req, res) => {
-  const { id, favorite } = req.params;
-  console.log(id + favorite);
+const getUserFavourites = async (req, res) => {
+  const { id } = req.params;
 
   try {
-    await Favourite.create({
-      user_id: id,
-      fav_user_id: favorite
+    if (!isValidNumber(id))
+      return res.status(400).json({ errorMessage: "The id must be an integer" });
+
+    const user = await User.findByPk(id);
+    if (!user) return res.status(404).json({ errorMessage: "There is no user with that id" });
+
+    const favList = await Favourite.findAll({
+      where: { userId: id }
     });
 
-    return res.json({ message: favorite + " Added to favorites of User " + id });
+    if (favList.length) {
+      let ids = favList.map(fav => fav.fav_user_id);
+
+      const favourites = await User.findAll({
+        where: {
+          id: {
+            [Op.and]: [ids]
+          }
+        }
+      });
+
+      return res.status(200).json(favourites);
+    }
+    return res.status(200).json([]);
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
@@ -173,30 +330,90 @@ const addUserFavourites = async (req, res) => {
   }
 };
 
-/**
- * STATUS : Testing
- * MESSAGE : is not finished yet, requires a session manager to manage the request to the database
- * Gets the list of favorites of one user, only returns 10 articles by page
- * @returns favorites list
- */
-
-const getUserFavourites = async (req, res) => {
-  const { page, id } = req.params;
+const addUserFavourites = async (req, res) => {
+  const { id, favourite } = req.params;
 
   try {
-    const favourites = await Favourite.findAll({
+    if (!isValidNumber(id) || !isValidNumber(favourite))
+      return res.status(400).json({ errorMessage: "Both params must be integers" });
+
+    const userThatFavs = await User.findByPk(id);
+    const userFaved = await User.findByPk(favourite);
+
+    if (!userThatFavs)
+      return res
+        .status(404)
+        .json({ errorMessage: "The user that is trying to add a new fav does not exist" });
+
+    if (!userFaved)
+      return res
+        .status(404)
+        .json({ errorMessage: "The user that you are trying to add to your favs does not exist" });
+
+    const found = await Favourite.findOne({
       where: {
-        user_id: id
-      },
-      offset: (page - 1) * 10,
-      limit: 10
+        fav_user_id: favourite,
+        userId: id
+      }
     });
 
-    return res.json(favourites);
+    if (found) return res.status(400).json({ errorMessage: "The user is already in favs" });
+
+    await Favourite.create({
+      fav_user_id: favourite,
+      userId: id
+    });
+
+    return res.status(200).json({ message: favourite + " added to favs of User " + id });
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
     });
+  }
+};
+
+const deleteUserFavourites = async (req, res) => {
+  const { id, favourite } = req.params;
+
+  try {
+    if (!isValidNumber(id) || !isValidNumber(favourite))
+      return res.status(400).json({ errorMessage: "Both params must be integers" });
+
+    const userThatDeletes = await User.findByPk(id);
+    const userDeleted = await User.findByPk(favourite);
+
+    if (!userThatDeletes)
+      return res
+        .status(404)
+        .json({ errorMessage: "The user that is trying to delete a fav does not exist" });
+
+    if (!userDeleted)
+      return res.status(404).json({
+        errorMessage: "The user that you are trying to delete does not exist"
+      });
+
+    const found = await Favourite.findOne({
+      where: {
+        fav_user_id: favourite,
+        userId: id
+      }
+    });
+
+    if (!found)
+      return res
+        .status(400)
+        .json({ errorMessage: "The user that you are trying to delete is not in your favs" });
+
+    await Favourite.destroy({
+      where: {
+        fav_user_id: favourite,
+        userId: id
+      }
+    });
+
+    return res.sendStatus(204);
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.original ? error.original : error });
   }
 };
 
@@ -230,98 +447,6 @@ const updateUser = async (req, res) => {
     )
       .then(result => res.json(result))
       .catch(err => res.json(err));
-  } catch (error) {
-    return res.status(500).json({ errorMessage: error.original ? error.original : error });
-  }
-};
-
-const addUser = async (req, res) => {
-  const {
-    name,
-    surname,
-    age,
-    city,
-    offers_services,
-    description,
-    rating,
-    profile_pic,
-    fb_authId,
-    email,
-    password,
-    isGoogle
-  } = req.body;
-
-  try {
-    if (!name || !surname || !city || !fb_authId || !email || !password) {
-      return res.status(400).json({ errorMessage: "Missing required fields" });
-    }
-
-    if (
-      isValidString(name) ||
-      isValidString(surname) ||
-      isValidString(city) ||
-      isValidString(fb_authId) ||
-      isValidString(email) ||
-      isValidString(password)
-    )
-      return res.status(400).json({ errorMessage: "All fields must be string type" });
-
-    let [auth, created] = await Auth.findOrCreate({
-      where: { email },
-      defaults: {
-        id: fb_authId,
-        email,
-        password,
-        isGoogle
-      }
-    });
-
-    if (created) {
-      let newUser = await User.create({
-        name,
-        surname,
-        age,
-        city,
-        offers_services,
-        description,
-        rating,
-        profile_pic,
-        authId: auth.id
-      });
-
-      return res.status(201).json({
-        message: "A new user has been authenticated and created successfully",
-        user: newUser.dataValues
-      });
-    }
-
-    return res.status(400).json({ errorMessage: "There is already an account with that email" });
-  } catch (error) {
-    return res.status(500).json({
-      errorMessage: error.original ? error.original : error
-    });
-  }
-};
-
-/**
- * STATUS : Testing
- * MESSAGE : is not finished yet, requires a session manager to manage the request to the database
- * Deletes user favorite
- * @returns response of the request
- */
-
-const deleteFavourite = async (req, res) => {
-  const { favorite, id } = req.params;
-
-  try {
-    await Favourite.destroy({
-      where: {
-        user_id: id,
-        fav_user_id: favorite
-      }
-    });
-
-    return res.sendStatus(204);
   } catch (error) {
     return res.status(500).json({ errorMessage: error.original ? error.original : error });
   }
@@ -414,15 +539,16 @@ const getSearch = async (req, res) => {
 module.exports = {
   getUsersBestRating,
   getUsers,
-  addUser,
+  register,
+  login,
   updateUser,
-  deleteFavourite,
+  deleteUserFavourites,
   deleteUser,
   getUserById,
   getUsersByCategory,
   getUsersByFilter,
   getUserFavourites,
   addUserFavourites,
-  getUserJobOffers,
-  getSearch
+  getSearch,
+  addUserReview
 };

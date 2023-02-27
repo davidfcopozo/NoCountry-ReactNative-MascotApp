@@ -18,14 +18,12 @@ const Search = () => {
 
   return (
     <ScrollView>
-      <View className="p-2 w-full">
+      <View className="w-full">
         <SearchBar></SearchBar>
-        <View className="mt-3">
-          <Text style={{ color: colors.text }} className="font-bold text-2xl mb-2">
-            Los más destacados
-          </Text>
-          <Highlights data={sortedUsersByRating} />
-        </View>
+        <Text style={{ color: colors.text }} className="font-bold text-2xl mt-4 mb-3 text-center">
+          Los más destacados
+        </Text>
+        <Highlights data={sortedUsersByRating} />
       </View>
     </ScrollView>
   );

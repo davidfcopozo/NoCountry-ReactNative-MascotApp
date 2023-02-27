@@ -5,28 +5,13 @@ import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const FormEditProfile = () => {
   const colorScheme = "light";
   const { colors } = useTheme();
-
-  const [user, setUser] = useState({
-    id: 1,
-    image:
-      "https://www.lavanguardia.com/files/content_image_mobile_filter/uploads/2022/05/21/628955615d048.jpeg",
-    name: "Lautaro",
-    lastName: "Santillan",
-    email: "pepito@gmail.com",
-    service: "Paseo de Mascotas",
-    price: "1000",
-    stars: 5,
-    info: "Disponible",
-    user_picture: null,
-    location: "Córdoba, Argentina",
-    clients: 5,
-    about:
-      "Soy una persona responsable contrata mis servicios en mi perfil. Hago un servicio de calidad que flipas, dale crack"
-  });
+  const { currentUser } = useSelector(state => state.users);
+  const user = currentUser?.data;
 
   const [loading, setLoading] = useState("");
   const [success, setSuccess] = useState(false);
@@ -48,12 +33,12 @@ const FormEditProfile = () => {
     <View>
       <Formik
         initialValues={{
-          name: `${user.name} ${user.lastName}`,
+          name: `${user.name} ${user.surname}`,
           email: user.email,
-          location: user.location,
-          about: user.about,
+          city: user.city,
+          description: user.description,
           service: user.service,
-          user_picture: user.user_picture
+          profile_pic: user.profile_pic
         }}
         validate={values => {
           const errors = {};
@@ -90,7 +75,7 @@ const FormEditProfile = () => {
           <form className="flex flex-col justify-center items-center" onSubmit={handleSubmit}>
             <View className="p-5">
               <View className="flex items-center">
-                {user.user_picture ? (
+                {user.profile_pic ? (
                   <View>
                     <Image
                       style={{
@@ -100,7 +85,7 @@ const FormEditProfile = () => {
                       }}
                       className="rounded-full"
                       source={{
-                        uri: user.user_picture
+                        uri: user.profile_pic
                       }}
                     />
                   </View>
@@ -119,7 +104,7 @@ const FormEditProfile = () => {
                     type="file"
                     accept="image/png, image/jpeg, image/jpg"
                     onChange={uploadImage}
-                    value={values.user_picture}
+                    value={values.profile_pic}
                   ></input>
                 </View>
               </View>
@@ -183,7 +168,7 @@ const FormEditProfile = () => {
                       name="location"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.location}
+                      value={values.city}
                     />
                   </View>
                 </View>
@@ -204,7 +189,7 @@ const FormEditProfile = () => {
                       name="about"
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.about}
+                      value={values.description}
                     />
                   </View>
                 </View>

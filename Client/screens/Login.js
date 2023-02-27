@@ -1,40 +1,40 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   Text,
   View,
   Image,
   Pressable,
-  ScrollView,
   Keyboard,
   KeyboardAvoidingView,
-  Alert
+  ActivityIndicator
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import InputField from "../components/InputField";
 import { useTheme, useNavigation } from "@react-navigation/native";
-import { useAuth } from "../context/AuthContext";
+import { loginUser } from "./../redux/actions/index";
+import { actionLogin } from "../redux/reducers/users";
 
-const Login = () => {
+const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
   const { colors } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(false);
-  const { login } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { loading } = useSelector(state => state.users);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const handleError = (error, input) => {
     setErrors(prevState => ({ ...prevState, [input]: error }));
   };
 
+  
   async function handleSignin() {
     try {
+      const loginCredentials = { email, password };
       handleError("");
-      setLoading(true);
-      await login(email, password);
-
-      setLoading(false);
+      dispatch(loginUser(loginCredentials));
     } catch (error) {
       if (error.code === "auth/wrong-password") {
         handleError("Contraseña incorrecta, por favor intentelo de nuevo", "password");
@@ -69,13 +69,30 @@ const Login = () => {
 
     if (valid) {
       await handleSignin();
-      await navigation.navigate("Perfil");
+      dispatch(actionLogin(true));
+      setOpenLogin(!openLogin);
+      navigation.navigate("Perfil");
     }
   };
 
+  function goRegister(){
+    setOpenLogin(false);
+    setOpenRegister(true);
+  }
+
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={"padding"}>
+    <>
       <View className="flex gap-y-2 p-8 w-full">
+        {loading ? (
+          <View className="absolute bottom-0  top-[-60] left-[-20] right-0 justify-center  align-center w-[100vw] bg-gray-100 opacity-25 h-[100vh] m-0 z-10">
+            <ActivityIndicator
+              animating={true}
+              size="large"
+              color="blue"
+              className="self-center z-50"
+            />
+          </View>
+        ) : null}
         <Image
           style={{
             resizeMode: "contain"
@@ -87,13 +104,16 @@ const Login = () => {
         <Text style={{ color: colors.text }} className="text-2xl mb-4 font-bold text-center">
           Bienvenido a MascotApp
         </Text>
+        
         <InputField
+          className="my-2"
           label="E-Mail"
           placeholder="Correo electrónico"
           onChangeText={text => setEmail(text)}
           error={errors.email}
         />
         <InputField
+          className="my-2"
           label="Contraseña"
           placeholder="Tu contraseña"
           onChangeText={text => setPassword(text)}
@@ -110,10 +130,10 @@ const Login = () => {
         <View className="flex gap-y-2">
           <Text className="text-violet-500/80 font-bold">Me Olvide la Contraseña</Text>
           <Text className="text-violet-500/80 font-bold">Politica de Privacidad</Text>
-          <Text className="text-violet-500/80 font-bold">No tenes cuenta? Registrate aca</Text>
+          <Text onPress={() => goRegister()} className="text-violet-500/80 font-bold">No tenes cuenta? Registrate aca</Text>
         </View>
       </View>
-    </KeyboardAvoidingView>
+    </>
   );
 };
 

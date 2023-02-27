@@ -4,8 +4,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { Link, useTheme } from "@react-navigation/native";
 import { Children } from "react";
 import { Pressable } from "react-native";
+import { useSelector } from "react-redux";
 
 const Service = ({ route }) => {
+  const { currentUser } = useSelector(state => state.users);
   const user = route.params.user;
   const colorScheme = "light";
   const { colors } = useTheme();
@@ -40,7 +42,7 @@ const Service = ({ route }) => {
         <Link to={{ screen: "Post", params: { user: user } }}>
           <View className="flex flex-row items-center gap-x-4">
             <View className="pl-2">
-              {user.user_picture ? (
+              {user.profile_pic ? (
                 <View className="flex items-center justify-center">
                   <Image
                     style={{
@@ -50,7 +52,7 @@ const Service = ({ route }) => {
                     }}
                     className="rounded-full"
                     source={{
-                      uri: user.user_picture
+                      uri: user.profile_pic
                     }}
                   />
                 </View>
@@ -71,12 +73,12 @@ const Service = ({ route }) => {
                 style={{ color: colors.textGray }}
                 className="text-base mb-1 font-semibold"
               >
-                {user.location}
+                {user.city}
               </Text>
-              {user.stars ? (
+              {user.rating ? (
                 <View className="flex flex-row items-center">
                   {Children.toArray(
-                    Array.from(Array(user.stars)).map(star => (
+                    Array.from(Array(user.rating)).map(star => (
                       <Ionicons name="star" size={13} color="#ffe100" />
                     ))
                   )}
@@ -93,12 +95,17 @@ const Service = ({ route }) => {
           </View>
         </Link>
         <View>
-          <Link to={{ screen: "Message", params: { user: user } }}>
+            <Link to={currentUser?.data?.id? { screen: "Message", params: { user } } : {screen: "Perfil"}}>
             <View
               style={{ color: colors.text, borderColor: colors.text }}
               className="border-2 px-8 py-1 mr-2"
             >
-              <Text className="font-bold text-sm">Chat</Text>
+              <Text
+                style={{ color: colors.text, borderColor: colors.text }}
+                className="font-bold text-sm"
+              >
+                Chat
+              </Text>
             </View>
           </Link>
         </View>

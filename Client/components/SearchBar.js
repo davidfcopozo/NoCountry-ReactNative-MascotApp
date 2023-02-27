@@ -16,11 +16,14 @@ const SearchBar = () => {
   const dispatch = useDispatch();
 
   const handleInput = () => {
-    dispatch(searchView({search: input}));
+    dispatch(searchView({ search: input }));
   };
 
   return (
-    <View className="flex flex-row justify-center items-center pl-2 pr-14">
+    <View className="flex flex-row justify-center items-center pt-3 pl-2 pr-20 w-full">
+      <View className="w-10 md:w-0">
+
+      </View>
       <View className="left-12">
         <SearchIcon color={colors.text}></SearchIcon>
       </View>
@@ -30,6 +33,7 @@ const SearchBar = () => {
         placeholder="Buscar en MascotApp"
         onChange={e => setInput(e.nativeEvent.text)}
         onSubmitEditing={handleInput}
+        keyboardType="web-search"
         placeholderTextColor={colors.textGray}
       ></TextInput>
 
@@ -43,7 +47,11 @@ const SearchBar = () => {
       </View>
 
       <Modal animationType="slide" transparent={true} visible={openFilter}>
-        <Filter currentSearch={{search: input}} openFilter={openFilter} setOpenFilter={setOpenFilter}></Filter>
+        <Filter
+          currentSearch={{ search: input }}
+          openFilter={openFilter}
+          setOpenFilter={setOpenFilter}
+        ></Filter>
       </Modal>
     </View>
   );

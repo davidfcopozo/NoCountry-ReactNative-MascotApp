@@ -1,22 +1,24 @@
 import { Text, View, Image, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Children} from "react";
+import { Children } from "react";
 import { Link, useTheme } from "@react-navigation/native";
 import LoadingGif from "./LoadingGif";
+import { useSelector } from "react-redux";
 
 const Highlights = ({ data }) => {
-  const { colors } = useTheme();
+  const { dark, colors } = useTheme();
+  const { currentUser } = useSelector(state => state.users);
 
-  if (!data) return <LoadingGif />
+  if (!data) return <LoadingGif />;
 
   return (
     <>
       <ScrollView>
-        <View className="flex flex-wrap flex-row py-5 gap-1">
+        <View className="flex justify-start flex-wrap gap-2 flex-row pl-2 py-4 lg:pl-10">
           {data?.length > 0 ? (
             Children.toArray(
-              data.map(card => (
-                <Link to={{ screen: "UserProfile", params: { user: card, title: card.name } }}>
+              data.map((card, index) => (
+                <Link style={{marginRight: data.length-1 === index? "auto" : 0}} to={currentUser?.data?.id === card.id? { screen: "Perfil"} : { screen: "VisitProfile", params: {user: card, title: card.name, id : card.id} }}>
                   <View
                     className="flex-1 flex items-center w-32 border border-black/5 rounded-lg overflow-hidden bg-white/10 pt-3"
                   >
@@ -31,12 +33,17 @@ const Highlights = ({ data }) => {
                           uri: card.profile_pic
                         }}
                       />
-                      ) : (
-                        <Ionicons name="person-circle-outline" size={100} style={{height: 100, width: 100}} color={colors.text} />
+                    ) : (
+                      <View className="bg-white">
+                        <Ionicons
+                          name="person-circle-outline"
+                          size={100}
+                          style={{ height: 100, width: 100 }}
+                        />
+                      </View>
                     )}
 
                     <View className="p-2">
-
                       <Text
                         numberOfLines={1}
                         style={{ color: colors.textGray }}
@@ -46,11 +53,18 @@ const Highlights = ({ data }) => {
                       </Text>
 
                       {
+                        card?.categories?.length > 0?
                         Children.toArray(
-                        card?.categories?.map(category => (
-                          <Text className="bg-violet-700 text-white font-bold p-1 text-center capitalize">{category?.name}</Text>
-                        ))
+                          card?.categories?.map(category => (
+                            <Text className="bg-violet-700 text-white font-bold p-1 text-center capitalize">
+                              {category?.name}
+                            </Text>
+                          ))
                         )
+                        :
+                        <Text className="bg-violet-700 text-white font-bold p-1 text-center capitalize">
+                          Usuario
+                        </Text>
                       }
 
                       <View className="flex flex-row py-2 justify-left items-left gap-x-2">
@@ -77,6 +91,9 @@ const Highlights = ({ data }) => {
                                 <Ionicons name="star" size={10} color="#ffe100" />
                               ))
                             )}
+                            <Text style={{ color: colors.textGray }} className="text-xs ml-1">
+                              {card.rating ? "(" + card.rating + ")" : undefined}
+                            </Text>
                           </View>
                         </View>
                       </View>
@@ -87,7 +104,9 @@ const Highlights = ({ data }) => {
             )
           ) : (
             <View className="flex justify-center items-center w-full">
-              <Text className="py-3 px-4 text-center font-bold text-2xl text-white bg-violet-600">Sin Resultados.</Text>
+              <Text className="py-3 px-4 text-center font-bold text-2xl text-white bg-violet-600">
+                Sin Resultados.
+              </Text>
             </View>
           )}
         </View>
