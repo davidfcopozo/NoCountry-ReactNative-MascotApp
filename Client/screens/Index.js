@@ -15,7 +15,7 @@ const Index = () => {
         <Shortcuts navigate={false} />
 
         <Text style={{ color: colors.text }} className="font-bold text-2xl mb-2">
-          Mascoteros cerca de tí
+          Mascoteros cerca de ti
         </Text>
 
         <Cards Data={CardsData} />
