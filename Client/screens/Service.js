@@ -126,7 +126,14 @@ const Service = ({ route }) => {
       "
       >
         <View>
-          <TouchableOpacity className="flex flex-row justify-center items-center bg-violet-700 py-2 px-5 rounded-lg">
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate(
+                currentUser?.data?.id ? { name: "Request", params: { user } } : { name: "Perfil" }
+              )
+            }
+            className="flex flex-row justify-center items-center bg-violet-700 py-2 px-5 rounded-lg"
+          >
             <Text className="text-xl text-white">Contratar</Text>
           </TouchableOpacity>
         </View>

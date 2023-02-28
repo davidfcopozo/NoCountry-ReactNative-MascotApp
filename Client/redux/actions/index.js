@@ -83,7 +83,7 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
         email: email,
         userId: userid,
         timestamp: new Date()
-      }); 
+      });
     }
 
     return response.data;
@@ -160,6 +160,15 @@ export const fetchFavourites = createAsyncThunk("/users/fetchFavourites", async 
       }
     });
     return users.data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const fetchPetTypes = createAsyncThunk("/petTypes", async () => {
+  try {
+    const petTypes = await axios.get("/petTypes");
+    return petTypes.data;
   } catch (error) {
     console.log(error);
   }
