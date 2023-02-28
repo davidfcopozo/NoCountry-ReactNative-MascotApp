@@ -84,7 +84,7 @@ const CustomDark = {
   dark: true,
   colors: {
     background: darkColor,
-    border: "#272729ab",
+    border: "#272729c7",
     card: darkColor,
     notification: "#ff453a",
     primary: "#0a84ff",
