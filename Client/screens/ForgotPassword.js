@@ -27,40 +27,53 @@ const ForgotPassword = ({ route }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  let toastConfig;
+  let toastConfig = {
+    success: props => (
+      <BaseToast
+        {...props}
+        style={{
+          borderLeftColor: "green",
+          height: "100%",
+          paddingVertical: 10,
+          paddingHorizontal: 15,
+          zIndex: 100
+        }}
+        text1Style={{
+          fontSize: 17,
+          fontWeight: "700"
+        }}
+        text2Style={{
+          fontSize: 15,
+          fontWeight: "400"
+        }}
+        text2NumberOfLines={5}
+      />
+    ),
+    error: props => (
+      <ErrorToast
+        {...props}
+        style={{
+          borderLeftColor: "red",
+          height: "100%",
+          paddingVertical: 10,
+          paddingHorizontal: 15,
+          zIndex: 100
+        }}
+        text1Style={{
+          fontSize: 17
+        }}
+        text2Style={{
+          fontSize: 15,
+          fontWeight: "400"
+        }}
+        text2NumberOfLines={5}
+      />
+    )
+  };
 
   useEffect(() => {
     setOpenLogin(false);
     setEmail(emailFromLogin ? emailFromLogin : "");
-    toastConfig = {
-      success: props => (
-        <BaseToast
-          {...props}
-          style={{ borderLeftColor: "green" }}
-          contentContainerStyle={{ paddingHorizontal: 15 }}
-          text1Style={{
-            fontSize: 17,
-            fontWeight: "700"
-          }}
-          text2Style={{
-            fontSize: 17,
-            fontWeight: "700"
-          }}
-        />
-      ),
-      error: props => (
-        <ErrorToast
-          {...props}
-          text1Style={{
-            fontSize: 17
-          }}
-          text2Style={{
-            fontSize: 17,
-            fontWeight: "400"
-          }}
-        />
-      )
-    };
   }, []);
 
   const handleError = (error, input) => {
@@ -74,7 +87,7 @@ const ForgotPassword = ({ route }) => {
       Toast.show({
         type: "success",
         text1: "¡Hurra!",
-        text2: "Revisa tu correo para más instrucciones.",
+        text2: "Te hemos enviado un correo electrónico, abre el enlace para cambiar tu contraseña.",
         onHide: () => navigation.navigate("Perfil"),
         visibilityTime: 3000,
         autoHide: true
@@ -86,7 +99,7 @@ const ForgotPassword = ({ route }) => {
         Toast.show({
           type: "error",
           text1: "¡Lo sentimos!",
-          text2: "No hemos encontrado este usuario."
+          text2: "No hemos encontrado este usuario en nuestra base de datos."
         });
       } else if (error.code) {
         setValid(false);
@@ -140,7 +153,7 @@ const ForgotPassword = ({ route }) => {
             className="mb-4 h-28 w-56 mx-auto"
             source={require("../assets/logo.png")}
           />
-          <View className="w-100 align-center">
+          <View className="w-100 align-center" style={{ zIndex: -1 }}>
             <Text style={{ color: colors.text }} className="text-sm mb-4 w-[80%] self-center">
               ¿Olvidó la contraseña de su cuenta? Ingrese su dirección de correo electrónico y le
               enviaremos un enlace de recuperación.
@@ -153,12 +166,13 @@ const ForgotPassword = ({ route }) => {
             error={errors.email}
             value={email}
           />
-          <View className="bg-violet-700 p-3 rounded-lg">
+          <View className="bg-violet-700 p-3 rounded-lg mb-2">
             <Pressable onPress={handleValidation} disabled={loading ? true : false}>
               <Text className="text-white text-center font-bold text-lg">Continuar</Text>
             </Pressable>
           </View>
-          <View className="flex gap-y-2">
+
+          <View className="flex gap-y-2 justify-start items-start">
             <Link to={{ screen: "Perfil" }}>
               <Text className="text-violet-500/80 font-bold">Tenes cuenta? Inicia sesión acá</Text>
             </Link>

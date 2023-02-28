@@ -13,7 +13,7 @@ const Cards = ({ Data }) => {
       {Children.toArray(
         Data?.map(card => (
           <Link to={{ screen: "Service", params: { user: card, title: card.name } }}>
-            <View className="w-44 relative border border-black/5 rounded-lg overflow-hidden bg-white/10">
+            <View className="w-44 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
               <Image
                 className="h-36"
                 source={{

@@ -18,7 +18,8 @@ const FormEditProfile = () => {
     city: "",
     description: "",
     profile_pic: "",
-    services: []
+    services: [],
+    pets: []
   });
 
   const handleChange = name => {
@@ -151,6 +152,29 @@ const FormEditProfile = () => {
                     style={{ color: colors.text, borderColor: colors.text }}
                   >
                     No ofreces servicios
+                  </Text>
+                )}
+              </View>
+            </View>
+
+            <View className="gap-y-1 pb-3">
+              <Text style={{ color: colors.text }} className="text-lg font-bold">
+                Mascotas
+              </Text>
+              <View style={{ color: colors.text, borderColor: colors.text }}>
+                {user.offers_services ? (
+                  <Text
+                    className="text-base"
+                    style={{ color: colors.text, borderColor: colors.text }}
+                  >
+                    Si tiene mascota
+                  </Text>
+                ) : (
+                  <Text
+                    className="text-base"
+                    style={{ color: colors.text, borderColor: colors.text }}
+                  >
+                    No tiene mascota
                   </Text>
                 )}
               </View>
