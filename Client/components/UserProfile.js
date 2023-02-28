@@ -198,7 +198,7 @@ const UserProfile = ({ route }) => {
             showsHorizontalScrollIndicator={false}
             className="mt-3 gap-x-5"
           >
-            <View className="w-36 relative shadow-md rounded-lg overflow-hidden bg-white/10">
+            <View className="w-36 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
               <Image
                 className="h-24"
                 source={{
@@ -206,7 +206,7 @@ const UserProfile = ({ route }) => {
                 }}
               />
 
-              <View className="p-2">
+              <View className="p-2 flex justify-center items-center">
                 <Text
                   numberOfLines={1}
                   style={{ color: colors.text }}
@@ -225,7 +225,7 @@ const UserProfile = ({ route }) => {
               </View>
             </View>
 
-            <View className="w-36 relative shadow-md rounded-lg overflow-hidden bg-white/10">
+            <View className="w-36 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
               <Image
                 className="h-24"
                 source={{
@@ -233,7 +233,7 @@ const UserProfile = ({ route }) => {
                 }}
               />
 
-              <View className="p-2">
+              <View className="p-2 flex justify-center items-center">
                 <Text
                   numberOfLines={1}
                   style={{ color: colors.text }}
@@ -252,7 +252,7 @@ const UserProfile = ({ route }) => {
               </View>
             </View>
 
-            <View className="w-36 relative shadow-md rounded-lg overflow-hidden bg-white/10">
+            <View className="w-36 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
               <Image
                 className="h-24"
                 source={{
@@ -260,7 +260,7 @@ const UserProfile = ({ route }) => {
                 }}
               />
 
-              <View className="p-2">
+              <View className="p-2 flex justify-center items-center">
                 <Text
                   numberOfLines={1}
                   style={{ color: colors.text }}
@@ -297,7 +297,7 @@ const UserProfile = ({ route }) => {
           <View className="mt-3">
             {userActive ? (
               <View className="flex flex-row gap-x-5">
-                <View className="w-36 relative shadow-md rounded-lg overflow-hidden bg-white/10">
+                <View className="w-36 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
                   <Image
                     className="h-24"
                     source={{
@@ -305,7 +305,7 @@ const UserProfile = ({ route }) => {
                     }}
                   />
 
-                  <View className="p-2">
+                  <View className="p-2 flex justify-center items-center">
                     <Text
                       numberOfLines={1}
                       style={{ color: colors.text }}
@@ -324,7 +324,7 @@ const UserProfile = ({ route }) => {
                   </View>
                 </View>
                 <Pressable onPress={() => navigation.navigate({ name: "FormAddPet" })}>
-                  <View className="w-36 relative shadow-md rounded-lg overflow-hidden bg-white/10">
+                  <View className="w-36 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
                     <Image
                       className="h-24"
                       source={{
@@ -332,7 +332,7 @@ const UserProfile = ({ route }) => {
                       }}
                     />
 
-                    <View className="p-2">
+                    <View className="p-2 flex justify-center items-center">
                       <Text
                         numberOfLines={1}
                         style={{ color: colors.text }}
@@ -358,7 +358,7 @@ const UserProfile = ({ route }) => {
                   No tiene mascotas
                 </Text>
                 <Pressable onPress={() => navigation.navigate({ name: "FormAddPet" })}>
-                  <View className="w-36 relative shadow-md rounded-lg overflow-hidden bg-white/10">
+                  <View className="w-36 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
                     <Image
                       className="h-24"
                       source={{
@@ -366,7 +366,7 @@ const UserProfile = ({ route }) => {
                       }}
                     />
 
-                    <View className="p-2">
+                    <View className="p-2 flex justify-center items-center">
                       <Text
                         numberOfLines={1}
                         style={{ color: colors.text }}
@@ -391,7 +391,7 @@ const UserProfile = ({ route }) => {
         ) : user.offers_services ? (
           <View className="mt-3">
             {user.offers_services ? (
-              <View className="w-36 relative shadow-md rounded-lg overflow-hidden bg-white/10">
+              <View className="w-36 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
                 <Image
                   className="h-24"
                   source={{
@@ -399,7 +399,7 @@ const UserProfile = ({ route }) => {
                   }}
                 />
 
-                <View className="p-2">
+                <View className="p-2 flex justify-center items-center">
                   <Text
                     numberOfLines={1}
                     style={{ color: colors.text }}
@@ -437,7 +437,7 @@ const UserProfile = ({ route }) => {
           </Text>
 
           {user.offers_services ? (
-            <View className="shadow-md py-3 px-4 rounded-lg  bg-white/10 mt-2">
+            <View className="shadow-sm py-3 px-4 rounded-lg bg-white/10 mt-2 mb-10">
               <View className="flex flex-row items-center gap-x-6">
                 <View className="">
                   <Image
@@ -491,11 +491,6 @@ const UserProfile = ({ route }) => {
           </TouchableOpacity>
         </View>
       ) : undefined}
-      <View>
-        <TouchableOpacity onPress={handleLogOut} className="bg-violet-700 py-2 px-4 rounded-lg">
-          <Text className="text-xl text-white">Cerrar sesión</Text>
-        </TouchableOpacity>
-      </View>
     </ScrollView>
   );
 };
