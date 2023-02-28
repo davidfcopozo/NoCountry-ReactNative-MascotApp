@@ -92,7 +92,7 @@ const Shortcuts = ({ navigate }) => {
     <View className="flex items-center justify-center mt-16">
       <View className="flex justify-center pt-4">
         <Text style={{ color: colors.text }} className="flex justify-center text-xl font-semibold">
-          Elije un servicio
+          Elige un servicio
         </Text>
       </View>
       <View className="flex flex-wrap flex-row py-5 px-5 gap-4 justify-center items-center">

@@ -57,8 +57,6 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
       sendEmailVerification(res.user)
     );
     const firebaseId = auth.currentUser.uid;
-    // Para saber a qué rutas se debe mandar el firebaseToken por headers, ir a Server/src/routes/users.js
-    const firebaseToken = auth.currentUser.accessToken;
 
     const userData = {
       name,
@@ -71,8 +69,6 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
 
     const response = await axios.post("/users/register", userData);
 
-    // toast.success(`Welcome ${userData.name} ${userData.surname}`, { position: toast.POSITION.BOTTOM_CENTER });
-
     //Registra el usuario en la coleccion de users en firestore
 
     if (auth.currentUser.uid) {
@@ -83,7 +79,7 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
         email: email,
         userId: userid,
         timestamp: new Date()
-      }); 
+      });
     }
 
     return response.data;
@@ -95,10 +91,11 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
 export const loginUser = createAsyncThunk("users/loginUser", async loginCredentials => {
   try {
     const { email, password } = loginCredentials;
-    console.log(email, password);
     await signInWithEmailAndPassword(auth, email, password);
     const firebaseId = auth.currentUser.uid;
+    // Para saber a qué rutas se debe mandar el firebaseToken por headers, ir a Server/src/routes/users.js
     const firebaseToken = auth.currentUser.accessToken;
+
     const currentUserData = await axios.post(`/users/login`, {
       id: firebaseId,
       email,
