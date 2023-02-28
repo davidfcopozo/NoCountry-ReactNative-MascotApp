@@ -42,6 +42,10 @@ const UserProfile = ({ route}) => {
     dispatch(fetchFavourites(currentUser));
   };
 
+  const refreshList = () => {
+    dispatch(fetchFavourites(currentUser));
+  }
+
   const verifyFavorite = id => {
     const res = favorited
       ?.filter(fav => {
@@ -143,10 +147,10 @@ const UserProfile = ({ route}) => {
 
           {!userActive ? (
             verifyFavorite(user.id) ? (
-              <Ionicons onPress={() => delFavorite()} name="heart" size={30} color={colors.text} />
+              <Ionicons onPress={() => {delFavorite(), refreshList()}} name="heart" size={30} color={colors.text} />
             ) : (
               <Ionicons
-                onPress={() => currentUser?.data?.id? addFavorite() : navigation.navigate("Perfil")}
+                onPress={() => currentUser?.data?.id? (addFavorite(), refreshList()): navigation.navigate("Perfil")}
                 name="heart-outline"
                 size={30}
                 color={colors.text}

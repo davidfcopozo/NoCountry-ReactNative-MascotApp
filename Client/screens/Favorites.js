@@ -26,6 +26,10 @@ const Favorites = () => {
     dispatch(fetchFavourites(currentUser));
   };
 
+  const refreshList = () => {
+    dispatch(fetchFavourites(currentUser));
+  }
+
   return (
     <View className="pt-3 pb-10 w-full">
       <ScrollView className="h-full" showsVerticalScrollIndicator="false">
@@ -71,7 +75,7 @@ const Favorites = () => {
 
               <Pressable className="right-2 top-2 absolute">
                 <Ionicons
-                  onPress={() => delFavorite(favorite.id)}
+                  onPress={() => {delFavorite(favorite.id), refreshList()}}
                   name="trash-outline"
                   size={26}
                   color={dark ? "#fff" : "#000"}
