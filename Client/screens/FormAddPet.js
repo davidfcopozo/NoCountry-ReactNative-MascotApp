@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
 import { fetchPetTypes } from "../redux/actions";
+import LoadingGif from '../components/LoadingGif'
 
 const FormAddPet = () => {
   const { colors } = useTheme();
@@ -128,6 +129,11 @@ const FormAddPet = () => {
       navigation.goBack();
     }
   };
+
+  if (!petTypes) {
+    return <LoadingGif/>
+  }
+
   return (
     <ScrollView>
       <View>
