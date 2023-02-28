@@ -88,7 +88,7 @@ const FormSecondScreen = ({ formData, setFormData, setScreen }) => {
 
     if (valid) {
       await handleSignup();
-      await AsyncStorage.setItem("token", formData);
+      await AsyncStorage.setItem("token", JSON.stringify(formData));
     }
   };
 
