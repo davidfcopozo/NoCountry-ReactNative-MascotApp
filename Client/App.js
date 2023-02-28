@@ -43,6 +43,12 @@ import FormEntrenamiento from "./components/FormEntrenamiento";
 import ServicesContracted from "./components/ServicesContracted";
 import ServicesProvided from "./components/ServicesProvided";
 import UserProfile from "./components/UserProfile";
+import Review from "./screens/Review";
+import ForgotPassword from "./screens/ForgotPassword";
+import Privacy from "./screens/Privacy";
+import Configuration from "./screens/Configuration";
+import FormAddPet from "./screens/FormAddPet";
+import Request from "./screens/Request";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
@@ -358,6 +364,30 @@ function App() {
                   component={Privacy}
                   options={{
                     title: "Politicas de Privacidad"
+                  }}
+                />
+
+                <Stack.Screen
+                  name="Configuration"
+                  component={Configuration}
+                  options={{
+                    title: "Configuracion"
+                  }}
+                />
+
+                <Stack.Screen
+                  name="FormAddPet"
+                  component={FormAddPet}
+                  options={{
+                    title: "Agregar mascota"
+                  }}
+                />
+
+                <Stack.Screen
+                  name="Request"
+                  component={Request}
+                  options={{
+                    title: "Contratar"
                   }}
                 />
               </Stack.Navigator>

@@ -9,7 +9,8 @@ import {
   logOutUser,
   fetchFavourites,
   addFavourite,
-  deleteFavourite
+  deleteFavourite,
+  fetchPetTypes
 } from "../actions";
 
 const initialState = {
@@ -20,6 +21,7 @@ const initialState = {
   favouriteUsers: [],
   search: [],
   chatRecipients: [],
+  petTypes: [],
   isLogin: false
 };
 
@@ -68,6 +70,9 @@ const usersReducer = createSlice({
     });
     builder.addCase(fetchFavourites.fulfilled, (state, action) => {
       state.favouriteUsers = action.payload;
+    });
+    builder.addCase(fetchPetTypes.fulfilled, (state, action) => {
+      state.petTypes = action.payload;
     });
     // builder.addCase(addFavourite.fulfilled, (state, action) => {
     //   state.favouriteUsers.push(action.payload);
