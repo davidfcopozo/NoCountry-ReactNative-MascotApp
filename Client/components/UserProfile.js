@@ -42,6 +42,10 @@ const UserProfile = ({ route }) => {
     dispatch(fetchFavourites(currentUser));
   };
 
+  const refreshList = () => {
+    dispatch(fetchFavourites(currentUser));
+  };
+
   const verifyFavorite = id => {
     const res = favorited
       ?.filter(fav => {
@@ -142,11 +146,21 @@ const UserProfile = ({ route }) => {
 
           {!userActive ? (
             verifyFavorite(user.id) ? (
-              <Ionicons onPress={() => delFavorite()} name="heart" size={30} color={colors.text} />
+              <Ionicons
+                onPress={() => {
+                  delFavorite(), refreshList();
+                }}
+                name="heart"
+                size={30}
+                color={colors.text}
+              />
             ) : (
               <Ionicons
                 onPress={() =>
-                  currentUser?.data?.id ? addFavorite() : navigation.navigate("Perfil")
+                  currentUser?.data?.id
+                    ? (addFavorite(), refreshList())
+                    : navigation.navigate("Perfil")
+
                 }
                 name="heart-outline"
                 size={30}
@@ -159,7 +173,7 @@ const UserProfile = ({ route }) => {
 
       <View className="mt-8">
         <Text style={{ color: colors.text }} className="text-xl mb-1 font-bold">
-          Sobre mi
+          Sobre mí
         </Text>
         <Text style={{ color: colors.text }} className="text-base">
           {!userActive
@@ -169,7 +183,7 @@ const UserProfile = ({ route }) => {
             : currentUser?.data?.id
             ? user.description
               ? user.description
-              : "Aun no completaste este campo."
+              : "Aún no completaste este campo."
             : ""}
         </Text>
       </View>
@@ -470,6 +484,7 @@ const UserProfile = ({ route }) => {
 
       {userActive ? (
         <View className="flex justify-center items-center">
+
           <TouchableOpacity
             onPress={handleLogOut}
             className="bg-violet-700 py-2 px-4 rounded-lg mt-10"
@@ -479,6 +494,13 @@ const UserProfile = ({ route }) => {
         </View>
       ) : undefined}
     </ScrollView>
+
+          <TouchableOpacity onPress={handleLogOut} className="bg-violet-700 py-2 px-4 rounded-lg">
+            <Text className="text-xl text-white">Cerrar sesión</Text>
+          </TouchableOpacity>
+        </View>
+      ) : undefined}
+    </View>
   );
 };
 

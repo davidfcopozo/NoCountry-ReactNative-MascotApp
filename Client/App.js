@@ -1,5 +1,4 @@
 import { REACT_APP_BACK_URL } from "@env";
-import axios from "axios";
 import { NativeWindStyleSheet } from "nativewind";
 import { useState } from "react";
 import { NativeRouter } from "react-router-native";
@@ -9,11 +8,14 @@ import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
-import persistStore from "redux-persist/es/persistStore";
-import store from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
+import persistStore from "redux-persist/es/persistStore";
+import axios from "axios";
+import Constants from "expo-constants";
 
-import { HomeIcon, MessageIcon, PawIcon, ProfileIcon, SearchIcon } from "./components/Icons";
+import store from "./redux/store";
+
+import AuthProvider from "./context/AuthContext";
 
 import Index from "./screens/Index";
 import Home from "./screens/Home";
@@ -27,7 +29,11 @@ import BlogPost from "./screens/BlogPost";
 import Favorites from "./screens/Favorites";
 import EditarProfile from "./screens/EditProfile";
 import Service from "./screens/Service";
-import AuthProvider from "./context/AuthContext";
+import Review from "./screens/Review";
+import ForgotPassword from "./screens/ForgotPassword";
+import Privacy from "./screens/Privacy";
+
+import { HomeIcon, MessageIcon, PawIcon, ProfileIcon, SearchIcon } from "./components/Icons";
 import FormService from "./components/FormService";
 import FormCorteDePelo from "./components/FormCorteDePelo";
 import FormPaseador from "./components/FormPaseador";
@@ -46,10 +52,7 @@ import Request from "./screens/Request";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
-axios.defaults.baseURL = REACT_APP_BACK_URL;
-
-//axios.defaults.baseURL = REACT_APP_BACK_URL; // cuando querramos trabajar y/o probar nuestro proyecto de forma local
-// axios.defaults.baseURL = process.env.REACT_APP_DEPLOY_BACK_URL; // cuando querramos pushear o actualizar nuestro deploy del front
+axios.defaults.baseURL = Constants.expoConfig.extra.api;
 
 // Habilita Tailwind en React Native Web
 
