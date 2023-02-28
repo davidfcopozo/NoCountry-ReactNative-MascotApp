@@ -536,6 +536,29 @@ const getSearch = async (req, res) => {
   }
 };
 
+const resetPassword = async (req, res) => {
+  const { email, password } = req.body;
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  try {
+    await Auth.update(
+      {
+        password : hashedPassword
+      },
+      {
+        where: {
+          email
+        }
+      }
+    );
+
+    return res.status(200);
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.original ? error.original : error });
+  }
+};
+
 module.exports = {
   getUsersBestRating,
   getUsers,
@@ -550,5 +573,6 @@ module.exports = {
   getUserFavourites,
   addUserFavourites,
   getSearch,
-  addUserReview
+  addUserReview,
+  resetPassword
 };
