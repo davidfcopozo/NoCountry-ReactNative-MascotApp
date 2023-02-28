@@ -160,7 +160,6 @@ const UserProfile = ({ route }) => {
                   currentUser?.data?.id
                     ? (addFavorite(), refreshList())
                     : navigation.navigate("Perfil")
-
                 }
                 name="heart-outline"
                 size={30}
@@ -484,7 +483,6 @@ const UserProfile = ({ route }) => {
 
       {userActive ? (
         <View className="flex justify-center items-center">
-
           <TouchableOpacity
             onPress={handleLogOut}
             className="bg-violet-700 py-2 px-4 rounded-lg mt-10"
@@ -493,14 +491,12 @@ const UserProfile = ({ route }) => {
           </TouchableOpacity>
         </View>
       ) : undefined}
+      <View>
+        <TouchableOpacity onPress={handleLogOut} className="bg-violet-700 py-2 px-4 rounded-lg">
+          <Text className="text-xl text-white">Cerrar sesión</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
-
-          <TouchableOpacity onPress={handleLogOut} className="bg-violet-700 py-2 px-4 rounded-lg">
-            <Text className="text-xl text-white">Cerrar sesión</Text>
-          </TouchableOpacity>
-        </View>
-      ) : undefined}
-    </View>
   );
 };
 
