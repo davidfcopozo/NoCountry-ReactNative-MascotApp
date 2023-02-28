@@ -35,12 +35,13 @@ const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
       handleError("");
       dispatch(loginUser(loginCredentials));
     } catch (error) {
+      console.log(error);
       if (error.code === "auth/wrong-password") {
-        handleError("Contraseña incorrecta, por favor intentelo de nuevo", "password");
+        handleError("Contraseña incorrecta", "password");
       } else if (error.code === "auth/user-not-found") {
-        handleError("Usuario no encontrado", "password");
+        handleError("No existe una cuenta registrada con ese email", "password");
       } else if (error.code) {
-        handleError("Algo salió mal, por favor intentelo de nuevo", "password");
+        handleError("Algo ha salido mal. Por favor inténtelo nuevamente", "password");
       }
     }
   }
