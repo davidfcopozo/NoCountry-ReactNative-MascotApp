@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Pressable, Image } from "react-native";
+import { View, Text, Pressable, Image, Platform } from "react-native";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { BackIcon } from "./Icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -9,7 +9,7 @@ const ChatHeader = ({ user }) => {
   const { colors } = useTheme();
   
   return (
-    <View className="h-15 flex-row bg-white-500 dark:black-500 pt-10 lg:pt-2 pb-1 mb-1 w-full align-center">
+    <View className={"h-15 flex-row bg-white-500 dark:black-500 lg:pt-2 pb-1 mb-1 w-full align-center "+(Platform.OS === "ios"? "pt-10" : "pt-4")}>
       <Pressable
         className="justify-center px-5"
         onPress={() => navigation.goBack()}
