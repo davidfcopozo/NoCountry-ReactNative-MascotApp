@@ -22,6 +22,12 @@ const FormSecondScreen = ({ formData, setFormData, setScreen }) => {
       setErrors("");
       setLoading(true);
       dispatch(registerUser(formData)).then(res => {
+        if (!res.error) {
+          return Toast.show({
+            type: "success",
+            text1: `¡Registro exitoso! Se te ha enviado un email para que verifiques tu correo electónico`
+          });
+        }
         switch (res.error?.message) {
           case "auth/email-already-in-use":
             Toast.show({
