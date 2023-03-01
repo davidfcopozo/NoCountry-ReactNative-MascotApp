@@ -28,7 +28,7 @@ const slides = [
   }
 ];
 
-const OnboardingScreen = () => {
+const OnboardingScreen = ({ setFinishedOnboarding }) => {
   const { width } = useWindowDimensions();
   const { colors } = useTheme();
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -72,6 +72,7 @@ const OnboardingScreen = () => {
         slides={slides}
         skip={skip}
         next={next}
+        setFinishedOnboarding={setFinishedOnboarding}
       />
     </View>
   );
