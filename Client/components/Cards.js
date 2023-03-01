@@ -1,5 +1,5 @@
 import { Text, View, Image, Pressable, ScrollView } from "react-native";
-import { Children, Fragment } from "react";
+import { Children } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useTheme } from "@react-navigation/native";
 

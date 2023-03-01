@@ -1,10 +1,9 @@
-import { Text, View, ScrollView, Image, Pressable } from "react-native";
+import { Text, View, ScrollView } from "react-native";
 import Cards from "../components/Cards";
 import Shortcuts from "../components/Shortcuts";
-import CardsData from "../db/cards.json";
 import Blogs from "../components/Blogs";
 import BlogsData from "../db/blogs.json";
-import { Link, useTheme } from "@react-navigation/native";
+import { useTheme } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchNearbyUsers } from "../redux/actions";
