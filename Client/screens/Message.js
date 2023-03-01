@@ -1,4 +1,4 @@
-import { ScrollView, KeyboardAvoidingView } from "react-native";
+import { ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import ChatHeader from "../components/ChatHeader";
 import ChatInput from "../components/ChatInput";
 import { useState, useEffect, useRef } from "react";
@@ -100,8 +100,8 @@ const Message = ({ route }) => {
   return (
     <>
       <KeyboardAvoidingView
-        className="pb-6 h-full justify-center mb-3"
-        behavior="padding"
+        className={"h-full justify-center mb-3 "+(Platform.OS === "ios"? "pb-6" : "")}
+        behavior={Platform.OS === "ios"? "padding" : 0}
         style={{ flex: 1 }}
       >
         <ChatHeader user={receiver} />

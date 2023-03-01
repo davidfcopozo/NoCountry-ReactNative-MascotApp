@@ -161,3 +161,13 @@ export const fetchFavourites = createAsyncThunk("/users/fetchFavourites", async 
     console.log(error);
   }
 });
+
+export const fetchPetTypes = createAsyncThunk("/petTypes", async () => {
+  try {
+    const petTypes = await axios.get("/petTypes");
+    return petTypes.data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
