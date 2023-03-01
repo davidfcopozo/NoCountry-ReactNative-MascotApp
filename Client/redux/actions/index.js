@@ -171,14 +171,20 @@ export const fetchPetTypes = createAsyncThunk("petTypes", async () => {
   }
 });
 
-export const addNewPet = createAsyncThunk("/add", async formData => {
+export const addNewPet = createAsyncThunk("/add", async data => {
   try {
-    const { name, age, breed, weight, typePet } = formData;
+    const { user, formData } = data;
 
-    const petData = { name, age, breed, weight, typePet };
+    const newPet = {
+      userId: user.id,
+      petTypeId: formData.idPet,
+      name: formData.name,
+      age: formData.age,
+      breed: formData.breed,
+      weight: formData.weight
+    };
 
-    const response = await axios.post("/add", petData);
-    console.log(petData);
+    const response = await axios.post("/pets/add", newPet);
     return response.data;
   } catch (error) {
     console.log("ERROR", error);
