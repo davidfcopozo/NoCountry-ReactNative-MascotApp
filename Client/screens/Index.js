@@ -1,25 +1,30 @@
 import { Text, View, ScrollView } from "react-native";
 import Cards from "../components/Cards";
 import Shortcuts from "../components/Shortcuts";
-import CardsData from "../db/cards.json";
 import Blogs from "../components/Blogs";
 import BlogsData from "../db/blogs.json";
 import { useTheme } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useSelector } from "react-redux";
 import OnboardingScreen from "./OnboardingScreen";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchNearbyUsers } from "../redux/actions";
 
 const Index = () => {
   const { colors } = useTheme();
-
   const [firstAppLaunch, setFirstAppLaunch] = useState("");
   const [finishedOnboarding, setFinishedOnboarding] = useState(false);
-  const { isLogin } = useSelector(state => state.users);
+  const { isLogin, currentUser, nearbyUsers } = useSelector(state => state.users);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchNearbyUsers(currentUser.data?.city));
+  }, [currentUser.length]);
 
   useEffect(() => {
     const getAsyncProps = async () => {
       const appData = await AsyncStorage.getItem("firstAppLaunch");
+
       if (appData === null) {
         setFirstAppLaunch(true);
         AsyncStorage.setItem("firstAppLaunch", "false");
@@ -27,8 +32,11 @@ const Index = () => {
         setFirstAppLaunch(false);
       }
     };
-    getAsyncProps();
-  }, [AsyncStorage]);
+
+    if (isLogin) {
+      getAsyncProps();
+    }
+  }, []);
 
   if (firstAppLaunch && isLogin && finishedOnboarding === false)
     return <OnboardingScreen setFinishedOnboarding={setFinishedOnboarding} />;
@@ -42,7 +50,7 @@ const Index = () => {
           Mascoteros cerca de ti
         </Text>
 
-        <Cards Data={CardsData} />
+        <Cards Data={nearbyUsers?.data} />
 
         <Text style={{ color: colors.text }} className="font-bold text-2xl mb-2">
           Blogs

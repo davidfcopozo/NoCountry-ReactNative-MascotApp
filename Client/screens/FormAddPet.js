@@ -5,7 +5,8 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
 import { fetchPetTypes } from "../redux/actions";
-import LoadingGif from '../components/LoadingGif'
+import LoadingGif from "../components/LoadingGif";
+import { addNewPet } from "../redux/actions";
 
 const FormAddPet = () => {
   const { colors } = useTheme();
@@ -13,19 +14,20 @@ const FormAddPet = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { petTypes } = useSelector(state => state.users);
+  const { currentUser } = useSelector(state => state.users);
+  const user = currentUser?.data;
 
   useEffect(() => {
     dispatch(fetchPetTypes());
-    console.log(petTypes);
   }, []);
 
   const [formData, setFormData] = useState({
+    idPet: 0,
     typePet: "",
     name: "",
     breed: "",
     age: "",
-    weight: "",
-    image_pet: imagePet
+    weight: ""
   });
 
   const [valid, setValid] = useState({
@@ -33,8 +35,7 @@ const FormAddPet = () => {
     name: false,
     breed: false,
     age: false,
-    weight: false,
-    image_pet: false
+    weight: false
   });
 
   const [errors, setErrors] = useState({});
@@ -48,17 +49,20 @@ const FormAddPet = () => {
     } else setValid({ ...valid, [name]: false });
   };
 
-  const handleSelect = name => {
-    setFormData({ ...formData, typePet: name });
-    name === "perro"
+  const handleSelect = data => {
+    const id = data[0];
+    const type = data.slice(2, 10);
+    setFormData({ ...formData, idPet: id, typePet: type });
+    setValid({ ...valid, typePet: true });
+    type === "perro"
       ? setImagePet("https://cdn-icons-png.flaticon.com/128/1998/1998627.png")
-      : name === "gato"
+      : type === "gato"
       ? setImagePet("https://cdn-icons-png.flaticon.com/128/1998/1998592.png")
-      : name === "pez"
+      : type === "pez"
       ? setImagePet("https://cdn-icons-png.flaticon.com/128/874/874960.png")
-      : name === "pájaro"
+      : type === "pájaro"
       ? setImagePet("https://cdn-icons-png.flaticon.com/128/404/404013.png")
-      : name === "hámster"
+      : type === "hámster"
       ? setImagePet("https://cdn-icons-png.flaticon.com/128/6807/6807896.png")
       : setImagePet(
           "https://img.freepik.com/vector-gratis/coleccion-diferentes-caras-perros_1096-37.jpg"
@@ -107,23 +111,10 @@ const FormAddPet = () => {
         weight: false
       });
     }
-    if (!formData.image_pet) {
-      handleError("Por favor, seleccione una opcion", "image_pet");
-      setValid({
-        ...valid,
-        image_pet: false
-      });
-    }
 
-    if (
-      valid.typePet &&
-      valid.name &&
-      valid.breed &&
-      valid.age &&
-      valid.weight &&
-      valid.image_pet
-    ) {
+    if (valid.typePet && valid.name && valid.breed && valid.age && valid.weight) {
       setTimeout(() => {
+        dispatch(addNewPet({ user, formData }));
         alert(JSON.stringify(formData, null, 2));
       }, 100);
       navigation.goBack();
@@ -131,7 +122,7 @@ const FormAddPet = () => {
   };
 
   if (!petTypes) {
-    return <LoadingGif/>
+    return <LoadingGif />;
   }
 
   return (
@@ -187,11 +178,31 @@ const FormAddPet = () => {
                   }}
                   onValueChange={handleSelect}
                   items={[
-                    { label: petTypes[0]?.name, value: petTypes[0]?.name, color: colors.text },
-                    { label: petTypes[1]?.name, value: petTypes[1]?.name, color: colors.text },
-                    { label: petTypes[2]?.name, value: petTypes[2]?.name, color: colors.text },
-                    { label: petTypes[3]?.name, value: petTypes[3]?.name, color: colors.text },
-                    { label: petTypes[4]?.name, value: petTypes[4]?.name, color: colors.text }
+                    {
+                      label: petTypes[0]?.name,
+                      value: petTypes[0] ? [petTypes[0].id, petTypes[0].name] : undefined,
+                      color: colors.text
+                    },
+                    {
+                      label: petTypes[1]?.name,
+                      value: petTypes[1] ? [petTypes[1].id, petTypes[1].name] : undefined,
+                      color: colors.text
+                    },
+                    {
+                      label: petTypes[2]?.name,
+                      value: petTypes[2] ? [petTypes[2].id, petTypes[2].name] : undefined,
+                      color: colors.text
+                    },
+                    {
+                      label: petTypes[3]?.name,
+                      value: petTypes[3] ? [petTypes[3].id, petTypes[3].name] : undefined,
+                      color: colors.text
+                    },
+                    {
+                      label: petTypes[4]?.name,
+                      value: petTypes[4] ? [petTypes[4].id, petTypes[4].name] : undefined,
+                      color: colors.text
+                    }
                   ]}
                 />
               </View>
