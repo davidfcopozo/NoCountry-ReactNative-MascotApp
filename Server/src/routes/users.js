@@ -13,7 +13,8 @@ const {
   deleteUserFavourites,
   addUserFavourites,
   getSearch,
-  addUserReview
+  addUserReview,
+  resetPassword
 } = require("../controllers/users");
 const decodeToken = require("../middleware");
 
@@ -34,5 +35,6 @@ router.patch("/:id", updateUser); // ,decodeToken
 router.delete("/:id", deleteUser); // ,decodeToken
 router.get("/:id", getUserById); // ,decodeToken
 router.post("/review/:id", addUserReview); // ,decodeToken
+router.put("/password", resetPassword); // ,decodeToken
 
 module.exports = router;
