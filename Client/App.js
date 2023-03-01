@@ -2,8 +2,8 @@ import { REACT_APP_BACK_URL } from "@env";
 import { NativeWindStyleSheet } from "nativewind";
 import { useState } from "react";
 import { NativeRouter } from "react-router-native";
-import { Provider, useSelector } from "react-redux";
-import { Image, View, StatusBar } from "react-native";
+import { Provider } from "react-redux";
+import { Image, StatusBar } from "react-native";
 import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -43,7 +43,6 @@ import FormEntrenamiento from "./components/FormEntrenamiento";
 import ServicesContracted from "./components/ServicesContracted";
 import ServicesProvided from "./components/ServicesProvided";
 import UserProfile from "./components/UserProfile";
-import OnboardingScreen from "./screens/OnboardingScreen";
 import Configuration from "./screens/Configuration";
 import FormAddPet from "./screens/FormAddPet";
 import Request from "./screens/Request";
@@ -362,14 +361,6 @@ function App() {
                   component={Privacy}
                   options={{
                     title: "Politicas de Privacidad"
-                  }}
-                />
-
-                <Stack.Screen
-                  name="OnboardingScreen"
-                  component={OnboardingScreen}
-                  options={{
-                    title: "Bienvenid@ a MascotApp"
                   }}
                 />
 
