@@ -10,7 +10,7 @@ import { firebaseDb as db } from "../../firebase";
 import { auth } from "../../firebase";
 import axios from "axios";
 
-export const fetchUsers = createAsyncThunk("/users/fetchUsers", async () => {
+export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
   try {
     const users = await axios.get("/users");
     return users.data;
@@ -19,7 +19,7 @@ export const fetchUsers = createAsyncThunk("/users/fetchUsers", async () => {
   }
 });
 
-export const sortUsersByRating = createAsyncThunk("/users/sortUsersByRating", async () => {
+export const sortUsersByRating = createAsyncThunk("users/sortUsersByRating", async () => {
   try {
     const users = await axios.get("/users/rating");
     return users.data;
@@ -28,7 +28,7 @@ export const sortUsersByRating = createAsyncThunk("/users/sortUsersByRating", as
   }
 });
 
-export const fetchUserById = createAsyncThunk("/users/fetchUserById", async userId => {
+export const fetchUserById = createAsyncThunk("users/fetchUserById", async userId => {
   try {
     const userById = await axios.get(`/users/${userId}`);
     console.log(userById.data);
@@ -38,7 +38,7 @@ export const fetchUserById = createAsyncThunk("/users/fetchUserById", async user
   }
 });
 
-export const searchView = createAsyncThunk("/users/search", async searchThis => {
+export const searchView = createAsyncThunk("users/search", async searchThis => {
   try {
     const users = await axios.get("/users/search", {
       params: searchThis
@@ -67,7 +67,7 @@ export const registerUser = createAsyncThunk("users/registerUser", async formDat
       password
     };
 
-    const response = await axios.post("/users/register", userData);
+    const response = await axios.post("users/register", userData);
 
     //Registra el usuario en la coleccion de users en firestore
 
@@ -149,7 +149,7 @@ export const deleteFavourite = createAsyncThunk("users/deleteFavourite", async d
   }
 });
 
-export const fetchFavourites = createAsyncThunk("/users/fetchFavourites", async currentUser => {
+export const fetchFavourites = createAsyncThunk("users/fetchFavourites", async currentUser => {
   try {
     const users = await axios.get(`/users/favourites/${currentUser.data.id}`, {
       headers: {
@@ -162,7 +162,7 @@ export const fetchFavourites = createAsyncThunk("/users/fetchFavourites", async 
   }
 });
 
-export const fetchPetTypes = createAsyncThunk("/petTypes", async () => {
+export const fetchPetTypes = createAsyncThunk("petTypes", async () => {
   try {
     const petTypes = await axios.get("/petTypes");
     return petTypes.data;
@@ -185,23 +185,11 @@ export const addNewPet = createAsyncThunk("/add", async formData => {
   }
 });
 
-export const updateProfile = createAsyncThunk("/users/updateProfile", async data => {
+export const fetchNearbyUsers = createAsyncThunk("users/fetchNearbyUsers", async city => {
   try {
-    const { user, formData } = data;
-
-    const updateInfo = {
-      name: formData.name,
-      surname: formData.surname,
-      age: formData.age,
-      city: formData.city,
-      description: formData.description,
-      profile_pic: formData.profile_pic
-    };
-    // console.log(user, formData);
-    const response = await axios.put(`/users/${user.id}`, updateInfo);
-    console.log(response.data);
-    return response.data;
+    const usersSameCity = await axios.get(`/users/city/${city}`);
+    return usersSameCity;
   } catch (error) {
-    console.log("ERROR", error);
+    return error.response.data;
   }
 });

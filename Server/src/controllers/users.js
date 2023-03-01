@@ -130,6 +130,33 @@ const getUserById = async (req, res) => {
   }
 };
 
+const getUsersSameCity = async (req, res) => {
+  const { city } = req.params;
+
+  try {
+    if (isValidNumber(city))
+      return res.status(400).json({ errorMessage: "The city must be string type" });
+
+    const usersSameCity = await User.findAll({
+      where: {
+        city: {
+          [Op.iLike]: `${city}`
+        }
+      }
+    });
+
+    const nearbyUsers = usersSameCity.map(user => user.dataValues);
+
+    nearbyUsers.length
+      ? res.status(200).json(nearbyUsers)
+      : res.status(404).json({ errorMessage: "There is no users with the same city" });
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original ? error.original : error
+    });
+  }
+};
+
 const getUsersBestRating = async (req, res) => {
   try {
     const usersOrdered = await User.findAll({
@@ -541,10 +568,10 @@ const resetPassword = async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-  
+
     await Auth.update(
       {
-        password : hashedPassword
+        password: hashedPassword
       },
       {
         where: {
@@ -560,7 +587,6 @@ const resetPassword = async (req, res) => {
 };
 
 module.exports = {
-  getUsersBestRating,
   getUsers,
   register,
   login,
@@ -568,6 +594,8 @@ module.exports = {
   deleteUserFavourites,
   deleteUser,
   getUserById,
+  getUsersSameCity,
+  getUsersBestRating,
   getUsersByCategory,
   getUsersByFilter,
   getUserFavourites,
