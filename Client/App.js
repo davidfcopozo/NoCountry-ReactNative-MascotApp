@@ -2,7 +2,7 @@ import { REACT_APP_BACK_URL } from "@env";
 import { NativeWindStyleSheet } from "nativewind";
 import { useState } from "react";
 import { NativeRouter } from "react-router-native";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { Image, View, StatusBar } from "react-native";
 import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -43,6 +43,7 @@ import FormEntrenamiento from "./components/FormEntrenamiento";
 import ServicesContracted from "./components/ServicesContracted";
 import ServicesProvided from "./components/ServicesProvided";
 import UserProfile from "./components/UserProfile";
+import OnboardingScreen from "./screens/OnboardingScreen";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
@@ -185,11 +186,14 @@ function BottomNavigation({ isDarkMode, setDarkMode, colors }) {
 // Index de Rutas
 
 let persistorStore = persistStore(store);
+const { isLogin } = useSelector(state => state.users);
 
 function App() {
   const [isDarkMode, setDarkMode] = useState(false);
 
   const { colors } = useTheme();
+  const [initialRoute, setInitialRoute] = useState();
+  const [firstAppLaunch, setFirstAppLaunch] = useState();
 
   // Esto toma el tema del dispositivo
   // const scheme = useColorScheme();
@@ -358,6 +362,14 @@ function App() {
                   component={Privacy}
                   options={{
                     title: "Politicas de Privacidad"
+                  }}
+                />
+
+                <Stack.Screen
+                  name="OnboardingScreen"
+                  component={OnboardingScreen}
+                  options={{
+                    title: "Bienvenid@ a MascotApp"
                   }}
                 />
               </Stack.Navigator>
