@@ -3,7 +3,7 @@ import { NativeWindStyleSheet } from "nativewind";
 import { useState } from "react";
 import { NativeRouter } from "react-router-native";
 import { Provider } from "react-redux";
-import { Image, View, StatusBar } from "react-native";
+import { Image, StatusBar } from "react-native";
 import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
