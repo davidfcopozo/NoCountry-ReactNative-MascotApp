@@ -1,7 +1,7 @@
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { View, Text, Pressable, useWindowDimensions } from "react-native";
 
-const OnboardingFooter = ({ currentSlideIndex, slides, skip, next }) => {
+const OnboardingFooter = ({ currentSlideIndex, slides, skip, next, setFinishedOnboarding }) => {
   const { colors } = useTheme();
   const { height } = useWindowDimensions();
   const navigation = useNavigation();
@@ -33,7 +33,7 @@ const OnboardingFooter = ({ currentSlideIndex, slides, skip, next }) => {
         {currentSlideIndex == slides.length - 1 ? (
           <View className="h-14">
             <Pressable
-              onPress={() => navigation.navigate("Inicio")}
+              onPress={() => setFinishedOnboarding(true)}
               className="flex-1 h-14 rounded-md justify-center align-center"
               style={{
                 backgroundColor: colors.violet
