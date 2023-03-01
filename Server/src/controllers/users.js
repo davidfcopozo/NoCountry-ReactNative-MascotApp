@@ -204,8 +204,8 @@ const getUsersByCategory = async (req, res) => {
     const usersArray = usersThatOfferServices.map(user => user.dataValues);
 
     const usersToShow = [];
-    for (let user of usersArray) {
-      for (let u of user.categories) {
+    for (const user of usersArray) {
+      for (const u of user.categories) {
         if (u.id === categoryId) {
           usersToShow.push(user);
         }
@@ -337,7 +337,7 @@ const getUserFavourites = async (req, res) => {
     });
 
     if (favList.length) {
-      let ids = favList.map(fav => fav.fav_user_id);
+      const ids = favList.map(fav => fav.fav_user_id);
 
       const favourites = await User.findAll({
         where: {
