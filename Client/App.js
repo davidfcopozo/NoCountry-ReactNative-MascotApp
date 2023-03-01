@@ -186,14 +186,11 @@ function BottomNavigation({ isDarkMode, setDarkMode, colors }) {
 // Index de Rutas
 
 let persistorStore = persistStore(store);
-const { isLogin } = useSelector(state => state.users);
 
 function App() {
   const [isDarkMode, setDarkMode] = useState(false);
 
   const { colors } = useTheme();
-  const [initialRoute, setInitialRoute] = useState();
-  const [firstAppLaunch, setFirstAppLaunch] = useState();
 
   // Esto toma el tema del dispositivo
   // const scheme = useColorScheme();
