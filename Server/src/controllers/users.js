@@ -539,9 +539,9 @@ const getSearch = async (req, res) => {
 const resetPassword = async (req, res) => {
   const { email, password } = req.body;
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-
   try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+  
     await Auth.update(
       {
         password : hashedPassword
