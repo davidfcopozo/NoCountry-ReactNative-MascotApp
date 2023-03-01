@@ -5,7 +5,8 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
 import { fetchPetTypes } from "../redux/actions";
-import LoadingGif from '../components/LoadingGif'
+import LoadingGif from "../components/LoadingGif";
+import { addNewPet } from "../redux/actions";
 
 const FormAddPet = () => {
   const { colors } = useTheme();
@@ -16,7 +17,7 @@ const FormAddPet = () => {
 
   useEffect(() => {
     dispatch(fetchPetTypes());
-    console.log(petTypes);
+    // console.log(petTypes);
   }, []);
 
   const [formData, setFormData] = useState({
@@ -24,8 +25,7 @@ const FormAddPet = () => {
     name: "",
     breed: "",
     age: "",
-    weight: "",
-    image_pet: imagePet
+    weight: ""
   });
 
   const [valid, setValid] = useState({
@@ -33,8 +33,7 @@ const FormAddPet = () => {
     name: false,
     breed: false,
     age: false,
-    weight: false,
-    image_pet: false
+    weight: false
   });
 
   const [errors, setErrors] = useState({});
@@ -50,6 +49,7 @@ const FormAddPet = () => {
 
   const handleSelect = name => {
     setFormData({ ...formData, typePet: name });
+    setValid({ ...valid, typePet: true });
     name === "perro"
       ? setImagePet("https://cdn-icons-png.flaticon.com/128/1998/1998627.png")
       : name === "gato"
@@ -71,6 +71,7 @@ const FormAddPet = () => {
 
   const handleValidation = async () => {
     Keyboard.dismiss();
+    console.log(formData);
 
     if (!formData.typePet) {
       handleError("Por favor, seleccione un tipo de mascota", "typePet");
@@ -107,23 +108,10 @@ const FormAddPet = () => {
         weight: false
       });
     }
-    if (!formData.image_pet) {
-      handleError("Por favor, seleccione una opcion", "image_pet");
-      setValid({
-        ...valid,
-        image_pet: false
-      });
-    }
 
-    if (
-      valid.typePet &&
-      valid.name &&
-      valid.breed &&
-      valid.age &&
-      valid.weight &&
-      valid.image_pet
-    ) {
+    if (valid.typePet && valid.name && valid.breed && valid.age && valid.weight) {
       setTimeout(() => {
+        dispatch(addNewPet(formData));
         alert(JSON.stringify(formData, null, 2));
       }, 100);
       navigation.goBack();
@@ -131,7 +119,7 @@ const FormAddPet = () => {
   };
 
   if (!petTypes) {
-    return <LoadingGif/>
+    return <LoadingGif />;
   }
 
   return (

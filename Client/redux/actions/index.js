@@ -171,3 +171,37 @@ export const fetchPetTypes = createAsyncThunk("/petTypes", async () => {
   }
 });
 
+export const addNewPet = createAsyncThunk("/add", async formData => {
+  try {
+    const { name, age, breed, weight, typePet } = formData;
+
+    const petData = { name, age, breed, weight, typePet };
+
+    const response = await axios.post("/add", petData);
+    console.log(petData);
+    return response.data;
+  } catch (error) {
+    console.log("ERROR", error);
+  }
+});
+
+export const updateProfile = createAsyncThunk("/users/updateProfile", async data => {
+  try {
+    const { user, formData } = data;
+
+    const updateInfo = {
+      name: formData.name,
+      surname: formData.surname,
+      age: formData.age,
+      city: formData.city,
+      description: formData.description,
+      profile_pic: formData.profile_pic
+    };
+    // console.log(user, formData);
+    const response = await axios.put(`/users/${user.id}`, updateInfo);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log("ERROR", error);
+  }
+});
