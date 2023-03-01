@@ -17,7 +17,7 @@ const getUserJobOffers = async (req, res) => {
       ? res.status(404).json({
           errorMessage: `${user.dataValues.name} ${user.dataValues.surname} has no jobOffers to show`
         })
-      : res.status(200).send(user.dataValues.jobOffers);
+      : res.status(200).json(user.dataValues.jobOffers);
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
@@ -72,7 +72,7 @@ const createJobOffer = async (req, res) => {
 
     // Si no la tiene, la creo
     if (userJobOfferWithCategory === null) {
-      let newJobOffer = await JobOffer.create({
+      const newJobOffer = await JobOffer.create({
         name,
         description,
         price,
@@ -84,7 +84,7 @@ const createJobOffer = async (req, res) => {
       // Como el usuario se ha creado una jobOffer, seteo su propiedad offers_services en true
       await user.update({ offers_services: true });
 
-      return res.status(201).json({ jobOffer: newJobOffer.dataValues });
+      return res.status(201).json(newJobOffer.dataValues);
     }
 
     // Si efectivamente la tiene, mando mensaje de error
