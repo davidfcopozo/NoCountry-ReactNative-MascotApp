@@ -10,7 +10,8 @@ import {
   fetchFavourites,
   addFavourite,
   deleteFavourite,
-  fetchPetTypes
+  fetchPetTypes,
+  fetchNearbyUsers
 } from "../actions";
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
   currentUser: [],
   userDetail: {},
   favouriteUsers: [],
+  nearbyUsers: [],
   search: [],
   chatRecipients: [],
   petTypes: [],
@@ -41,12 +43,10 @@ const usersReducer = createSlice({
       state.search = action.payload;
     });
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
-      const { payload } = action;
-      state.chatRecipients.push(payload);
+      state.chatRecipients.push(action.payload);
     });
     builder.addCase(searchView.fulfilled, (state, action) => {
-      const { payload } = action;
-      state.search = [payload];
+      state.search = action.payload;
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.users = action.payload;
@@ -74,18 +74,12 @@ const usersReducer = createSlice({
     builder.addCase(fetchPetTypes.fulfilled, (state, action) => {
       state.petTypes = action.payload;
     });
-    // builder.addCase(addFavourite.fulfilled, (state, action) => {
-    //   state.favouriteUsers.push(action.payload);
-    // });
-    // builder.addCase(deleteFavourite.fulfilled, (state, action) => {
-    //   const newArray = state.favouriteUsers.filter(
-    //     favUser => favUser.fav_user_id !== action.payload
-    //   );
-    //   state.favouriteUsers = newArray;
-    // });
+    builder.addCase(fetchNearbyUsers.fulfilled, (state, action) => {
+      state.nearbyUsers = action.payload;
+    });
   }
 });
 
-export const { addFavouriteUser, removeFavouriteUser, actionLogin } = usersReducer.actions;
+export const { actionLogin } = usersReducer.actions;
 
 export default usersReducer.reducer;
