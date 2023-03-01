@@ -171,6 +171,26 @@ export const fetchPetTypes = createAsyncThunk("petTypes", async () => {
   }
 });
 
+export const addNewPet = createAsyncThunk("/add", async data => {
+  try {
+    const { user, formData } = data;
+
+    const newPet = {
+      userId: user.id,
+      petTypeId: formData.idPet,
+      name: formData.name,
+      age: formData.age,
+      breed: formData.breed,
+      weight: formData.weight
+    };
+
+    const response = await axios.post("/pets/add", newPet);
+    return response.data;
+  } catch (error) {
+    console.log("ERROR", error);
+  }
+});
+
 export const fetchNearbyUsers = createAsyncThunk("users/fetchNearbyUsers", async city => {
   try {
     const usersSameCity = await axios.get(`/users/city/${city}`);
