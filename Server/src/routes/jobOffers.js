@@ -5,13 +5,12 @@ const {
   updateJobOffer,
   deleteJobOffer
 } = require("../controllers/jobOffers");
-const decodeToken = require("../middleware");
 
 const router = Router();
 
-router.get("/", getUserJobOffers); // ,decodeToken
+router.get("/", getUserJobOffers);
 router.post("/create", createJobOffer);
-router.patch("/:id/update", updateJobOffer);
-router.delete("/:id/delete", deleteJobOffer);
+router.patch("/:id", updateJobOffer);
+router.delete("/:id", deleteJobOffer);
 
 module.exports = router;

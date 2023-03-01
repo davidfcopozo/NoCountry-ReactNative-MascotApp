@@ -17,15 +17,16 @@ const {
   resetPassword,
   getUsersSameCity
 } = require("../controllers/users");
-const decodeToken = require("../middleware");
+// const decodeToken = require("../middleware");
 
 const router = Router();
 
 // El middleware decodeToken se aplica a determinadas rutas (son las que se necesita estar logueado para poder acceder)
+
 router.get("/", getUsers); // ,decodeToken
 router.post("/register", register);
 router.post("/login", login);
-router.get("/city/:city", getUsersSameCity);
+router.get("/city/:city", getUsersSameCity); // ,decodeToken
 router.get("/rating", getUsersBestRating);
 router.get("/category", getUsersByCategory);
 router.get("/filter", getUsersByFilter);
