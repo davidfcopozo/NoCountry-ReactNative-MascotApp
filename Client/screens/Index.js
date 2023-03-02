@@ -18,7 +18,7 @@ const Index = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchNearbyUsers(currentUser.data?.city));
+    dispatch(fetchNearbyUsers(currentUser.data));
   }, [currentUser.length]);
 
   useEffect(() => {
