@@ -3,7 +3,7 @@ import { NativeWindStyleSheet } from "nativewind";
 import { useState } from "react";
 import { NativeRouter } from "react-router-native";
 import { Provider } from "react-redux";
-import { Image, StatusBar } from "react-native";
+import { Image, Platform, StatusBar } from "react-native";
 import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -197,7 +197,7 @@ function App() {
       <AuthProvider>
         <Provider store={store}>
           <PersistGate persistor={persistorStore}>
-            <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
+            <StatusBar barStyle={Platform.OS === "ios"? isDarkMode ? "light-content" : "dark-content" : "light-content"} />
 
             <NavigationContainer theme={isDarkMode ? CustomDark : CustomLight}>
               <Stack.Navigator

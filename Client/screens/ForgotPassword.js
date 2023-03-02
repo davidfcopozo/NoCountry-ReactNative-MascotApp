@@ -16,12 +16,12 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { BaseToast, ErrorToast } from "react-native-toast-message";
 
 const ForgotPassword = ({ route }) => {
-  const { emailFromLogin } = route.params;
+  const emailFromLogin = route.params?.emailFromLogin;
   const { colors } = useTheme();
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
   const [valid, setValid] = useState(false);
-  const { loading } = useSelector(state => state.users);
+  const { loading, currentUser } = useSelector(state => state.users);
   const { resetPassword } = useAuth();
 
   const navigation = useNavigation();
@@ -72,7 +72,7 @@ const ForgotPassword = ({ route }) => {
   };
 
   useEffect(() => {
-    setEmail(emailFromLogin ? emailFromLogin : "");
+    setEmail(emailFromLogin? emailFromLogin : "");
   }, []);
 
   const handleError = (error, input) => {
@@ -171,15 +171,20 @@ const ForgotPassword = ({ route }) => {
             </Pressable>
           </View>
 
-          <View className="flex gap-y-2 justify-start items-start">
-            <Link to={{ screen: "Perfil" }}>
-              <Text className="text-violet-500/80 font-bold">Tenes cuenta? Inicia sesión acá</Text>
-            </Link>
-            <Link to={{ screen: "Perfil" }}>
-              <Text className="text-violet-500/80 font-bold">No tenes cuenta? Registrate acá</Text>
-            </Link>
-            <Text className="text-violet-500/80 font-bold">Política de Privacidad</Text>
-          </View>
+          {
+            !currentUser?.data?.id?
+            <View className="flex gap-y-2 justify-start items-start">
+              <Link to={{ screen: "Perfil" }}>
+                <Text className="text-violet-500/80 font-bold">Tenes cuenta? Inicia sesión acá</Text>
+              </Link>
+              <Link to={{ screen: "Perfil" }}>
+                <Text className="text-violet-500/80 font-bold">No tenes cuenta? Registrate acá</Text>
+              </Link>
+              <Text className="text-violet-500/80 font-bold">Política de Privacidad</Text>
+            </View>
+            :
+            undefined
+          }
         </KeyboardAvoidingView>
       </View>
     </>
