@@ -13,7 +13,6 @@ const {
   deleteUserFavourites,
   addUserFavourites,
   getSearch,
-  addUserReview,
   resetPassword,
   getUsersSameCity
 } = require("../controllers/users");
@@ -37,7 +36,6 @@ router.delete("/favourites/:id/:favourite", deleteUserFavourites); // ,decodeTok
 router.patch("/:id", updateUser); // ,decodeToken
 router.delete("/:id", deleteUser); // ,decodeToken
 router.get("/:id", getUserById); // ,decodeToken
-router.post("/review/:id", addUserReview); // ,decodeToken
 router.put("/password", resetPassword); // ,decodeToken
 
 module.exports = router;
