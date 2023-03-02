@@ -91,7 +91,6 @@ const FormEditProfile = () => {
     <ScrollView>
       <View className="p-5 mx-auto max-w-2xl w-full">
         <View>
-          <Text>{JSON.stringify(formData)}</Text>
           <View>
             <View className="flex items-center mb-3">
             {
