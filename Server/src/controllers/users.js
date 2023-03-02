@@ -131,11 +131,18 @@ const getUserById = async (req, res) => {
 };
 
 const getUsersSameCity = async (req, res) => {
-  const { city } = req.params;
+  const { city, id } = req.params;
 
   try {
     if (isValidNumber(city))
       return res.status(400).json({ errorMessage: "The city must be string type" });
+
+    if (!isValidNumber(id))
+      return res.status(400).json({ errorMessage: "The id must be an integer" });
+
+    const user = await User.findByPk(id);
+    if (user === null)
+      return res.status(404).json({ errorMessage: "There is no user with that id" });
 
     const usersSameCity = await User.findAll({
       where: {
@@ -146,9 +153,10 @@ const getUsersSameCity = async (req, res) => {
     });
 
     const nearbyUsers = usersSameCity.map(user => user.dataValues);
+    const filteringCurrentUser = nearbyUsers.filter(user => user.id !== parseInt(id));
 
     nearbyUsers.length
-      ? res.status(200).json(nearbyUsers)
+      ? res.status(200).json(filteringCurrentUser)
       : res.status(404).json({ errorMessage: "There is no users with the same city" });
   } catch (error) {
     return res.status(500).json({
