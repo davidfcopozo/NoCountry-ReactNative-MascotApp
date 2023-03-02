@@ -203,9 +203,11 @@ export const fetchPetsUser = createAsyncThunk("/myPets", async data => {
   }
 });
 
-export const fetchNearbyUsers = createAsyncThunk("users/fetchNearbyUsers", async city => {
+export const fetchNearbyUsers = createAsyncThunk("users/fetchNearbyUsers", async data => {
   try {
-    const usersSameCity = await axios.get(`/users/city/${city}`);
+    const { city, id } = data;
+
+    const usersSameCity = await axios.get(`/users/city/${city}/${id}`);
     return usersSameCity;
   } catch (error) {
     return error.response.data;
@@ -248,11 +250,11 @@ export const fetchJobOffersUser = createAsyncThunk("/myJobOffers", async data =>
 export const updateUser = createAsyncThunk("users/updateUser", async data => {
   try {
     const { id, formData, profile_pic } = data;
-    const forms = {...formData, profile_pic}
+    const forms = { ...formData, profile_pic };
 
-    console.log("forms "+JSON.stringify(forms));
+    console.log("forms " + JSON.stringify(forms));
 
-    const userData = Object.entries(forms).reduce((a,[k,v]) => (v ? (a[k]=v, a) : a), {})
+    const userData = Object.entries(forms).reduce((a, [k, v]) => (v ? ((a[k] = v), a) : a), {});
 
     const response = await axios.patch(`users/${id}`, userData);
 

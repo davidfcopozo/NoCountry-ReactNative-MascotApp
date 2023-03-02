@@ -53,7 +53,7 @@ const AboutUs = () => {
                 Developers.map(dev => (
                   <View style={{borderColor: colors.border}} className="flex flex-row border p-3 mb-1 rounded-sm max-w-lg">
                     <Image
-                      className={"mr-3 ml-1 w-[100px] h-[100px] lg:w-[160px] lg:h-[160px] "+(showText[dev.id-1].show === true? "mb-auto" : "mt-auto")}
+                      className={"mr-3 ml-1 w-[100px] h-[100px] lg:w-[160px] lg:h-[160px] mb-auto"}
                       resizeMode="contain"
                       source={{
                           uri: dev.github_pic

@@ -32,7 +32,7 @@ const Favorites = () => {
 
   return (
     <View className="pt-3 pb-10 w-full">
-      <ScrollView className="h-full" showsVerticalScrollIndicator="false">
+      <ScrollView className="h-full">
         {Children.toArray(
           favorites?.map(favorite => (
             <View

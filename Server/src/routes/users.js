@@ -13,7 +13,6 @@ const {
   deleteUserFavourites,
   addUserFavourites,
   getSearch,
-  addUserReview,
   resetPassword,
   getUsersSameCity
 } = require("../controllers/users");
@@ -26,7 +25,7 @@ const router = Router();
 router.get("/", getUsers); // ,decodeToken
 router.post("/register", register);
 router.post("/login", login);
-router.get("/city/:city", getUsersSameCity); // ,decodeToken
+router.get("/city/:city/:id", getUsersSameCity); // ,decodeToken
 router.get("/rating", getUsersBestRating);
 router.get("/category", getUsersByCategory);
 router.get("/filter", getUsersByFilter);
@@ -37,7 +36,6 @@ router.delete("/favourites/:id/:favourite", deleteUserFavourites); // ,decodeTok
 router.patch("/:id", updateUser); // ,decodeToken
 router.delete("/:id", deleteUser); // ,decodeToken
 router.get("/:id", getUserById); // ,decodeToken
-router.post("/review/:id", addUserReview); // ,decodeToken
 router.put("/password", resetPassword); // ,decodeToken
 
 module.exports = router;

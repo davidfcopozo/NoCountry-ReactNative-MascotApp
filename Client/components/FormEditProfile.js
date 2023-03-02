@@ -30,7 +30,11 @@ const FormEditProfile = () => {
 
   const cloudinaryUpload = async () => {
     const data = new FormData()
-    data.append('file', image)
+    data.append('file', {
+      uri: image,
+      type: "image/*",
+      name: "filename"
+    })
     data.append('upload_preset', 'mascot')
     data.append("cloud_name", "dizfi5qoy")
     const res = await fetch("https://api.cloudinary.com/v1_1/dizfi5qoy/image/upload", {
@@ -49,7 +53,7 @@ const FormEditProfile = () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [10, 10],
       quality: 1,
     });
 
