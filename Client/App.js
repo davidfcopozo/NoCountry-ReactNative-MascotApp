@@ -164,8 +164,7 @@ function BottomNavigation({ isDarkMode, setDarkMode, colors }) {
         component={Messages}
         options={{
           tabBarLabel: "Mensajes",
-          tabBarIcon: props => <MessageIcon color={props.color} />,
-          tabBarBadge: 3
+          tabBarIcon: props => <MessageIcon color={props.color} />
         }}
       />
 

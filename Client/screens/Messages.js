@@ -116,16 +116,16 @@ const Messages = () => {
     );
 
   return (
-    <ScrollView className="p-5 gap-y-5">
+    <ScrollView className="p-5 gap-y-3">
       <Text style={{ color: colors.text }} className="text-3xl font-bold">
         Mensajes
       </Text>
 
       {Children.toArray(
         chatList?.map(user => (
-          <View className="flex flex-row justify-between">
+          <View className="flex flex-row justify-between items-center">
             <Link to={{ screen: "Message", params: { user: user } }}>
-            <View className="flex flex-row items-center gap-x-5">
+            <View className="flex flex-row items-center gap-x-5 -mb-2">
               {user?.profile_pic ? (
                 <Image
                   style={{
@@ -139,15 +139,12 @@ const Messages = () => {
                   className="rounded-full"
                 />
               ) : (
-                <Ionicons name="person-circle-outline" size={82} color={colors.text} />
+                <Ionicons name="person-circle-outline" size={85} color={colors.text} />
               )}
 
-              <View className="gap-y-2 items-start">
-                <Text style={{ color: colors.text }} className="font-bold text-xl">
-                  {user?.name+" "+user?.surname}
-                </Text>
-                <Text style={{ color: colors.textGray }}>Ultimo Mensaje</Text>
-              </View>
+              <Text style={{ color: colors.text }} className="font-bold text-xl">
+                {user?.name+" "+user?.surname}
+              </Text>
             </View>
             </Link>
             <Pressable onPress={() => deleteChat(user?.id)}>
