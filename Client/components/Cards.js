@@ -42,7 +42,7 @@ const Cards = ({ Data }) => {
                           style={{
                             width: 35,
                             height: 35,
-                            resizeMode: "contain"
+                            resizeMode: "cover"
                           }}
                           className="rounded-full"
                           source={{

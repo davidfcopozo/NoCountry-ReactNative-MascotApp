@@ -2,7 +2,7 @@ const { JobOffer, User, Category } = require("../db");
 const { isValidNumber, isValidString } = require("./../validations/index");
 
 const getUserJobOffers = async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.query;
 
   try {
     if (!userId) return res.status(400).json({ errorMessage: "UserId missing" });

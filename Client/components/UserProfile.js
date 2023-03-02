@@ -17,6 +17,8 @@ import { addFavourite, deleteFavourite, fetchFavourites, logOutUser } from "../r
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import VisitorOptions from "./VisitorOptions";
+import { fetchPetsUser } from "../redux/actions";
+import { fetchJobOffersUser } from "../redux/actions";
 
 const UserProfile = ({ route }) => {
   const { colors } = useTheme();
@@ -26,6 +28,13 @@ const UserProfile = ({ route }) => {
   const user = route?.params ? route.params.user : currentUser?.data;
   const favorited = useSelector(state => state.users.favouriteUsers);
   const userActive = route?.params?.user ? false : true;
+  const { petsUsers } = useSelector(state => state.users);
+  const { jobOffersUser } = useSelector(state => state.users);
+
+  useEffect(() => {
+    dispatch(fetchPetsUser({ currentUser }));
+    dispatch(fetchJobOffersUser({ currentUser }));
+  }, [dispatch]);
 
   const handleLogOut = () => {
     dispatch(actionLogin(false));
@@ -73,7 +82,7 @@ const UserProfile = ({ route }) => {
             style={{
               width: 100,
               height: 100,
-              resizeMode: "contain"
+              resizeMode: "cover"
             }}
             className="rounded-full"
             source={{
@@ -192,97 +201,71 @@ const UserProfile = ({ route }) => {
           Servicios
         </Text>
 
-        {user.offers_services ? (
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            className="mt-3 gap-x-5"
-          >
-            <View className="w-36 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
-              <Image
-                className="h-24"
-                source={{
-                  uri: "https://www.lavanguardia.com/files/content_image_mobile_filter/uploads/2022/05/21/628955615d048.jpeg"
-                }}
-              />
+        {userActive ? (
+          <View className="">
+            {jobOffersUser?.length >= 1 ? (
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                className="gap-x-4"
+              >
+                {jobOffersUser.map(jobOffer => (
+                  <Link
+                    key={jobOffer.id}
+                    to={{ screen: "Service", params: { jobOffer: jobOffer, user: user } }}
+                  >
+                    <View
+                      key={jobOffer.id}
+                      className="relative shadow-sm rounded-lg overflow-hidden bg-white/10 mt-3"
+                    >
+                      <Image
+                        className="h-24"
+                        source={{
+                          uri: jobOffer.img
+                        }}
+                      />
 
-              <View className="p-2 flex justify-center items-center">
-                <Text
-                  numberOfLines={1}
-                  style={{ color: colors.text }}
-                  className="text-base font-semibold -mb-1 flex justify-center"
-                >
-                  {user.categories[0]?.name}
-                </Text>
+                      <View className="p-3 gap-y-1 flex justify-center items-center">
+                        <Text
+                          numberOfLines={1}
+                          style={{ color: colors.text }}
+                          className="text-base font-semibold -mb-1 flex justify-center"
+                        >
+                          {jobOffer.name}
+                        </Text>
 
-                <Text
-                  numberOfLines={1}
-                  style={{ color: colors.textGray }}
-                  className="text-sm flex justify-center"
-                >
-                  En {user.city}
-                </Text>
-              </View>
-            </View>
-
-            <View className="w-36 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
-              <Image
-                className="h-24"
-                source={{
-                  uri: "https://www.lavanguardia.com/files/content_image_mobile_filter/uploads/2022/05/21/628955615d048.jpeg"
-                }}
-              />
-
-              <View className="p-2 flex justify-center items-center">
-                <Text
-                  numberOfLines={1}
-                  style={{ color: colors.text }}
-                  className="text-base font-semibold -mb-1 flex justify-center"
-                >
-                  {user.categories[0]?.name}
-                </Text>
-
-                <Text
-                  numberOfLines={1}
-                  style={{ color: colors.textGray }}
-                  className="text-sm flex justify-center"
-                >
-                  En {user.city}
+                        <Text
+                          numberOfLines={1}
+                          style={{ color: colors.textGray }}
+                          className="text-sm flex justify-center"
+                        >
+                          En {user.city}
+                        </Text>
+                      </View>
+                    </View>
+                  </Link>
+                ))}
+              </ScrollView>
+            ) : (
+              <View>
+                <Text style={{ color: colors.text }} className="text-base">
+                  No ofrece servicios
                 </Text>
               </View>
-            </View>
-
-            <View className="w-36 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
-              <Image
-                className="h-24"
-                source={{
-                  uri: "https://www.lavanguardia.com/files/content_image_mobile_filter/uploads/2022/05/21/628955615d048.jpeg"
-                }}
-              />
-
-              <View className="p-2 flex justify-center items-center">
-                <Text
-                  numberOfLines={1}
-                  style={{ color: colors.text }}
-                  className="text-base font-semibold -mb-1 flex justify-center"
-                >
-                  {user.categories[0]?.name}
-                </Text>
-
-                <Text
-                  numberOfLines={1}
-                  style={{ color: colors.textGray }}
-                  className="text-sm flex justify-center"
-                >
-                  En {user.city}
-                </Text>
-              </View>
-            </View>
-          </ScrollView>
+            )}
+          </View>
         ) : (
           <View>
             <Text style={{ color: colors.text }} className="text-base">
-              No ofrece servicios
+            {!userActive
+            ? user.offers_services
+              ? user.offers_services
+              : user.name + " todavia no ofrece servicios."
+            : currentUser?.data?.id
+            ? user.offers_services
+              ? user.offers_services
+              : "Aún no ofreces servicios."
+            : ""}
             </Text>
           </View>
         )}
@@ -294,133 +277,124 @@ const UserProfile = ({ route }) => {
         </Text>
 
         {userActive ? (
-          <View className="mt-3">
-            {userActive ? (
-              <View className="flex flex-row gap-x-5">
-                <View className="w-36 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
-                  <Image
-                    className="h-24"
-                    source={{
-                      uri: "https://img.freepik.com/vector-gratis/coleccion-diferentes-caras-perros_1096-37.jpg"
-                    }}
-                  />
+          <View className="">
+            {petsUsers?.length >= 1 ? (
+              <View className="flex flex-row gap-x-4 justify-center flex-wrap">
+                {petsUsers.map(pet => (
+                  <View key={pet.id} className="flex flex-row">
+                    <View className="w-36 pt-3 mt-3 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
+                      <Image
+                        style={{
+                          resizeMode: "contain"
+                        }}
+                        className="h-24"
+                        source={{
+                          uri:
+                            pet.petTypeId === 1
+                              ? "https://cdn-icons-png.flaticon.com/128/1998/1998627.png"
+                              : pet.petTypeId === 2
+                              ? "https://cdn-icons-png.flaticon.com/128/1998/1998592.png"
+                              : pet.petTypeId === 3
+                              ? "https://cdn-icons-png.flaticon.com/128/874/874960.png"
+                              : pet.petTypeId === 4
+                              ? "https://cdn-icons-png.flaticon.com/128/404/404013.png"
+                              : pet.petTypeId === 5
+                              ? "https://cdn-icons-png.flaticon.com/128/6807/6807896.png"
+                              : "https://img.freepik.com/vector-gratis/coleccion-diferentes-caras-perros_1096-37.jpg"
+                        }}
+                      />
 
-                  <View className="p-2 flex justify-center items-center">
-                    <Text
-                      numberOfLines={1}
-                      style={{ color: colors.text }}
-                      className="text-base font-semibold -mb-1 flex justify-center"
-                    >
-                      Nombre
-                    </Text>
+                      <View className="p-2 gap-y-1 flex justify-center items-center">
+                        <Text
+                          numberOfLines={1}
+                          style={{ color: colors.text }}
+                          className="text-base font-semibold -mb-1 flex justify-center"
+                        >
+                          {pet.name}
+                        </Text>
 
-                    <Text
-                      numberOfLines={1}
-                      style={{ color: colors.textGray }}
-                      className="text-sm flex justify-center"
-                    >
-                      Raza
-                    </Text>
-                  </View>
-                </View>
-                <Pressable onPress={() => navigation.navigate({ name: "FormAddPet" })}>
-                  <View className="w-36 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
-                    <Image
-                      className="h-24"
-                      source={{
-                        uri: "https://thumbs.dreamstime.com/b/agregue-el-icono-signo-m-s-m%C3%A1s-simple-a%C3%B1ade-la-cruz-del-vector-de-muestra-ade-ejemplo-148041788.jpg"
-                      }}
-                    />
-
-                    <View className="p-2 flex justify-center items-center">
-                      <Text
-                        numberOfLines={1}
-                        style={{ color: colors.text }}
-                        className="text-base font-semibold -mb-1 flex justify-center"
-                      >
-                        Agregar mascota
-                      </Text>
-
-                      <Text
-                        numberOfLines={1}
-                        style={{ color: colors.textGray }}
-                        className="text-sm flex justify-center"
-                      >
-                        Toca aqui
-                      </Text>
+                        <Text
+                          numberOfLines={1}
+                          style={{ color: colors.textGray }}
+                          className="text-sm flex justify-center"
+                        >
+                          {pet.breed}
+                        </Text>
+                      </View>
                     </View>
                   </View>
-                </Pressable>
-              </View>
-            ) : (
-              <View>
-                <Text style={{ color: colors.text }} className="text-base">
-                  No tiene mascotas
-                </Text>
-                <Pressable onPress={() => navigation.navigate({ name: "FormAddPet" })}>
-                  <View className="w-36 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
-                    <Image
-                      className="h-24"
-                      source={{
-                        uri: "https://thumbs.dreamstime.com/b/agregue-el-icono-signo-m-s-m%C3%A1s-simple-a%C3%B1ade-la-cruz-del-vector-de-muestra-ade-ejemplo-148041788.jpg"
-                      }}
-                    />
+                ))}
+                <View className="">
+                  <Pressable onPress={() => navigation.navigate({ name: "FormAddPet" })}>
+                    <View className="w-36 h-44 mt-3 shadow-sm rounded-lg bg-white/10 flex items-center justify-center">
+                      <View className="flex justify-center items-center">
+                        <Ionicons
+                          size={70}
+                          name="add-circle-outline"
+                          color={colors.text}
+                        ></Ionicons>
+                      </View>
 
-                    <View className="p-2 flex justify-center items-center">
-                      <Text
-                        numberOfLines={1}
-                        style={{ color: colors.text }}
-                        className="text-base font-semibold -mb-1 flex justify-center"
-                      >
-                        Agregar
-                      </Text>
+                      <View className="pb-3 flex justify-center items-center flex-wrap">
+                        <Text
+                          numberOfLines={1}
+                          style={{ color: colors.text }}
+                          className="text-base font-semibold -mb-1 flex justify-center"
+                        >
+                          Agregar mascota
+                        </Text>
 
-                      <Text
-                        numberOfLines={1}
-                        style={{ color: colors.textGray }}
-                        className="text-sm flex justify-center"
-                      >
-                        Toca aqui
-                      </Text>
+                        <Text
+                          numberOfLines={1}
+                          style={{ color: colors.textGray }}
+                          className="text-sm flex justify-center pt-1"
+                        >
+                          Toca aqui
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                </Pressable>
-              </View>
-            )}
-          </View>
-        ) : user.offers_services ? (
-          <View className="mt-3">
-            {user.offers_services ? (
-              <View className="w-36 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
-                <Image
-                  className="h-24"
-                  source={{
-                    uri: "https://img.freepik.com/vector-gratis/coleccion-diferentes-caras-perros_1096-37.jpg"
-                  }}
-                />
-
-                <View className="p-2 flex justify-center items-center">
-                  <Text
-                    numberOfLines={1}
-                    style={{ color: colors.text }}
-                    className="text-base font-semibold -mb-1 flex justify-center"
-                  >
-                    Nombre
-                  </Text>
-
-                  <Text
-                    numberOfLines={1}
-                    style={{ color: colors.textGray }}
-                    className="text-sm flex justify-center"
-                  >
-                    Raza
-                  </Text>
+                  </Pressable>
                 </View>
               </View>
             ) : (
-              <Text style={{ color: colors.text }} className="text-base">
-                No tiene mascotas
-              </Text>
+              <View className="">
+                <View>
+                  <Text style={{ color: colors.text }} className="text-base">
+                    No tiene mascotas
+                  </Text>
+                </View>
+                <View className="flex justify-center items-center mt-4">
+                  <Pressable onPress={() => navigation.navigate({ name: "FormAddPet" })}>
+                    <View className="w-36 h-44 shadow-sm rounded-lg bg-white/10 flex items-center justify-center">
+                      <View className="flex justify-center items-center">
+                        <Ionicons
+                          size={70}
+                          name="add-circle-outline"
+                          color={colors.text}
+                        ></Ionicons>
+                      </View>
+
+                      <View className="pb-3 flex justify-center items-center flex-wrap">
+                        <Text
+                          numberOfLines={1}
+                          style={{ color: colors.text }}
+                          className="text-base font-semibold -mb-1 flex justify-center"
+                        >
+                          Agregar mascota
+                        </Text>
+
+                        <Text
+                          numberOfLines={1}
+                          style={{ color: colors.textGray }}
+                          className="text-sm flex justify-center pt-1"
+                        >
+                          Toca aqui
+                        </Text>
+                      </View>
+                    </View>
+                  </Pressable>
+                </View>
+              </View>
             )}
           </View>
         ) : (
@@ -485,9 +459,9 @@ const UserProfile = ({ route }) => {
         <View className="flex justify-center items-center">
           <TouchableOpacity
             onPress={handleLogOut}
-            className="bg-violet-700 py-2 px-4 rounded-lg mt-10"
+            className="bg-violet-700 py-2.5 px-4 rounded-lg mt-10"
           >
-            <Text className="text-xl text-white">Cerrar sesion</Text>
+            <Text className="text-xl text-white font-bold">Cerrar sesion</Text>
           </TouchableOpacity>
         </View>
       ) : undefined}

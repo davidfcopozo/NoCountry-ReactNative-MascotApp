@@ -7,7 +7,8 @@ import { useSelector } from "react-redux";
 
 const Service = ({ route }) => {
   const { currentUser } = useSelector(state => state.users);
-  const user = route.params.user;
+  const { user } = route.params;
+  const { jobOffer } = route.params;
   const colorScheme = "light";
   const { colors } = useTheme();
   const navigation = useNavigation();
@@ -17,7 +18,7 @@ const Service = ({ route }) => {
       <Image
         className="h-56"
         source={{
-          uri: user.image
+          uri: jobOffer.img
         }}
       />
       <View
@@ -26,12 +27,12 @@ const Service = ({ route }) => {
       >
         <View>
           <Text style={{ color: colors.text }} className="font-semibold text-lg">
-            {user.service}
+            {jobOffer.name}
           </Text>
         </View>
         <View>
           <Text style={{ color: colors.text }} className="font-bold text-lg">
-            ${user.price}
+            ${jobOffer.price}
           </Text>
         </View>
       </View>
@@ -116,9 +117,7 @@ const Service = ({ route }) => {
       </View>
       <View className="py-3 px-3">
         <Text style={{ color: colors.text }} className="font-semibold">
-          Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem
-          Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un
-          impresor.
+          {jobOffer.description}
         </Text>
       </View>
       <View

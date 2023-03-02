@@ -1,105 +1,171 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, Keyboard } from "react-native";
+import { View, Text, ScrollView, TextInput, TouchableOpacity, Keyboard, Image } from "react-native";
 import React from "react";
 import { useTheme, useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import { updateUser } from "../redux/actions";
+import * as ImagePicker from 'expo-image-picker';
+
 
 const FormEditProfile = () => {
   const colorScheme = "light";
   const { colors } = useTheme();
   const { currentUser } = useSelector(state => state.users);
   const user = currentUser?.data;
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [image, setImage] = useState(null);
+  const [message, setMessage] = useState("Actualizar");
+
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    city: "",
-    description: "",
-    profile_pic: "",
+    name: user? user.name : null,
+    surname: user? user.surname : null,
+    city: user? user.city : null,
+    description: user? user.description : null,
     services: [],
     pets: []
   });
 
+  const cloudinaryUpload = async () => {
+    const data = new FormData()
+    data.append('file', image)
+    data.append('upload_preset', 'mascot')
+    data.append("cloud_name", "dizfi5qoy")
+    const res = await fetch("https://api.cloudinary.com/v1_1/dizfi5qoy/image/upload", {
+      method: "post",
+      body: data
+    }).then(res => res.json())
+    .then(data => {
+        return data.secure_url
+      }).catch(err => {
+        Alert.alert("An Error Occured While Uploading")
+      })
+    return res
+  }
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  }
+
   const handleChange = name => {
-    if (name) {
-      return val => {
-        setFormData({ ...formData, [name]: val });
-        setValid({ ...valid, [name]: true });
-      };
-    } else setValid({ ...valid, [name]: false });
+      if (name) {
+        return val => {
+          setFormData({ ...formData, [name]: val });
+          //setValid({ ...valid, [name]: true });
+        };
+      } //else setValid({ ...valid, [name]: false });
   };
 
   const handleSubmit = async () => {
+    console.log("actualizando perfil");
     Keyboard.dismiss();
-    setTimeout(() => {
+
+    const res = await cloudinaryUpload();
+
+    dispatch(updateUser({
+      formData,
+      profile_pic: res,
+      id: user?.id
+    }))
+/*     setTimeout(() => {
       alert(JSON.stringify(formData, null, 2));
-    }, 100);
+    }, 100); */
+
     navigation.goBack();
   };
 
   return (
     <ScrollView>
-      <View>
-        <View className="p-5">
+      <View className="p-5 mx-auto max-w-2xl w-full">
+        <View>
           <View>
-            <View className="flex items-center">
-              {user.profile_pic ? (
-                <View>
+            <View className="flex items-center mb-3">
+            {
+              image?
+                <Image
+                  style={{
+                    width: 100,
+                    height: 100,
+                    resizeMode: "cover"
+                  }}
+                  className="rounded-full"
+                  source={{
+                    uri: image
+                  }}
+                />
+                :
+                user.profile_pic?(
                   <Image
                     style={{
                       width: 100,
                       height: 100,
-                      resizeMode: "contain"
+                      resizeMode: "cover"
                     }}
                     className="rounded-full"
                     source={{
                       uri: user.profile_pic
                     }}
                   />
-                </View>
-              ) : (
-                <View className="rounded-full bg-white flex items-center">
-                  <Ionicons
-                    name="person-circle-outline"
-                    size={100}
-                    fill={colorScheme === "dark" ? "#fff" : "#000"}
-                  />
-                </View>
-              )}
+                ) : (
+                  <View className="rounded-full bg-white flex items-center">
+                    <Ionicons
+                      name="person-circle-outline"
+                      size={100}
+                      fill={colorScheme === "dark" ? "#fff" : "#000"}
+                    />
+                  </View>
+                )
+            }
             </View>
-            <View className="mb-5 px-28" style={{ color: colors.text, borderColor: colors.text }}>
-              <TouchableOpacity className="flex justify-center items-center bg-violet-700 py-2 rounded-lg">
-                <Text className="text-white">Subir foto</Text>
+            <View className="flex justify-center items-center mb-5" style={{ color: colors.text, borderColor: colors.text }}>
+              <TouchableOpacity className="bg-violet-700 py-2.5 px-6 rounded-lg" onPress={pickImage}>
+                <Text className="text-white font-bold">Subir foto</Text>
               </TouchableOpacity>
             </View>
+
             <View className="gap-y-1 pb-3">
               <Text style={{ color: colors.text }} className="text-lg font-bold">
                 Nombre
               </Text>
               <View
                 style={{ color: colors.text, borderColor: colors.text }}
-                className="border rounded-lg pl-3"
+                className="border rounded-lg"
               >
                 <TextInput
+                  className="p-2"
                   style={{ color: colors.text, borderColor: colors.text }}
                   onChangeText={handleChange("name")}
+                  value={formData.name}
                 />
               </View>
             </View>
 
             <View className="gap-y-1 pb-3">
               <Text style={{ color: colors.text }} className="text-lg font-bold">
-                Email
+                Apellido
               </Text>
               <View
                 style={{ color: colors.text, borderColor: colors.text }}
-                className="border rounded-lg pl-3"
+                className="border rounded-lg"
               >
                 <TextInput
+                  className="p-2"
                   style={{ color: colors.text, borderColor: colors.text }}
-                  onChangeText={handleChange("email")}
+                  onChangeText={handleChange("surname")}
+                  value={formData.surname}
                 />
               </View>
             </View>
@@ -110,11 +176,13 @@ const FormEditProfile = () => {
               </Text>
               <View
                 style={{ color: colors.text, borderColor: colors.text }}
-                className="border rounded-lg pl-3"
+                className="border rounded-lg"
               >
                 <TextInput
+                  className="p-2" 
                   style={{ color: colors.text, borderColor: colors.text }}
                   onChangeText={handleChange("city")}
+                  value={formData.city}
                 />
               </View>
             </View>
@@ -125,16 +193,18 @@ const FormEditProfile = () => {
               </Text>
               <View
                 style={{ color: colors.text, borderColor: colors.text }}
-                className="border rounded-lg pl-3"
+                className="border rounded-lg"
               >
                 <TextInput
+                  className="p-2"
                   style={{ color: colors.text, borderColor: colors.text }}
                   onChangeText={handleChange("description")}
+                  value={formData.description}
                 />
               </View>
             </View>
 
-            <View className="gap-y-1 pb-3">
+{/*             <View className="gap-y-1 pb-3">
               <Text style={{ color: colors.text }} className="text-lg font-bold">
                 Servicios
               </Text>
@@ -174,20 +244,20 @@ const FormEditProfile = () => {
                     className="text-base"
                     style={{ color: colors.text, borderColor: colors.text }}
                   >
-                    No tiene mascota
+                    No tenes mascota
                   </Text>
                 )}
               </View>
-            </View>
+            </View> */}
           </View>
         </View>
 
-        <View className="px-5">
+        <View className="flex justify-center items-center">
           <TouchableOpacity
-            className="flex justify-center items-center bg-violet-700 py-2 rounded-lg"
-            onPress={handleSubmit}
+            className="bg-violet-700 py-2 px-6 rounded-lg"
+            onPress={() => {handleSubmit(), setMessage("Guardando..")}}
           >
-            <Text className="text-lg text-white">Actualizar</Text>
+            <Text className="text-lg text-white font-bold">{message}</Text>
           </TouchableOpacity>
         </View>
       </View>
