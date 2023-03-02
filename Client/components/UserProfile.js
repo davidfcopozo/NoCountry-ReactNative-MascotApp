@@ -34,7 +34,7 @@ const UserProfile = ({ route }) => {
   useEffect(() => {
     dispatch(fetchPetsUser({ currentUser }));
     dispatch(fetchJobOffersUser({ currentUser }));
-  }, [dispatch, jobOffersUser]);
+  }, [dispatch]);
 
   const handleLogOut = () => {
     dispatch(actionLogin(false));
@@ -210,8 +210,14 @@ const UserProfile = ({ route }) => {
                 className="gap-x-4"
               >
                 {jobOffersUser.map(jobOffer => (
-                  <Link to={{ screen: "Service", params: { jobOffer: jobOffer, user: user } }}>
-                    <View className="relative shadow-sm rounded-lg overflow-hidden bg-white/10 mt-3">
+                  <Link
+                    key={jobOffer.id}
+                    to={{ screen: "Service", params: { jobOffer: jobOffer, user: user } }}
+                  >
+                    <View
+                      key={jobOffer.id}
+                      className="relative shadow-sm rounded-lg overflow-hidden bg-white/10 mt-3"
+                    >
                       <Image
                         className="h-24"
                         source={{
@@ -264,10 +270,10 @@ const UserProfile = ({ route }) => {
 
         {userActive ? (
           <View className="">
-            {petsUsers.length >= 1 ? (
+            {petsUsers?.length >= 1 ? (
               <View className="flex flex-row gap-x-4 justify-center flex-wrap">
                 {petsUsers.map(pet => (
-                  <View className="flex flex-row">
+                  <View key={pet.id} className="flex flex-row">
                     <View className="w-36 pt-3 mt-3 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
                       <Image
                         style={{
