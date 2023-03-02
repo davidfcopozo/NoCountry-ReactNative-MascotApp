@@ -30,7 +30,11 @@ const FormEditProfile = () => {
 
   const cloudinaryUpload = async () => {
     const data = new FormData()
-    data.append('file', image)
+    data.append('file', {
+      uri: image,
+      type: "image/*",
+      name: "filename"
+    })
     data.append('upload_preset', 'mascot')
     data.append("cloud_name", "dizfi5qoy")
     const res = await fetch("https://api.cloudinary.com/v1_1/dizfi5qoy/image/upload", {
