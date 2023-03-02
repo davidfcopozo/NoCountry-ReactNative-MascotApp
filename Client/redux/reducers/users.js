@@ -11,7 +11,9 @@ import {
   addFavourite,
   deleteFavourite,
   fetchPetTypes,
-  fetchNearbyUsers
+  fetchNearbyUsers,
+  fetchPetsUser,
+  fetchJobOffersUser
 } from "../actions";
 
 const initialState = {
@@ -24,6 +26,8 @@ const initialState = {
   search: [],
   chatRecipients: [],
   petTypes: [],
+  petsUsers: [],
+  jobOffersUser: [],
   isLogin: false
 };
 
@@ -74,8 +78,14 @@ const usersReducer = createSlice({
     builder.addCase(fetchPetTypes.fulfilled, (state, action) => {
       state.petTypes = action.payload;
     });
+    builder.addCase(fetchPetsUser.fulfilled, (state, action) => {
+      state.petsUsers = action.payload;
+    });
     builder.addCase(fetchNearbyUsers.fulfilled, (state, action) => {
       state.nearbyUsers = action.payload;
+    });
+    builder.addCase(fetchJobOffersUser.fulfilled, (state, action) => {
+      state.jobOffersUser = action.payload;
     });
   }
 });
