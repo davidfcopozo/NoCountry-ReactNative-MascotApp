@@ -7,15 +7,15 @@ const { DB_USER, DB_PASSWORD, DB_HOST, DB_DEPLOY } = process.env;
 
 // Esto lo dejo comentado porque es lo que uso continuamente para hacer pruebas locales, de la otra forma tarda mucho en cargar cada vez que mato el servidor y lo vuelvo a levantar
 
-// const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/MascotApp`, {
-//   logging: false,
-//   native: false
-// });
-
-const sequelize = new Sequelize(DB_DEPLOY, {
+const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/MascotApp`, {
   logging: false,
   native: false
 });
+
+// const sequelize = new Sequelize(DB_DEPLOY, {
+//   logging: false,
+//   native: false
+// });
 
 const basename = path.basename(__filename);
 
