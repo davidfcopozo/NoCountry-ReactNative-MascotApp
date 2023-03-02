@@ -2,7 +2,7 @@ const { Pet, User, PetType } = require("../db");
 const { isValidNumber, isValidString } = require("./../validations/index");
 
 const getUserPets = async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.query;
 
   try {
     if (!userId || !isValidNumber(userId))

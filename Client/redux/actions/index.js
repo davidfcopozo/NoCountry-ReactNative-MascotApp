@@ -187,7 +187,19 @@ export const addNewPet = createAsyncThunk("/add", async data => {
     const response = await axios.post("/pets/add", newPet);
     return response.data;
   } catch (error) {
-    console.log("ERROR", error);
+    console.log(error);
+  }
+});
+
+export const fetchPetsUser = createAsyncThunk("/myPets", async data => {
+  try {
+    const { currentUser } = data;
+    const userId = currentUser.data.id;
+
+    const myPets = await axios.get(`/pets?userId=${userId}`);
+    return myPets.data;
+  } catch (error) {
+    console.log(error);
   }
 });
 
@@ -197,5 +209,38 @@ export const fetchNearbyUsers = createAsyncThunk("users/fetchNearbyUsers", async
     return usersSameCity;
   } catch (error) {
     return error.response.data;
+  }
+});
+
+export const addJobOffer = createAsyncThunk("/addJobOffer", async data => {
+  try {
+    console.log(data);
+    const { user, formData } = data;
+
+    const newJobOffer = {
+      userId: user.id,
+      categoryId: formData.categoryId,
+      img: formData.img,
+      name: formData.name,
+      price: formData.price,
+      description: formData.description
+    };
+
+    const response = await axios.post("/jobOffers/create", newJobOffer);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const fetchJobOffersUser = createAsyncThunk("/myJobOffers", async data => {
+  try {
+    const { currentUser } = data;
+    const userId = currentUser.data.id;
+
+    const myJobOffers = await axios.get(`/jobOffers?userId=${userId}`);
+    return myJobOffers.data;
+  } catch (error) {
+    console.log(error);
   }
 });

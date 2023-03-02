@@ -7,6 +7,7 @@ import RNPickerSelect from "react-native-picker-select";
 import { fetchPetTypes } from "../redux/actions";
 import LoadingGif from "../components/LoadingGif";
 import { addNewPet } from "../redux/actions";
+import Toast from "react-native-toast-message";
 
 const FormAddPet = () => {
   const { colors } = useTheme();
@@ -113,10 +114,11 @@ const FormAddPet = () => {
     }
 
     if (valid.typePet && valid.name && valid.breed && valid.age && valid.weight) {
-      setTimeout(() => {
-        dispatch(addNewPet({ user, formData }));
-        alert(JSON.stringify(formData, null, 2));
-      }, 100);
+      dispatch(addNewPet({ user, formData }));
+      Toast.show({
+        type: "success",
+        text1: `Mascota agregada con éxito`
+      });
       navigation.goBack();
     }
   };
