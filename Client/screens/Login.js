@@ -150,7 +150,7 @@ const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
         </View>
 
         <View className="flex gap-y-2 justify-start items-start">
-          <Link to={{ screen: "ForgotPassword", params: { emailFromLogin: email, setOpenLogin } }}>
+          <Link to={{ screen: "ForgotPassword", params: { emailFromLogin: email, setOpenLogin } }} onPress={() => setOpenLogin(false)}>
             <Text className="text-violet-500/80 font-bold">Me olvidé la contraseña</Text>
           </Link>
           <Text

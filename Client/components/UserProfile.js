@@ -272,7 +272,7 @@ const UserProfile = ({ route }) => {
 
         {userActive ? (
           <View className="">
-            {petsUsers.length >= 1 ? (
+            {petsUsers?.length >= 1 ? (
               <View className="flex flex-row gap-x-4 justify-center flex-wrap">
                 {petsUsers.map(pet => (
                   <View className="flex flex-row">

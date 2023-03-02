@@ -16,7 +16,7 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { BaseToast, ErrorToast } from "react-native-toast-message";
 
 const ForgotPassword = ({ route }) => {
-  const { setOpenLogin, emailFromLogin } = route.params;
+  const { emailFromLogin } = route.params;
   const { colors } = useTheme();
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
@@ -72,7 +72,6 @@ const ForgotPassword = ({ route }) => {
   };
 
   useEffect(() => {
-    setOpenLogin(false);
     setEmail(emailFromLogin ? emailFromLogin : "");
   }, []);
 
