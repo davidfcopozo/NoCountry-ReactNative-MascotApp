@@ -4,19 +4,42 @@ import Shortcuts from "../components/Shortcuts";
 import Blogs from "../components/Blogs";
 import BlogsData from "../db/blogs.json";
 import { useTheme } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import OnboardingScreen from "./OnboardingScreen";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import { fetchNearbyUsers } from "../redux/actions";
 
 const Index = () => {
   const { colors } = useTheme();
-
+  const [firstAppLaunch, setFirstAppLaunch] = useState("");
+  const [finishedOnboarding, setFinishedOnboarding] = useState(false);
+  const { isLogin, currentUser, nearbyUsers } = useSelector(state => state.users);
   const dispatch = useDispatch();
-  const { currentUser, nearbyUsers } = useSelector(state => state.users);
 
   useEffect(() => {
     dispatch(fetchNearbyUsers(currentUser.data?.city));
   }, [currentUser.length]);
+
+  useEffect(() => {
+    const getAsyncProps = async () => {
+      const appData = await AsyncStorage.getItem("firstAppLaunch");
+
+      if (appData === null) {
+        setFirstAppLaunch(true);
+        AsyncStorage.setItem("firstAppLaunch", "false");
+      } else {
+        setFirstAppLaunch(false);
+      }
+    };
+
+    if (isLogin) {
+      getAsyncProps();
+    }
+  }, []);
+
+  if (firstAppLaunch && isLogin && finishedOnboarding === false)
+    return <OnboardingScreen setFinishedOnboarding={setFinishedOnboarding} />;
 
   return (
     <ScrollView>

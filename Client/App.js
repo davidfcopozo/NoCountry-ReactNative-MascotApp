@@ -3,7 +3,7 @@ import { NativeWindStyleSheet } from "nativewind";
 import { useState } from "react";
 import { NativeRouter } from "react-router-native";
 import { Provider } from "react-redux";
-import { Image, View, StatusBar } from "react-native";
+import { Image, StatusBar } from "react-native";
 import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -35,17 +35,13 @@ import Privacy from "./screens/Privacy";
 
 import { HomeIcon, MessageIcon, PawIcon, ProfileIcon, SearchIcon } from "./components/Icons";
 import FormService from "./components/FormService";
-import FormCorteDePelo from "./components/FormCorteDePelo";
-import FormPaseador from "./components/FormPaseador";
-import FormTransporte from "./components/FormTransporte";
-import FormCuidado from "./components/FormCuidado";
-import FormEntrenamiento from "./components/FormEntrenamiento";
 import ServicesContracted from "./components/ServicesContracted";
 import ServicesProvided from "./components/ServicesProvided";
 import UserProfile from "./components/UserProfile";
 import Configuration from "./screens/Configuration";
 import FormAddPet from "./screens/FormAddPet";
 import Request from "./screens/Request";
+import FormJobOffers from "./components/FormJobOffers";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
@@ -276,43 +272,9 @@ function App() {
                 />
 
                 <Stack.Screen
-                  name="Corte de pelo"
-                  component={FormCorteDePelo}
-                  options={{
-                    title: "Corte de pelo"
-                  }}
-                />
-
-                <Stack.Screen
-                  name="Paseador"
-                  component={FormPaseador}
-                  options={{
-                    title: "Paseador"
-                  }}
-                />
-
-                <Stack.Screen
-                  name="Transporte"
-                  component={FormTransporte}
-                  options={{
-                    title: "Transporte"
-                  }}
-                />
-
-                <Stack.Screen
-                  name="Cuidado"
-                  component={FormCuidado}
-                  options={{
-                    title: "Cuidado"
-                  }}
-                />
-
-                <Stack.Screen
-                  name="Entrenamiento"
-                  component={FormEntrenamiento}
-                  options={{
-                    title: "Entrenamiento"
-                  }}
+                  name="FormJobOffers"
+                  component={FormJobOffers}
+                  options={({ route }) => ({ title: route.params.title })}
                 />
 
                 <Stack.Screen
