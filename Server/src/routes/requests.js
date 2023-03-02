@@ -3,7 +3,7 @@ const { createRequest, getUserRequests } = require("../controllers/requests");
 
 const router = Router();
 
+router.get("/:id", getUserRequests);
 router.post("/create", createRequest);
-router.get("/:userId", getUserRequests);
 
 module.exports = router;
