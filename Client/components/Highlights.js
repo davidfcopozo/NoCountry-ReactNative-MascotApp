@@ -18,11 +18,23 @@ const Highlights = ({ data }) => {
           {data?.length > 0 ? (
             Children.toArray(
               data.map((card, index) => (
-                <Link to={currentUser?.data?.id === card.id? { screen: "Perfil"} : { screen: "VisitProfile", params: {user: card, title: card.name, id : card.id} }}>
+                <Link
+                  to={
+                    currentUser?.data?.id === card?.id
+                      ? { screen: "Perfil" }
+                      : {
+                          screen: "VisitProfile",
+                          params: { user: card, title: card?.name, id: card?.id }
+                        }
+                  }
+                >
                   <View
-                    className={"flex-1 flex items-center w-32 border border-black/5 rounded-lg overflow-hidden bg-white/10 pt-3 "+(data.length -1 === index? "lg:mr-auto" : "")}
+                    className={
+                      "flex-1 flex items-center w-32 border border-black/5 rounded-lg overflow-hidden bg-white/10 pt-3 " +
+                      (data.length - 1 === index ? "lg:mr-auto" : "")
+                    }
                   >
-                    {card.profile_pic ? (
+                    {card?.profile_pic ? (
                       <Image
                         style={{
                           height: 100,
@@ -30,7 +42,7 @@ const Highlights = ({ data }) => {
                           resizeMode: "contain"
                         }}
                         source={{
-                          uri: card.profile_pic
+                          uri: card?.profile_pic
                         }}
                       />
                     ) : (
@@ -49,11 +61,10 @@ const Highlights = ({ data }) => {
                         style={{ color: colors.textGray }}
                         className="text-sm w-28"
                       >
-                        De {card.city}
+                        De {card?.city}
                       </Text>
 
-                      {
-                        card?.categories?.length > 0?
+                      {card?.categories?.length > 0 ? (
                         Children.toArray(
                           card?.categories?.map(category => (
                             <Text className="bg-violet-700 text-white font-bold p-1 text-center capitalize">
@@ -61,14 +72,14 @@ const Highlights = ({ data }) => {
                             </Text>
                           ))
                         )
-                        :
+                      ) : (
                         <Text className="bg-violet-700 text-white font-bold p-1 text-center capitalize">
                           Usuario
                         </Text>
-                      }
+                      )}
 
                       <View className="flex flex-row py-2 justify-left items-left gap-x-2">
-                        {card.profile_pic ? (
+                        {card?.profile_pic ? (
                           <Image
                             style={{
                               width: 35,
@@ -77,22 +88,22 @@ const Highlights = ({ data }) => {
                             }}
                             className="rounded-full"
                             source={{
-                              uri: card.profile_pic
+                              uri: card?.profile_pic
                             }}
                           />
                         ) : (
                           <Ionicons name="person-circle-outline" size={32} color={colors.text} />
                         )}
                         <View>
-                          <Text style={{ color: colors.text }}>{card.name}</Text>
+                          <Text style={{ color: colors.text }}>{card?.name}</Text>
                           <View className="flex flex-row items-center">
                             {Children.toArray(
-                              Array.from(Array(card.rating)).map(star => (
+                              Array.from(Array(card?.rating)).map(star => (
                                 <Ionicons name="star" size={10} color="#ffe100" />
                               ))
                             )}
                             <Text style={{ color: colors.textGray }} className="text-xs ml-1">
-                              {card.rating ? "(" + card.rating + ")" : undefined}
+                              {card?.rating ? "(" + card?.rating + ")" : undefined}
                             </Text>
                           </View>
                         </View>
