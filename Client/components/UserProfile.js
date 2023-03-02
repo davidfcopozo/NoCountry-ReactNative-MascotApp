@@ -13,7 +13,13 @@ import { Link, useTheme } from "@react-navigation/native";
 import { Children, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { actionLogin } from "../redux/reducers/users";
-import { addFavourite, deleteFavourite, fetchFavourites, logOutUser } from "../redux/actions";
+import {
+  addFavourite,
+  deleteFavourite,
+  fetchFavourites,
+  fetchReviewsUser,
+  logOutUser
+} from "../redux/actions";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import VisitorOptions from "./VisitorOptions";
@@ -28,12 +34,13 @@ const UserProfile = ({ route }) => {
   const user = route?.params ? route.params.user : currentUser?.data;
   const favorited = useSelector(state => state.users.favouriteUsers);
   const userActive = route?.params?.user ? false : true;
-  const { petsUsers } = useSelector(state => state.users);
-  const { jobOffersUser } = useSelector(state => state.users);
+  const { petsUsers, jobOffersUser, reviewsUser } = useSelector(state => state.users);
+  console.log("ss: ", reviewsUser);
 
   useEffect(() => {
     dispatch(fetchPetsUser({ currentUser }));
     dispatch(fetchJobOffersUser({ currentUser }));
+    dispatch(fetchReviewsUser(currentUser));
   }, [dispatch]);
 
   const handleLogOut = () => {
@@ -257,15 +264,15 @@ const UserProfile = ({ route }) => {
         ) : (
           <View>
             <Text style={{ color: colors.text }} className="text-base">
-            {!userActive
-            ? user.offers_services
-              ? user.offers_services
-              : user.name + " todavia no ofrece servicios."
-            : currentUser?.data?.id
-            ? user.offers_services
-              ? user.offers_services
-              : "Aún no ofreces servicios."
-            : ""}
+              {!userActive
+                ? user.offers_services
+                  ? user.offers_services
+                  : user.name + " todavia no ofrece servicios."
+                : currentUser?.data?.id
+                ? user.offers_services
+                  ? user.offers_services
+                  : "Aún no ofreces servicios."
+                : ""}
             </Text>
           </View>
         )}
@@ -410,7 +417,7 @@ const UserProfile = ({ route }) => {
             Reseñas
           </Text>
 
-          {user.offers_services ? (
+          {reviewsUser?.length ? (
             <View className="shadow-sm py-3 px-4 rounded-lg bg-white/10 mt-2 mb-10">
               <View className="flex flex-row items-center gap-x-6">
                 <View className="">

@@ -13,7 +13,8 @@ import {
   fetchPetTypes,
   fetchNearbyUsers,
   fetchPetsUser,
-  fetchJobOffersUser
+  fetchJobOffersUser,
+  fetchReviewsUser
 } from "../actions";
 
 const initialState = {
@@ -28,6 +29,7 @@ const initialState = {
   petTypes: [],
   petsUsers: [],
   jobOffersUser: [],
+  reviewsUser: [],
   isLogin: false
 };
 
@@ -86,6 +88,9 @@ const usersReducer = createSlice({
     });
     builder.addCase(fetchJobOffersUser.fulfilled, (state, action) => {
       state.jobOffersUser = action.payload;
+    });
+    builder.addCase(fetchReviewsUser.fulfilled, (state, action) => {
+      state.reviewsUser = action.payload;
     });
   }
 });
