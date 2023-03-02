@@ -179,3 +179,20 @@ export const fetchNearbyUsers = createAsyncThunk("users/fetchNearbyUsers", async
     return error.response.data;
   }
 });
+
+export const updateUser = createAsyncThunk("users/updateUser", async data => {
+  try {
+    const { id, formData, profile_pic } = data;
+    const forms = {...formData, profile_pic}
+
+    console.log("forms "+JSON.stringify(forms));
+
+    const userData = Object.entries(forms).reduce((a,[k,v]) => (v ? (a[k]=v, a) : a), {})
+
+    const response = await axios.patch(`users/${id}`, userData);
+
+    return response.data;
+  } catch (error) {
+    throw error.code;
+  }
+});

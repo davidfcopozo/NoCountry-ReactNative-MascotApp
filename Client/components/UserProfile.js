@@ -73,7 +73,7 @@ const UserProfile = ({ route }) => {
             style={{
               width: 100,
               height: 100,
-              resizeMode: "contain"
+              resizeMode: "cover"
             }}
             className="rounded-full"
             source={{
@@ -282,7 +282,15 @@ const UserProfile = ({ route }) => {
         ) : (
           <View>
             <Text style={{ color: colors.text }} className="text-base">
-              No ofrece servicios
+            {!userActive
+            ? user.offers_services
+              ? user.offers_services
+              : user.name + " todavia no ofrece servicios."
+            : currentUser?.data?.id
+            ? user.offers_services
+              ? user.offers_services
+              : "Aún no ofreces servicios."
+            : ""}
             </Text>
           </View>
         )}
@@ -485,9 +493,9 @@ const UserProfile = ({ route }) => {
         <View className="flex justify-center items-center">
           <TouchableOpacity
             onPress={handleLogOut}
-            className="bg-violet-700 py-2 px-4 rounded-lg mt-10"
+            className="bg-violet-700 py-2.5 px-4 rounded-lg mt-10"
           >
-            <Text className="text-xl text-white">Cerrar sesion</Text>
+            <Text className="text-xl text-white font-bold">Cerrar sesion</Text>
           </TouchableOpacity>
         </View>
       ) : undefined}

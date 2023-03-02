@@ -14,7 +14,7 @@ const Highlights = ({ data }) => {
   return (
     <>
       <ScrollView>
-        <View className="flex justify-center lg:justify-start flex-wrap gap-2 flex-row pl-2 py-4 lg:pl-10">
+        <View className="flex justify-center lg:justify-start flex-wrap gap-2 flex-row py-4 lg:pl-10">
           {data?.length > 0 ? (
             Children.toArray(
               data.map((card, index) => (
