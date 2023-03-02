@@ -51,8 +51,8 @@ const FormAddPet = () => {
   };
 
   const handleSelect = data => {
-    const id = data[0];
-    const type = data.slice(2, 10);
+    const id = data? data[0] : null;
+    const type = data? data[1] : null;
     setFormData({ ...formData, idPet: id, typePet: type });
     setValid({ ...valid, typePet: true });
     type === "perro"
