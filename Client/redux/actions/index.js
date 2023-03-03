@@ -286,7 +286,6 @@ export const updateUser = createAsyncThunk("users/updateUser", async data => {
   }
 });
 
-
 export const cleanState = createAsyncThunk("/cleanState", async () => {
   try {
     const clean = [];
@@ -332,6 +331,8 @@ export const fetchJobOffersRequestUser = createAsyncThunk("/jobOffersRequest", a
     return jobOffersUser.data;
   } catch (error) {
     console.log(error);
+  }
+});
 
 export const fetchReviewsUser = createAsyncThunk("/reviews/fetchReviewsUser", async currentUser => {
   try {
@@ -341,6 +342,5 @@ export const fetchReviewsUser = createAsyncThunk("/reviews/fetchReviewsUser", as
     return myReviews.data;
   } catch (error) {
     return error.response.data;
-
   }
 });
