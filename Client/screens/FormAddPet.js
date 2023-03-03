@@ -114,12 +114,24 @@ const FormAddPet = () => {
     }
 
     if (valid.typePet && valid.name && valid.breed && valid.age && valid.weight) {
-      dispatch(addNewPet({ user, formData }));
-      Toast.show({
-        type: "success",
-        text1: `Mascota agregada con éxito`
-      });
-      navigation.goBack();
+      try {
+        const response = await dispatch(addNewPet({ user, formData }));
+
+        if (response) {
+          Toast.show({
+            type: "success",
+            text1: `Mascota agregada con éxito`
+          });
+          setTimeout(() => {
+            navigation.goBack("");
+          }, 1500);
+        }
+      } catch (error) {
+        Toast.show({
+          type: "error",
+          text1: "Algo ha salido mal. Por favor inténtelo nuevamente"
+        });
+      }
     }
   };
 
@@ -130,6 +142,9 @@ const FormAddPet = () => {
   return (
     <ScrollView>
       <View>
+        <View className="z-10">
+          <Toast />
+        </View>
         <View className="p-5">
           <View>
             <View className="flex items-center mb-4">

@@ -14,6 +14,13 @@ import {
   fetchNearbyUsers,
   fetchPetsUser,
   fetchJobOffersUser,
+  fetchJobOffersUserSearch,
+  cleanState,
+  fetchPetsUserSearch,
+  fetchRequestsUser,
+  fetchRequestInfoUserId,
+  fetchJobOffersRequestUser,
+  fetchRequestInfoUsers
   updateUser,
   fetchReviewsUser,
   addNewPet
@@ -31,6 +38,13 @@ const initialState = {
   petTypes: [],
   petsUsers: [],
   jobOffersUser: [],
+  petsUsersSearch: [],
+  jobOffersUserSearch: [],
+  requestsUser: [],
+  userContracted: [],
+  userContractedJobOffers: [],
+  isLogin: false,
+  usersContracted: []
   reviewsUser: [],
   isLogin: false
 };
@@ -51,6 +65,7 @@ const usersReducer = createSlice({
       state.search = action.payload;
     });
     builder.addCase(fetchUserById.fulfilled, (state, action) => {
+      state.userContracted = action.payload;
       state.chatRecipients.push(action.payload);
     });
     builder.addCase(searchView.fulfilled, (state, action) => {
@@ -85,11 +100,30 @@ const usersReducer = createSlice({
     builder.addCase(fetchPetsUser.fulfilled, (state, action) => {
       state.petsUsers = action.payload;
     });
+    builder.addCase(fetchPetsUserSearch.fulfilled, (state, action) => {
+      state.petsUsersSearch = action.payload;
+    });
     builder.addCase(fetchNearbyUsers.fulfilled, (state, action) => {
       state.nearbyUsers = action.payload;
     });
     builder.addCase(fetchJobOffersUser.fulfilled, (state, action) => {
       state.jobOffersUser = action.payload;
+    });
+    builder.addCase(fetchJobOffersUserSearch.fulfilled, (state, action) => {
+      state.jobOffersUserSearch = action.payload;
+    });
+    builder.addCase(cleanState.fulfilled, (state, action) => {
+      state.jobOffersUserSearch = action.payload;
+      state.petsUsersSearch = action.payload;
+    });
+    builder.addCase(fetchRequestsUser.fulfilled, (state, action) => {
+      state.requestsUser = action.payload;
+    });
+    builder.addCase(fetchRequestInfoUserId.fulfilled, (state, action) => {
+      state.userContracted = action.payload;
+    });
+    builder.addCase(fetchJobOffersRequestUser.fulfilled, (state, action) => {
+      state.userContractedJobOffers = action.payload;
     });
     builder.addCase(updateUser.fulfilled, (state, action) => {
       const { formData, profile_pic } = action.meta.arg;

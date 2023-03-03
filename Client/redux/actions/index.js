@@ -31,7 +31,6 @@ export const sortUsersByRating = createAsyncThunk("users/sortUsersByRating", asy
 export const fetchUserById = createAsyncThunk("users/fetchUserById", async userId => {
   try {
     const userById = await axios.get(`/users/${userId}`);
-    console.log(userById.data);
     return [userById.data];
   } catch (error) {
     console.log(error);
@@ -162,6 +161,17 @@ export const fetchFavourites = createAsyncThunk("users/fetchFavourites", async c
   }
 });
 
+export const fetchNearbyUsers = createAsyncThunk("users/fetchNearbyUsers", async data => {
+  try {
+    const { city, id } = data;
+
+    const usersSameCity = await axios.get(`/users/city/${city}/${id}`);
+    return usersSameCity;
+  } catch (error) {
+    return error.response.data;
+  }
+});
+
 export const fetchPetTypes = createAsyncThunk("/petTypes/fetchPetTypes", async () => {
   try {
     const petTypes = await axios.get("/petTypes");
@@ -203,20 +213,20 @@ export const fetchPetsUser = createAsyncThunk("/pets/fetchPetsUser", async data 
   }
 });
 
-export const fetchNearbyUsers = createAsyncThunk("users/fetchNearbyUsers", async data => {
+export const fetchPetsUserSearch = createAsyncThunk("/myPetsSearch", async data => {
   try {
-    const { city, id } = data;
+    const { user } = data;
+    const userId = user.id;
 
-    const usersSameCity = await axios.get(`/users/city/${city}/${id}`);
-    return usersSameCity;
+    const myPets = await axios.get(`/pets?userId=${userId}`);
+    return myPets.data;
   } catch (error) {
-    return error.response.data;
+    console.log(error);
   }
 });
 
 export const addJobOffer = createAsyncThunk("/jobOffers/addJobOffer", async data => {
   try {
-    console.log(data);
     const { user, formData } = data;
 
     const newJobOffer = {
@@ -247,6 +257,18 @@ export const fetchJobOffersUser = createAsyncThunk("/jobOffers/fetchJobOffersUse
   }
 });
 
+export const fetchJobOffersUserSearch = createAsyncThunk("/myJobOffersSearch", async data => {
+  try {
+    const { user } = data;
+    const userId = user.id;
+
+    const myJobOffers = await axios.get(`/jobOffers?userId=${userId}`);
+    return myJobOffers.data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export const updateUser = createAsyncThunk("users/updateUser", async data => {
   try {
     const { id, formData, profile_pic } = data;
@@ -264,6 +286,53 @@ export const updateUser = createAsyncThunk("users/updateUser", async data => {
   }
 });
 
+
+export const cleanState = createAsyncThunk("/cleanState", async () => {
+  try {
+    const clean = [];
+    return clean;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const addRequest = createAsyncThunk("/addRequest", async formData => {
+  try {
+    const response = await axios.post("/requests/create", formData);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const fetchRequestsUser = createAsyncThunk("/myRequests", async data => {
+  try {
+    const { currentUser } = data;
+    const userId = currentUser.data.id;
+
+    const myRequests = await axios.get(`/requests?userId=${userId}`);
+    return myRequests.data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const fetchRequestInfoUserId = createAsyncThunk("users/fetchRequestId", async userId => {
+  try {
+    const userById = await axios.get(`/users/${userId}`);
+    return userById.data;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export const fetchJobOffersRequestUser = createAsyncThunk("/jobOffersRequest", async userId => {
+  try {
+    const jobOffersUser = await axios.get(`/jobOffers?userId=${userId}`);
+    return jobOffersUser.data;
+  } catch (error) {
+    console.log(error);
+
 export const fetchReviewsUser = createAsyncThunk("/reviews/fetchReviewsUser", async currentUser => {
   try {
     const { data } = currentUser;
@@ -272,5 +341,6 @@ export const fetchReviewsUser = createAsyncThunk("/reviews/fetchReviewsUser", as
     return myReviews.data;
   } catch (error) {
     return error.response.data;
+
   }
 });

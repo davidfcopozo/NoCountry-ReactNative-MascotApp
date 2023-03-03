@@ -3,18 +3,27 @@ import React from "react";
 import { useTheme, useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { useDispatch } from "react-redux";
+import { addRequest } from "../redux/actions";
+import Toast from "react-native-toast-message";
 
-const Request = () => {
+const Request = ({ route }) => {
   const { colors } = useTheme();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const { jobOffer, user, currentUser } = route.params;
 
   const [formData, setFormData] = useState({
-    Date: ""
+    date: "",
+    hired_user_id: user.id,
+    categoryId: jobOffer.categoryId,
+    jobOfferId: jobOffer.id,
+    userId: currentUser.data.id
   });
 
   const [valid, setValid] = useState({
-    serviceType: false
+    date: false
   });
 
   const [errors, setErrors] = useState({});
@@ -33,14 +42,14 @@ const Request = () => {
     const dt = new Date(date);
     const x = dt.toLocaleDateString();
     const x1 = x.split("/");
-    const result = x1[1] + "/" + x1[0] + "/" + x1[2];
+    const result = x1[0] + "/" + x1[1] + "/" + x1[2];
     setFormData({
       ...formData,
-      Date: result
+      date: result
     });
     setValid({
       ...valid,
-      Date: true
+      date: true
     });
     hideDatePicker();
   };
@@ -63,25 +72,42 @@ const Request = () => {
   const handleValidation = async () => {
     Keyboard.dismiss();
 
-    if (!formData.Date) {
-      handleError("Por favor, introduzca una fecha", "Date");
+    if (!formData.date) {
+      handleError("Por favor, introduzca una fecha", "date");
       setValid({
         ...valid,
-        Date: false
+        date: false
       });
     }
 
-    if (valid.Date) {
-      setTimeout(() => {
-        alert(JSON.stringify(formData, null, 2));
-      }, 100);
-      navigation.goBack();
+    if (valid.date) {
+      try {
+        const response = await dispatch(addRequest(formData));
+
+        if (response) {
+          Toast.show({
+            type: "success",
+            text1: `Contratacion exitosa `
+          });
+          setTimeout(() => {
+            navigation.goBack("");
+          }, 1500);
+        }
+      } catch (error) {
+        Toast.show({
+          type: "error",
+          text1: "Algo ha salido mal. Por favor inténtelo nuevamente"
+        });
+      }
     }
   };
 
   return (
     <ScrollView>
       <View>
+        <View className="z-10">
+          <Toast />
+        </View>
         <View className="p-5">
           <View className="">
             <View className="gap-y-1 pb-3">
@@ -93,7 +119,7 @@ const Request = () => {
                 className="flex justify-center items-center border rounded-lg py-3"
                 onPress={() => showDatePicker()}
               >
-                <Text style={{ color: colors.text }}>{formData.Date}</Text>
+                <Text style={{ color: colors.text }}>{formData.date}</Text>
               </TouchableOpacity>
 
               <DateTimePickerModal
@@ -102,7 +128,7 @@ const Request = () => {
                 onConfirm={handleDateConfirm}
                 onCancel={hideDatePicker}
               />
-              {!valid.Date && <Text className="text-xs color-[#ff0000]">{errors.Date}</Text>}
+              {!valid.date && <Text className="text-xs color-[#ff0000]">{errors.date}</Text>}
             </View>
           </View>
         </View>
