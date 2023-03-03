@@ -7,8 +7,7 @@ import { useSelector } from "react-redux";
 
 const Service = ({ route }) => {
   const { currentUser } = useSelector(state => state.users);
-  const { user } = route.params;
-  const { jobOffer } = route.params;
+  const { user, jobOffer, userContracted, ownUser } = route.params;
   const colorScheme = "light";
   const { colors } = useTheme();
   const navigation = useNavigation();
@@ -40,7 +39,7 @@ const Service = ({ route }) => {
         style={{ color: colors.text, borderColor: colors.text }}
         className="flex flex-row items-center justify-between py-4 px-7 border-b"
       >
-        <Link to={{ screen: "Post", params: { user: user } }}>
+        <Link to={{ screen: "VisitProfile", params: { user: user } }}>
           <View className="flex flex-row items-center">
             <View>
               {user.profile_pic ? (
@@ -116,37 +115,52 @@ const Service = ({ route }) => {
         </View>
       </View>
       <View className="py-3 px-3">
-        <Text style={{ color: colors.text }} className="font-semibold">
+        <Text style={{ color: colors.text }} className="font-semibold text-base">
           {jobOffer.description}
         </Text>
       </View>
-      <View
-        className="flex flex-row justify-center items-center gap-x-10 mt-7 mb-7
-      "
-      >
+      <View className="px-4 mt-9">
         <View>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate(
-                currentUser?.data?.id ? { name: "Request", params: { user } } : { name: "Perfil" }
-              )
-            }
-            className="flex flex-row justify-center items-center bg-violet-700 py-2 px-5 rounded-lg"
-          >
-            <Text className="text-xl text-white">Contratar</Text>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate(
-                currentUser?.data?.id ? { name: "Review", params: { user } } : { name: "Perfil" }
-              )
-            }
-            className="flex flex-row justify-center items-center bg-violet-700 py-2 px-5 rounded-lg"
-          >
-            <Text className="text-xl text-white">Calificar</Text>
-          </TouchableOpacity>
+          {userContracted ? (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate(
+                  currentUser?.data?.id
+                    ? { name: "Request", params: { user, currentUser, jobOffer } }
+                    : { name: "Perfil" }
+                )
+              }
+              className="flex flex-row justify-center items-center bg-violet-700 py-2 px-28 rounded-lg"
+            >
+              <Text className="text-xl text-white">Calificar</Text>
+            </TouchableOpacity>
+          ) : ownUser ? (
+            <View className="flex flex-row gap-x-5 justify-center">
+              {/* <View className="">
+                <TouchableOpacity className="flex flex-row justify-center items-center bg-violet-700 py-2 px-12 rounded-lg">
+                  <Text className="text-xl text-white">Editar</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity className="flex flex-row justify-center items-center bg-violet-700 py-2 px-10 rounded-lg">
+                  <Text className="text-xl text-white">Eliminar</Text>
+                </TouchableOpacity>
+              </View> */}
+            </View>
+          ) : (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate(
+                  currentUser?.data?.id
+                    ? { name: "Request", params: { user, currentUser, jobOffer } }
+                    : { name: "Perfil" }
+                )
+              }
+              className="flex flex-row justify-center items-center bg-violet-700 py-2 px-28 rounded-lg"
+            >
+              <Text className="text-xl text-white">Contratar</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </ScrollView>

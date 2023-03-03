@@ -2,7 +2,7 @@ const { Request, User } = require("../db");
 const { isValidNumber } = require("../validations");
 
 const getUserRequests = async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.query;
 
   try {
     if (!userId || !isValidNumber(userId))

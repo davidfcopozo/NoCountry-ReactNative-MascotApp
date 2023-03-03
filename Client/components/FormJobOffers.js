@@ -4,6 +4,7 @@ import { useTheme, useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addJobOffer } from "../redux/actions";
+import Toast from "react-native-toast-message";
 
 const FormJobOffers = ({ route }) => {
   const { colors } = useTheme();
@@ -94,14 +95,33 @@ const FormJobOffers = ({ route }) => {
     }
 
     if (valid.name && valid.price && valid.description) {
-      dispatch(addJobOffer({ user, formData }));
-      navigation.goBack();
+      try {
+        const response = await dispatch(addJobOffer({ user, formData }));
+
+        if (response) {
+          Toast.show({
+            type: "success",
+            text1: `Servicio agregado correctamente `
+          });
+          setTimeout(() => {
+            navigation.goBack("");
+          }, 1500);
+        }
+      } catch (error) {
+        Toast.show({
+          type: "error",
+          text1: "Algo ha salido mal. Por favor inténtelo nuevamente"
+        });
+      }
     }
   };
 
   return (
     <ScrollView>
       <View>
+        <View className="z-10">
+          <Toast />
+        </View>
         <View className="p-5">
           <View className="">
             <View className="gap-y-1 pb-3">

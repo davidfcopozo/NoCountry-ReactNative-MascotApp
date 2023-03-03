@@ -14,7 +14,7 @@ const Cards = ({ Data }) => {
         <>
           {Children.toArray(
             Data.map(card => (
-              <Link to={{ screen: "Profile", params: { user: card } }}>
+              <Link to={{ screen: "VisitProfile", params: { user: card } }}>
                 <View className="w-44 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
                   <Image
                     className="h-36"
