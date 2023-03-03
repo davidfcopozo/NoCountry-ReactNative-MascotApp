@@ -332,6 +332,8 @@ export const fetchJobOffersRequestUser = createAsyncThunk("/jobOffersRequest", a
     return jobOffersUser.data;
   } catch (error) {
     console.log(error);
+  }
+});
 
 export const fetchReviewsUser = createAsyncThunk("/reviews/fetchReviewsUser", async currentUser => {
   try {
