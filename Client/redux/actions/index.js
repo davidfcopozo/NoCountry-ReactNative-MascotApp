@@ -162,7 +162,7 @@ export const fetchFavourites = createAsyncThunk("users/fetchFavourites", async c
   }
 });
 
-export const fetchPetTypes = createAsyncThunk("petTypes", async () => {
+export const fetchPetTypes = createAsyncThunk("/petTypes/fetchPetTypes", async () => {
   try {
     const petTypes = await axios.get("/petTypes");
     return petTypes.data;
@@ -171,7 +171,7 @@ export const fetchPetTypes = createAsyncThunk("petTypes", async () => {
   }
 });
 
-export const addNewPet = createAsyncThunk("/add", async data => {
+export const addNewPet = createAsyncThunk("/pets/addNewPet", async data => {
   try {
     const { user, formData } = data;
 
@@ -191,7 +191,7 @@ export const addNewPet = createAsyncThunk("/add", async data => {
   }
 });
 
-export const fetchPetsUser = createAsyncThunk("/myPets", async data => {
+export const fetchPetsUser = createAsyncThunk("/pets/fetchPetsUser", async data => {
   try {
     const { currentUser } = data;
     const userId = currentUser.data.id;
@@ -214,7 +214,7 @@ export const fetchNearbyUsers = createAsyncThunk("users/fetchNearbyUsers", async
   }
 });
 
-export const addJobOffer = createAsyncThunk("/addJobOffer", async data => {
+export const addJobOffer = createAsyncThunk("/jobOffers/addJobOffer", async data => {
   try {
     console.log(data);
     const { user, formData } = data;
@@ -235,7 +235,7 @@ export const addJobOffer = createAsyncThunk("/addJobOffer", async data => {
   }
 });
 
-export const fetchJobOffersUser = createAsyncThunk("/myJobOffers", async data => {
+export const fetchJobOffersUser = createAsyncThunk("/jobOffers/fetchJobOffersUser", async data => {
   try {
     const { currentUser } = data;
     const userId = currentUser.data.id;
@@ -261,5 +261,16 @@ export const updateUser = createAsyncThunk("users/updateUser", async data => {
     return response.data;
   } catch (error) {
     throw error.code;
+  }
+});
+
+export const fetchReviewsUser = createAsyncThunk("/reviews/fetchReviewsUser", async currentUser => {
+  try {
+    const { data } = currentUser;
+
+    const myReviews = await axios.get(`/reviews/${data.id}`);
+    return myReviews.data;
+  } catch (error) {
+    return error.response.data;
   }
 });

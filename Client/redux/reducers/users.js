@@ -14,7 +14,8 @@ import {
   fetchNearbyUsers,
   fetchPetsUser,
   fetchJobOffersUser,
-  updateUser
+  updateUser,
+  fetchReviewsUser
 } from "../actions";
 
 const initialState = {
@@ -29,6 +30,7 @@ const initialState = {
   petTypes: [],
   petsUsers: [],
   jobOffersUser: [],
+  reviewsUser: [],
   isLogin: false
 };
 
@@ -94,6 +96,9 @@ const usersReducer = createSlice({
         ...state.currentUser,
         ...{ data: { ...state.currentUser.data, ...formData, profile_pic: profile_pic } }
       };
+    });
+    builder.addCase(fetchReviewsUser.fulfilled, (state, action) => {
+      state.reviewsUser = action.payload;
     });
   }
 });

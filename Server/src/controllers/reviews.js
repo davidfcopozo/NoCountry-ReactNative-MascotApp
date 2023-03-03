@@ -1,38 +1,56 @@
 const { Review, User, Request, Auth } = require("../db");
 const { isValidNumber, isValidString } = require("../validations");
+const { Op } = require("sequelize");
 
 const getUserReviews = async (req, res) => {
-  const { userId } = req.body;
+  const { id } = req.params;
 
   try {
-    if (!userId || !isValidNumber(userId))
-      return res
-        .status(400)
-        .json({ errorMessage: "The userId is required and must be an integer" });
+    if (!isValidNumber(id))
+      return res.status(400).json({ errorMessage: "The id  must be an integer" });
 
-    const user = await User.findByPk(userId);
+    const user = await User.findByPk(id);
+
     if (user === null)
       return res.status(404).json({ errorMessage: "There is no user with that id" });
 
     const reviewList = await Review.findAll({
       where: {
-        userId
+        userId: id
       }
     });
 
-    // Calcular el promedio de stars que se debe renderizar en el front
+    if (reviewList.length) {
+      // Acceder a los datos (name, surname y profile_pic) de los usuarios que califican para mandarlos al front
 
-    const starsArray = reviewList.map(review => review.stars);
-    const totalStars = starsArray.reduce((accumulator, currentValue) => accumulator + currentValue);
-    const numberOfReviews = reviewList.length;
-    const averageStars = totalStars / numberOfReviews;
+      const reviewersIds = reviewList.map(review => review.reviewer_user_id);
 
-    // Puedo mandarlo redondeado para simplificar
-    // const averageRounded = Math.round(averageStars);
+      const reviewers = await User.findAll({
+        where: {
+          id: {
+            [Op.and]: [reviewersIds]
+          }
+        }
+      });
 
-    reviewList.length
-      ? res.status(200).json({ reviews: reviewList, averageStars })
-      : res.status(200).json([]);
+      const reviewersData = reviewers.map(user => user.dataValues);
+
+      // Calcular el promedio de stars que se debe renderizar en el front
+
+      const starsArray = reviewList.map(review => review.stars);
+      const totalStars = starsArray.reduce(
+        (accumulator, currentValue) => accumulator + currentValue
+      );
+      const numberOfReviews = reviewList.length;
+      const averageStars = totalStars / numberOfReviews;
+
+      // Puedo mandarlo redondeado para simplificar
+      // const averageRounded = Math.round(averageStars);
+
+      return res.status(200).json({ reviews: reviewList, reviewers: reviewersData, averageStars });
+    }
+
+    return res.status(200).json([]);
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
