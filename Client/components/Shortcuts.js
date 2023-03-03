@@ -1,10 +1,8 @@
 import { Text, View, Image, Pressable, ScrollView } from "react-native";
 import { Link, useTheme } from "@react-navigation/native";
-import { useNavigation } from "@react-navigation/native";
 
 const Shortcuts = ({ navigate }) => {
   const { colors } = useTheme();
-  const navigation = useNavigation();
 
   return navigate === false ? (
     <View className="flex flex-wrap flex-row py-5 gap-4 justify-center">
@@ -92,11 +90,16 @@ const Shortcuts = ({ navigate }) => {
     <View className="flex items-center justify-center mt-16">
       <View className="flex justify-center pt-4">
         <Text style={{ color: colors.text }} className="flex justify-center text-xl font-semibold">
-          Elije un servicio
+          Elige un servicio
         </Text>
       </View>
       <View className="flex flex-wrap flex-row py-5 px-5 gap-4 justify-center items-center">
-        <Pressable onPress={() => navigation.navigate("Corte de pelo")}>
+        <Link
+          to={{
+            screen: "FormJobOffers",
+            params: { category: "Peluqueria", title: "Corte de pelo" }
+          }}
+        >
           <View className="gap-y-2">
             <View className="bg-pink-200 items-center p-4 rounded-xl">
               <Image
@@ -112,9 +115,14 @@ const Shortcuts = ({ navigate }) => {
               Corte de Pelo
             </Text>
           </View>
-        </Pressable>
+        </Link>
 
-        <Pressable onPress={() => navigation.navigate("Paseador")}>
+        <Link
+          to={{
+            screen: "FormJobOffers",
+            params: { category: "Paseo", title: "Paseador" }
+          }}
+        >
           <View className="gap-y-2">
             <View className="bg-pink-200 items-center p-4 rounded-xl">
               <Image
@@ -130,9 +138,14 @@ const Shortcuts = ({ navigate }) => {
               Paseador
             </Text>
           </View>
-        </Pressable>
+        </Link>
 
-        <Pressable onPress={() => navigation.navigate("Transporte")}>
+        <Link
+          to={{
+            screen: "FormJobOffers",
+            params: { category: "Transporte", title: "Transporte" }
+          }}
+        >
           <View className="gap-y-2">
             <View className="bg-pink-200 items-center p-4 rounded-xl">
               <Image
@@ -148,9 +161,14 @@ const Shortcuts = ({ navigate }) => {
               Transporte
             </Text>
           </View>
-        </Pressable>
+        </Link>
 
-        <Pressable onPress={() => navigation.navigate("Cuidado")}>
+        <Link
+          to={{
+            screen: "FormJobOffers",
+            params: { category: "Alojamiento", title: "Cuidado" }
+          }}
+        >
           <View className="gap-y-2">
             <View className="bg-pink-200 items-center p-4 rounded-xl">
               <Image
@@ -166,9 +184,14 @@ const Shortcuts = ({ navigate }) => {
               Cuidado
             </Text>
           </View>
-        </Pressable>
+        </Link>
 
-        <Pressable onPress={() => navigation.navigate("Entrenamiento")}>
+        <Link
+          to={{
+            screen: "FormJobOffers",
+            params: { category: "Entrenamiento", title: "Entrenamiento" }
+          }}
+        >
           <View className="gap-y-2">
             <View className="bg-pink-200 items-center p-4 rounded-xl">
               <Image
@@ -184,7 +207,7 @@ const Shortcuts = ({ navigate }) => {
               Entrenamiento
             </Text>
           </View>
-        </Pressable>
+        </Link>
       </View>
     </View>
   );

@@ -1,0 +1,47 @@
+[
+    {
+        "id" : 1,
+        "name" : "Ernesto Aramayo",
+        "about" : "Desarrollador Web y Mobile",
+        "role" : ["Backend"],
+        "github_user": "ernestoaaramayo",
+        "github_link": "https://github.com/ernestoaaramayo",
+        "github_pic": "https://avatars.githubusercontent.com/u/79431481?v=4"
+    },
+    {
+        "id" : 2,
+        "name" : "Franco Corniglione",
+        "about" : "Desarrollador Web y Mobile",
+        "role" : ["Backend", "Frontend"],
+        "github_user": "Francormin",
+        "github_link": "https://github.com/Francormin",
+        "github_pic": "https://avatars.githubusercontent.com/u/89218100?v=4"
+    },
+    {
+        "id" : 3,
+        "name" : "David Francisco Pozo",
+        "about" : "Desarrollador Web y Mobile",
+        "role" : ["Backend", "Frontend"],
+        "github_user": "davidfcopozo",
+        "github_link": "https://github.com/davidfcopozo",
+        "github_pic": "https://avatars.githubusercontent.com/u/46207472?v=4"
+    },
+    {
+        "id" : 4,
+        "name" : "Lautaro Santillan",
+        "about" : "Desarrollador Web y Mobile",
+        "role" : ["Frontend"],
+        "github_user": "LautiSantillan",
+        "github_link": "https://github.com/LautiSantillan",
+        "github_pic": "https://avatars.githubusercontent.com/u/95645590?v=4"
+    },
+    {
+        "id" : 5,
+        "name" : "Alexander Mamani",
+        "about" : "Desarrollador Web y Mobile",
+        "role" : ["Backend","Frontend"],
+        "github_user": "AlexQS96",
+        "github_link": "https://github.com/alexqs96",
+        "github_pic": "https://avatars.githubusercontent.com/u/72415956?v=4"
+    }
+]

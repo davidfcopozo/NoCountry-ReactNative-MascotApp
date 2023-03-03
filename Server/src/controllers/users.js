@@ -1,4 +1,4 @@
-const { User, Auth, Category, Favourite, JobOffer, Review, Request, Chat } = require("../db");
+const { User, Auth, Category, Favourite } = require("../db");
 const { isValidString, isValidNumber } = require("./../validations/index");
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
@@ -130,13 +130,48 @@ const getUserById = async (req, res) => {
   }
 };
 
+const getUsersSameCity = async (req, res) => {
+  const { city, id } = req.params;
+
+  try {
+    if (isValidNumber(city))
+      return res.status(400).json({ errorMessage: "The city must be string type" });
+
+    if (!isValidNumber(id))
+      return res.status(400).json({ errorMessage: "The id must be an integer" });
+
+    const user = await User.findByPk(id);
+    if (user === null)
+      return res.status(404).json({ errorMessage: "There is no user with that id" });
+
+    const usersSameCity = await User.findAll({
+      where: {
+        city: {
+          [Op.iLike]: `${city}`
+        }
+      }
+    });
+
+    const nearbyUsers = usersSameCity.map(user => user.dataValues);
+    const filteringCurrentUser = nearbyUsers.filter(user => user.id !== parseInt(id));
+
+    nearbyUsers.length
+      ? res.status(200).json(filteringCurrentUser)
+      : res.status(404).json({ errorMessage: "There is no users with the same city" });
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: error.original ? error.original : error
+    });
+  }
+};
+
 const getUsersBestRating = async (req, res) => {
+  const { id } = req.query;
+
   try {
     const usersOrdered = await User.findAll({
       where: {
-        rating: {
-          [Op.gt]: 0
-        }
+        offers_services: true
       },
       include: {
         model: Category
@@ -144,7 +179,19 @@ const getUsersBestRating = async (req, res) => {
       order: [["rating", "DESC"]]
     });
 
-    return res.status(200).json(usersOrdered);
+    if (id && id === "undefined") {
+      return res.status(200).json(usersOrdered);
+    } else {
+      if (id && !isValidNumber(id))
+        return res.status(400).json({ errorMessage: "The id must be an integer" });
+
+      const user = await User.findByPk(id);
+      if (user === null)
+        return res.status(404).json({ errorMessage: "There is no user with that id" });
+
+      const filteringCurrentUser = usersOrdered.filter(user => user.id !== parseInt(id));
+      return res.status(200).json(filteringCurrentUser);
+    }
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
@@ -177,8 +224,8 @@ const getUsersByCategory = async (req, res) => {
     const usersArray = usersThatOfferServices.map(user => user.dataValues);
 
     const usersToShow = [];
-    for (let user of usersArray) {
-      for (let u of user.categories) {
+    for (const user of usersArray) {
+      for (const u of user.categories) {
         if (u.id === categoryId) {
           usersToShow.push(user);
         }
@@ -191,79 +238,6 @@ const getUsersByCategory = async (req, res) => {
         .json({ message: `There is no users that offer ${category.dataValues.name}` });
 
     return res.status(200).json(usersToShow);
-  } catch (error) {
-    return res.status(500).json({
-      errorMessage: error.original ? error.original : error
-    });
-  }
-};
-
-const addUserReview = async (req, res) => {
-  const { id } = req.params;
-  const { reviewer_user_id, stars, description } = req.body;
-
-  try {
-    // Validaciones varias
-
-    if (!isValidNumber(id))
-      return res.status(400).json({ errorMessage: "The id type must be an integer" });
-
-    if (!reviewer_user_id || !isValidNumber(reviewer_user_id))
-      return res
-        .status(400)
-        .json({ errorMessage: "The rewiewer_user_id is required and must be an integer" });
-
-    if (reviewer_user_id === parseInt(id))
-      return res.status(400).json({ errorMessage: "A user cannot be self-reviewed" });
-
-    if (!stars || !isValidNumber(stars) || stars < 1 || stars > 5)
-      return res.status(400).json({
-        errorMessage: "The stars are required and must be an integer between 1 and 5 included"
-      });
-
-    if (description && !isValidString(description))
-      return res.status(400).json({ errorMessage: "Description field must be string type" });
-
-    // Los usuarios (tanto el reseñador como el reseñado) deben existir y estar autenticados
-
-    const userReviewed = await User.findByPk(id, { include: Auth });
-    const userReviewer = await User.findByPk(reviewer_user_id, { include: Auth });
-
-    if (!userReviewed || userReviewed?.dataValues.authId === null)
-      return res.status(404).json({
-        errorMessage: "The user you are trying to review does not exist or is not authenticated"
-      });
-
-    if (!userReviewer || userReviewer?.dataValues.authId === null)
-      return res.status(404).json({
-        errorMessage:
-          "The user that is trying to give the review does not exist or is not authenticated"
-      });
-
-    // Para dejar su reseña, el reseñador debe haber contratado previamente al reseñado
-
-    const userRequested = await Request.findOne({
-      where: {
-        hired_user_id: id,
-        userId: reviewer_user_id
-      }
-    });
-
-    if (!userRequested)
-      return res.status(404).json({
-        errorMessage: "The user that is trying to give the review has not hired the other user yet"
-      });
-
-    // Si todo va bien, y el proceso pasa todas las validaciones y chequeos de arriba, se emite finalmente la reseña
-
-    const newReview = await Review.create({
-      reviewer_user_id,
-      description,
-      stars,
-      userId: id
-    });
-
-    return res.status(201).json(newReview.dataValues);
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
@@ -310,7 +284,7 @@ const getUserFavourites = async (req, res) => {
     });
 
     if (favList.length) {
-      let ids = favList.map(fav => fav.fav_user_id);
+      const ids = favList.map(fav => fav.fav_user_id);
 
       const favourites = await User.findAll({
         where: {
@@ -536,8 +510,30 @@ const getSearch = async (req, res) => {
   }
 };
 
+const resetPassword = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await Auth.update(
+      {
+        password: hashedPassword
+      },
+      {
+        where: {
+          email
+        }
+      }
+    );
+
+    return res.status(200);
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.original ? error.original : error });
+  }
+};
+
 module.exports = {
-  getUsersBestRating,
   getUsers,
   register,
   login,
@@ -545,10 +541,12 @@ module.exports = {
   deleteUserFavourites,
   deleteUser,
   getUserById,
+  getUsersSameCity,
+  getUsersBestRating,
   getUsersByCategory,
   getUsersByFilter,
   getUserFavourites,
   addUserFavourites,
   getSearch,
-  addUserReview
+  resetPassword
 };

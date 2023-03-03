@@ -10,11 +10,12 @@ const Search = () => {
   const { colors } = useTheme();
 
   const dispatch = useDispatch();
+  const { currentUser } = useSelector(state => state.users);
   const sortedUsersByRating = useSelector(state => state.users.search);
 
   useEffect(() => {
-    dispatch(sortUsersByRating());
-  }, []);
+    dispatch(sortUsersByRating(currentUser.data?.id || undefined));
+  }, [currentUser.length]);
 
   return (
     <ScrollView>

@@ -76,10 +76,6 @@ function AuthProvider({ children }) {
     setCurrentUser(auth.currentUser);
   }, []);
 
-  useEffect(() => {
-    console.log(currentUser);
-  }, [currentUser]);
-
   //Context value to provide
   const value = {
     currentUser,

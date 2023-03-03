@@ -1,22 +1,23 @@
 import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Link, useTheme } from "@react-navigation/native";
+import { Link, useTheme, useNavigation } from "@react-navigation/native";
 import { Children } from "react";
-import { Pressable } from "react-native";
 import { useSelector } from "react-redux";
 
 const Service = ({ route }) => {
   const { currentUser } = useSelector(state => state.users);
-  const user = route.params.user;
+  const { user, jobOffer, userContracted, ownUser } = route.params;
   const colorScheme = "light";
   const { colors } = useTheme();
+  const navigation = useNavigation();
+
   return (
     <ScrollView>
       <Image
         className="h-56"
         source={{
-          uri: user.image
+          uri: jobOffer.img
         }}
       />
       <View
@@ -24,26 +25,25 @@ const Service = ({ route }) => {
         className="flex flex-row justify-between items-center py-4 px-6 border-b"
       >
         <View>
-          <Text style={{ color: colors.text }} className="font-bold text-lg">
-            ${user.price}
-          </Text>
           <Text style={{ color: colors.text }} className="font-semibold text-lg">
-            {user.service}
+            {jobOffer.name}
           </Text>
         </View>
-        <View className="">
-          <Ionicons name="heart-outline" size={30} color={colors.text} />
+        <View>
+          <Text style={{ color: colors.text }} className="font-bold text-lg">
+            ${jobOffer.price}
+          </Text>
         </View>
       </View>
       <View
         style={{ color: colors.text, borderColor: colors.text }}
-        className="flex flex-row justify-between items-center py-4 px-3 border-b"
+        className="flex flex-row items-center justify-between py-4 px-7 border-b"
       >
-        <Link to={{ screen: "Post", params: { user: user } }}>
-          <View className="flex flex-row items-center gap-x-4">
-            <View className="pl-2">
+        <Link to={{ screen: "VisitProfile", params: { user: user } }}>
+          <View className="flex flex-row items-center">
+            <View>
               {user.profile_pic ? (
-                <View className="flex items-center justify-center">
+                <View className="flex items-center">
                   <Image
                     style={{
                       width: 60,
@@ -57,7 +57,7 @@ const Service = ({ route }) => {
                   />
                 </View>
               ) : (
-                <View className="rounded-full bg-white flex items-center">
+                <View className="rounded-full bg-white flex">
                   <Ionicons
                     name="person-circle-outline"
                     size={60}
@@ -66,8 +66,8 @@ const Service = ({ route }) => {
                 </View>
               )}
             </View>
-            <View className="flex justify-center pb-1" style={{ color: colors.text }}>
-              <Text className="font-semibold text-lg">{user.name}</Text>
+            <View className="flex pl-3 pb-1" style={{ color: colors.text }}>
+              <Text style={{color: colors.text}} className="font-semibold text-lg">{user.name}</Text>
               <Text
                 numberOfLines={1}
                 style={{ color: colors.textGray }}
@@ -95,10 +95,14 @@ const Service = ({ route }) => {
           </View>
         </Link>
         <View>
-            <Link to={currentUser?.data?.id? { screen: "Message", params: { user } } : {screen: "Perfil"}}>
+          <Link
+            to={
+              currentUser?.data?.id ? { screen: "Message", params: { user } } : { screen: "Perfil" }
+            }
+          >
             <View
               style={{ color: colors.text, borderColor: colors.text }}
-              className="border-2 px-8 py-1 mr-2"
+              className="border-2 px-8 py-1"
             >
               <Text
                 style={{ color: colors.text, borderColor: colors.text }}
@@ -111,16 +115,53 @@ const Service = ({ route }) => {
         </View>
       </View>
       <View className="py-3 px-3">
-        <Text style={{ color: colors.text }} className="font-semibold">
-          Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem
-          Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un
-          impresor.
+        <Text style={{ color: colors.text }} className="font-semibold text-base">
+          {jobOffer.description}
         </Text>
       </View>
-      <View className="pr-4 pl-6 flex justify-center mt-10">
-        <TouchableOpacity className="flex flex-row justify-center items-center bg-violet-700 mb-6 py-2 gap-x-2 rounded-lg">
-          <Text className="text-xl text-white">Pagar servicio</Text>
-        </TouchableOpacity>
+      <View className="px-4 mt-9">
+        <View>
+          {userContracted ? (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate(
+                  currentUser?.data?.id
+                    ? { name: "Review", params: { user, currentUser, jobOffer } }
+                    : { name: "Perfil" }
+                )
+              }
+              className="flex flex-row justify-center items-center bg-violet-700 py-2 px-28 rounded-lg"
+            >
+              <Text className="text-xl text-white">Calificar</Text>
+            </TouchableOpacity>
+          ) : ownUser ? (
+            <View className="flex flex-row gap-x-5 justify-center">
+              {/* <View className="">
+                <TouchableOpacity className="flex flex-row justify-center items-center bg-violet-700 py-2 px-12 rounded-lg">
+                  <Text className="text-xl text-white">Editar</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity className="flex flex-row justify-center items-center bg-violet-700 py-2 px-10 rounded-lg">
+                  <Text className="text-xl text-white">Eliminar</Text>
+                </TouchableOpacity>
+              </View> */}
+            </View>
+          ) : (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate(
+                  currentUser?.data?.id
+                    ? { name: "Request", params: { user, currentUser, jobOffer } }
+                    : { name: "Perfil" }
+                )
+              }
+              className="flex flex-row justify-center items-center bg-violet-700 py-2 px-28 rounded-lg"
+            >
+              <Text className="text-xl text-white">Contratar</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     </ScrollView>
   );

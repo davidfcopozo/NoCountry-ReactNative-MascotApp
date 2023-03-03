@@ -1,3 +1,4 @@
+Client/app.json
 Client/node_modules/
 Client/.expo/
 Client/dist/
@@ -17,3 +18,4 @@ Server/firebase/ServiceAccount.json
 
 # macOS
 *.DS_Store
+node_modules

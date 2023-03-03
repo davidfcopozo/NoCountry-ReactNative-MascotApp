@@ -1,19 +1,21 @@
 import { REACT_APP_BACK_URL } from "@env";
-import axios from "axios";
 import { NativeWindStyleSheet } from "nativewind";
 import { useState } from "react";
 import { NativeRouter } from "react-router-native";
 import { Provider } from "react-redux";
-import { Image, View, StatusBar } from "react-native";
+import { Image, Platform, StatusBar } from "react-native";
 import { NavigationContainer, useTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
-import persistStore from "redux-persist/es/persistStore";
-import store from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
+import persistStore from "redux-persist/es/persistStore";
+import axios from "axios";
+import Constants from "expo-constants";
 
-import { HomeIcon, MessageIcon, PawIcon, ProfileIcon, SearchIcon } from "./components/Icons";
+import store from "./redux/store";
+
+import AuthProvider from "./context/AuthContext";
 
 import Index from "./screens/Index";
 import Home from "./screens/Home";
@@ -27,21 +29,23 @@ import BlogPost from "./screens/BlogPost";
 import Favorites from "./screens/Favorites";
 import EditarProfile from "./screens/EditProfile";
 import Service from "./screens/Service";
-import AuthProvider from "./context/AuthContext";
+import Review from "./screens/Review";
+import ForgotPassword from "./screens/ForgotPassword";
+import Privacy from "./screens/Privacy";
+
+import { HomeIcon, MessageIcon, PawIcon, ProfileIcon, SearchIcon } from "./components/Icons";
 import FormService from "./components/FormService";
-import FormCorteDePelo from "./components/FormCorteDePelo";
-import FormPaseador from "./components/FormPaseador";
-import FormTransporte from "./components/FormTransporte";
-import FormCuidado from "./components/FormCuidado";
-import FormEntrenamiento from "./components/FormEntrenamiento";
 import ServicesContracted from "./components/ServicesContracted";
 import ServicesProvided from "./components/ServicesProvided";
 import UserProfile from "./components/UserProfile";
+import Configuration from "./screens/Configuration";
+import FormAddPet from "./screens/FormAddPet";
+import Request from "./screens/Request";
+import FormJobOffers from "./components/FormJobOffers";
 
 // Setea la url base a partir de la cual axios va a realizar las llamadas al back
 
-axios.defaults.baseURL = REACT_APP_BACK_URL; // cuando querramos trabajar y/o probar nuestro proyecto de forma local
-// axios.defaults.baseURL = process.env.REACT_APP_DEPLOY_BACK_URL; // cuando querramos pushear o actualizar nuestro deploy del front
+axios.defaults.baseURL = Constants.expoConfig.extra.api;
 
 // Habilita Tailwind en React Native Web
 
@@ -78,7 +82,7 @@ const CustomDark = {
   dark: true,
   colors: {
     background: darkColor,
-    border: "#272729ab",
+    border: "#272729c7",
     card: darkColor,
     notification: "#ff453a",
     primary: "#0a84ff",
@@ -104,7 +108,7 @@ function BottomNavigation({ isDarkMode, setDarkMode, colors }) {
         headerRight: () => (
           <Ionicons
             onPress={() => setDarkMode(!isDarkMode)}
-            name={isDarkMode? "sunny-outline" : "moon-outline"}
+            name={isDarkMode ? "sunny-outline" : "moon-outline"}
             size={30}
             color={isDarkMode ? "#fff" : "#000"}
           />
@@ -160,8 +164,7 @@ function BottomNavigation({ isDarkMode, setDarkMode, colors }) {
         component={Messages}
         options={{
           tabBarLabel: "Mensajes",
-          tabBarIcon: props => <MessageIcon color={props.color} />,
-          tabBarBadge: 3
+          tabBarIcon: props => <MessageIcon color={props.color} />
         }}
       />
 
@@ -185,9 +188,6 @@ function App() {
   const [isDarkMode, setDarkMode] = useState(false);
 
   const { colors } = useTheme();
-
-  // Esto toma el tema del dispositivo
-  // const scheme = useColorScheme();
 
   return (
     <NativeRouter>
@@ -269,43 +269,9 @@ function App() {
                 />
 
                 <Stack.Screen
-                  name="Corte de pelo"
-                  component={FormCorteDePelo}
-                  options={{
-                    title: "Corte de pelo"
-                  }}
-                />
-
-                <Stack.Screen
-                  name="Paseador"
-                  component={FormPaseador}
-                  options={{
-                    title: "Paseador"
-                  }}
-                />
-
-                <Stack.Screen
-                  name="Transporte"
-                  component={FormTransporte}
-                  options={{
-                    title: "Transporte"
-                  }}
-                />
-
-                <Stack.Screen
-                  name="Cuidado"
-                  component={FormCuidado}
-                  options={{
-                    title: "Cuidado"
-                  }}
-                />
-
-                <Stack.Screen
-                  name="Entrenamiento"
-                  component={FormEntrenamiento}
-                  options={{
-                    title: "Entrenamiento"
-                  }}
+                  name="FormJobOffers"
+                  component={FormJobOffers}
+                  options={({ route }) => ({ title: route.params.title })}
                 />
 
                 <Stack.Screen
@@ -329,6 +295,54 @@ function App() {
                   component={UserProfile}
                   options={{
                     title: ""
+                  }}
+                />
+
+                <Stack.Screen
+                  name="Review"
+                  component={Review}
+                  options={{
+                    title: "Calificar"
+                  }}
+                />
+
+                <Stack.Screen
+                  name="ForgotPassword"
+                  component={ForgotPassword}
+                  options={{
+                    title: "Olvidé mi contraseña"
+                  }}
+                />
+
+                <Stack.Screen
+                  name="Privacy"
+                  component={Privacy}
+                  options={{
+                    title: "Politicas de Privacidad"
+                  }}
+                />
+
+                <Stack.Screen
+                  name="Configuration"
+                  component={Configuration}
+                  options={{
+                    title: "Configuracion"
+                  }}
+                />
+
+                <Stack.Screen
+                  name="FormAddPet"
+                  component={FormAddPet}
+                  options={{
+                    title: "Agregar mascota"
+                  }}
+                />
+
+                <Stack.Screen
+                  name="Request"
+                  component={Request}
+                  options={{
+                    title: "Contratar"
                   }}
                 />
               </Stack.Navigator>

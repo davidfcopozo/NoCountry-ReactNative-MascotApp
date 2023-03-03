@@ -13,18 +13,21 @@ const {
   deleteUserFavourites,
   addUserFavourites,
   getSearch,
-  addUserReview
+  resetPassword,
+  getUsersSameCity
 } = require("../controllers/users");
-const decodeToken = require("../middleware");
+// const decodeToken = require("../middleware");
 
 const router = Router();
 
 // El middleware decodeToken se aplica a determinadas rutas (son las que se necesita estar logueado para poder acceder)
+
 router.get("/", getUsers); // ,decodeToken
-router.get("/rating", getUsersBestRating);
-router.get("/category", getUsersByCategory);
 router.post("/register", register);
 router.post("/login", login);
+router.get("/city/:city/:id", getUsersSameCity); // ,decodeToken
+router.get("/rating", getUsersBestRating);
+router.get("/category", getUsersByCategory);
 router.get("/filter", getUsersByFilter);
 router.get("/search", getSearch);
 router.get("/favourites/:id", getUserFavourites); // ,decodeToken
@@ -33,6 +36,6 @@ router.delete("/favourites/:id/:favourite", deleteUserFavourites); // ,decodeTok
 router.patch("/:id", updateUser); // ,decodeToken
 router.delete("/:id", deleteUser); // ,decodeToken
 router.get("/:id", getUserById); // ,decodeToken
-router.post("/review/:id", addUserReview); // ,decodeToken
+router.put("/password", resetPassword); // ,decodeToken
 
 module.exports = router;
