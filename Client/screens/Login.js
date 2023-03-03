@@ -103,7 +103,9 @@ const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
 
   return (
     <>
-      <Toast />
+      <View className="z-10">
+        <Toast />
+      </View>
       <View className="flex gap-y-2 px-4 pb-8 lg:px-8 lg:py-8 w-full">
         {loading ? (
           <View className="absolute bottom-0  top-[-60] left-[-20] right-0 justify-center  align-center w-[100vw] bg-gray-100 opacity-25 h-[100vh] m-0 z-10">
@@ -117,7 +119,7 @@ const Login = ({ openLogin, setOpenLogin, setOpenRegister }) => {
         ) : null}
         <Image
           style={{
-            resizeMode: "contain"
+            resizeMode: "contain",
           }}
           className="mb-4 h-28 w-56 mx-auto"
           source={require("../assets/logo.png")}

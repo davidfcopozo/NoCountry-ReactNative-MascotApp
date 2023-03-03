@@ -28,26 +28,28 @@ const FormEditProfile = () => {
   console.log(currentUser);
 
   const cloudinaryUpload = async () => {
-    const data = new FormData();
-    data.append("file", {
-      uri: image,
-      type: "image/*",
-      name: "filename"
-    });
-    data.append("upload_preset", "mascot");
-    data.append("cloud_name", "dizfi5qoy");
-    const res = await fetch("https://api.cloudinary.com/v1_1/dizfi5qoy/image/upload", {
-      method: "post",
-      body: data
-    })
-      .then(res => res.json())
-      .then(data => {
-        return data.secure_url;
-      })
-      .catch(err => {
-        Alert.alert("An Error Occured While Uploading");
+    if (image) {
+      const data = new FormData();
+      data.append("file", {
+        uri: image,
+        type: "image/*",
+        name: "filename"
       });
-    return res;
+      data.append("upload_preset", "mascot");
+      data.append("cloud_name", "dizfi5qoy");
+      const res = await fetch("https://api.cloudinary.com/v1_1/dizfi5qoy/image/upload", {
+        method: "post",
+        body: data
+      })
+        .then(res => res.json())
+        .then(data => {
+          return data.secure_url;
+        })
+        .catch(err => {
+          Alert.alert("An Error Occured While Uploading");
+        });
+      return res; 
+    }
   };
 
   const pickImage = async () => {
@@ -80,7 +82,7 @@ const FormEditProfile = () => {
     dispatch(
       updateUser({
         formData,
-        profile_pic: res,
+        profile_pic: res? res : user?.profile_pic,
         id: user?.id
       })
     );
