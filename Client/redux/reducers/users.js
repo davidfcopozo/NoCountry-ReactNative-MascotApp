@@ -15,7 +15,8 @@ import {
   fetchPetsUser,
   fetchJobOffersUser,
   updateUser,
-  fetchReviewsUser
+  fetchReviewsUser,
+  addNewPet
 } from "../actions";
 
 const initialState = {
@@ -99,6 +100,9 @@ const usersReducer = createSlice({
     });
     builder.addCase(fetchReviewsUser.fulfilled, (state, action) => {
       state.reviewsUser = action.payload;
+    });
+    builder.addCase(addNewPet.fulfilled, (state, action) => {
+      state.petsUsers.push(action.payload);
     });
   }
 });
