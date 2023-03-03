@@ -35,7 +35,6 @@ const UserProfile = ({ route }) => {
   const favorited = useSelector(state => state.users.favouriteUsers);
   const userActive = route?.params?.user ? false : true;
   const { petsUsers, jobOffersUser, reviewsUser } = useSelector(state => state.users);
-  console.log("ss: ", reviewsUser);
 
   useEffect(() => {
     dispatch(fetchPetsUser({ currentUser }));
