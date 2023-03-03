@@ -21,7 +21,6 @@ export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
 
 export const sortUsersByRating = createAsyncThunk("users/sortUsersByRating", async id => {
   try {
-    console.log(id, typeof id);
     const users = await axios.get(`/users/rating?id=${id}`);
     return users.data;
   } catch (error) {
