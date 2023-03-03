@@ -20,7 +20,7 @@ import {
   fetchRequestsUser,
   fetchRequestInfoUserId,
   fetchJobOffersRequestUser,
-  fetchRequestInfoUsers
+  fetchRequestInfoUsers,
   updateUser,
   fetchReviewsUser,
   addNewPet
@@ -44,7 +44,7 @@ const initialState = {
   userContracted: [],
   userContractedJobOffers: [],
   isLogin: false,
-  usersContracted: []
+  usersContracted: [],
   reviewsUser: [],
   isLogin: false
 };
