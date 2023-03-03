@@ -42,7 +42,7 @@ real.
 
 ```sh
 
-- api -> Backend
+- api -> Backend URL
 - FB_API_KEY -> Firebase
 - FB_AUTH_DOMAIN -> Firebase
 - FB_PROJECT_ID -> Firebase
@@ -55,7 +55,7 @@ real.
 ### Backend
 
 ```sh
-- DB_DEPLY = Postgres uri
+- DB_DEPLOY = Postgres uri
 - PORT = Server Port
 ```
 
