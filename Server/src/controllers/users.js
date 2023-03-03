@@ -166,12 +166,12 @@ const getUsersSameCity = async (req, res) => {
 };
 
 const getUsersBestRating = async (req, res) => {
+  const { id } = req.query;
+
   try {
     const usersOrdered = await User.findAll({
       where: {
-        rating: {
-          [Op.gt]: 0
-        }
+        offers_services: true
       },
       include: {
         model: Category
@@ -179,7 +179,19 @@ const getUsersBestRating = async (req, res) => {
       order: [["rating", "DESC"]]
     });
 
-    return res.status(200).json(usersOrdered);
+    if (id && id === "undefined") {
+      return res.status(200).json(usersOrdered);
+    } else {
+      if (id && !isValidNumber(id))
+        return res.status(400).json({ errorMessage: "The id must be an integer" });
+
+      const user = await User.findByPk(id);
+      if (user === null)
+        return res.status(404).json({ errorMessage: "There is no user with that id" });
+
+      const filteringCurrentUser = usersOrdered.filter(user => user.id !== parseInt(id));
+      return res.status(200).json(filteringCurrentUser);
+    }
   } catch (error) {
     return res.status(500).json({
       errorMessage: error.original ? error.original : error
