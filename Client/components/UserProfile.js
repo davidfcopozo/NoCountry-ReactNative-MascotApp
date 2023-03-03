@@ -6,7 +6,8 @@ import {
   ScrollView,
   Pressable,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  Platform
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Link, useTheme } from "@react-navigation/native";
@@ -89,7 +90,7 @@ const UserProfile = ({ route }) => {
     );
 
   return (
-    <ScrollView className="p-5 gap-y-5">
+    <ScrollView className={"px-5 pt-6 gap-y-5 h-full " + ( Platform.OS === "ios" ? "mb-10" : "")}>
       <View className="flex flex-row pl-2">
         {user.profile_pic ? (
           <Image
@@ -286,7 +287,7 @@ const UserProfile = ({ route }) => {
                   >
                     <View
                       key={jobOffer.id}
-                      className="relative shadow-sm rounded-lg overflow-hidden bg-white/10 mt-3"
+                      className="relative shadow-sm rounded-lg overflow-hidden bg-white/10 mt-3 w-[120px]"
                     >
                       <Image
                         className="h-24"
@@ -335,7 +336,7 @@ const UserProfile = ({ route }) => {
         {userActive ? (
           <View className="">
             {petsUsers?.length >= 1 ? (
-              <View className="flex flex-row gap-x-4 justify-center flex-wrap">
+              <View className="flex flex-row gap-x-4 justify-start flex-wrap">
                 {petsUsers.map(pet => (
                   <View key={pet.id} className="flex flex-row">
                     <View className="w-36 pt-3 mt-3 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
@@ -516,7 +517,7 @@ const UserProfile = ({ route }) => {
       </View>
 
       {user.offers_services ? (
-        <View>
+        <View className="mb-40">
           <Text style={{ color: colors.text }} className="text-xl font-bold mb-1">
             Reseñas
           </Text>
@@ -567,7 +568,7 @@ const UserProfile = ({ route }) => {
       ) : undefined}
 
       {userActive ? (
-        <View className="flex justify-center items-center">
+        <View className="flex justify-center items-center mb-10">
           <TouchableOpacity
             onPress={handleLogOut}
             className="bg-violet-700 py-2.5 px-4 rounded-lg mt-10"
