@@ -54,8 +54,10 @@ real.
 
 ### Backend
 
+```sh
 - DB_DEPLY = Postgres uri
 - PORT = Server Port
+```
 
 # Instalación
 
