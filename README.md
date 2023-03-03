@@ -2,7 +2,7 @@
 
 # MascotApp
 
-<a href="mascotapp.netlify.app"><img width=200 src="https://res.cloudinary.com/dizfi5qoy/image/upload/v1677875491/Screenshot_2023-03-03_at_17.31.12_sxhm8e.png"></a>
+<a href="https://mascotapp.netlify.app"><img width=200 src="https://res.cloudinary.com/dizfi5qoy/image/upload/v1677875491/Screenshot_2023-03-03_at_17.31.12_sxhm8e.png"></a>
 
 ## Descrioción
 
