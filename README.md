@@ -1,4 +1,4 @@
-![Logo](https://res.cloudinary.com/dizfi5qoy/image/upload/v1677870789/paw_nbbzkj.png)
+![Logo](https://res.cloudinary.com/dizfi5qoy/image/upload/v1677872092/paw_aeuqdu.png)
 
 # MascotApp
 
