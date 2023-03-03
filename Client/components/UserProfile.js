@@ -13,7 +13,13 @@ import { Link, useTheme } from "@react-navigation/native";
 import { Children, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { actionLogin } from "../redux/reducers/users";
-import { addFavourite, deleteFavourite, fetchFavourites, logOutUser } from "../redux/actions";
+import {
+  addFavourite,
+  deleteFavourite,
+  fetchFavourites,
+  fetchReviewsUser,
+  logOutUser
+} from "../redux/actions";
 import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import VisitorOptions from "./VisitorOptions";
@@ -31,10 +37,8 @@ const UserProfile = ({ route }) => {
   const user = route?.params ? route.params.user : currentUser?.data;
   const favorited = useSelector(state => state.users.favouriteUsers);
   const userActive = route?.params?.user ? false : true;
-  const { petsUsers } = useSelector(state => state.users);
-  const { petsUsersSearch } = useSelector(state => state.users);
-  const { jobOffersUser } = useSelector(state => state.users);
-  const { jobOffersUserSearch } = useSelector(state => state.users);
+  const { petsUsers, petsUsersSearch, jobOffersUser, jobOffersUserSearch, reviewsUser} = useSelector(state => state.users);
+
 
   useEffect(() => {
     dispatch(cleanState());
@@ -42,7 +46,9 @@ const UserProfile = ({ route }) => {
     dispatch(fetchJobOffersUser({ currentUser }));
     dispatch(fetchPetsUserSearch({ user }));
     dispatch(fetchJobOffersUserSearch({ user }));
-  }, []);
+    dispatch(fetchReviewsUser(currentUser));
+  }, [dispatch]);
+
 
   const handleLogOut = () => {
     dispatch(actionLogin(false));
@@ -105,7 +111,7 @@ const UserProfile = ({ route }) => {
 
         <View className="flex justify-between flex-row w-full flex-shrink pl-4">
           <View className="flex flex-col gap-y-2">
-            <Text style={{ color: colors.text }} className="text-2xl font-bold -mb-1">
+            <Text style={{ color: colors.text }} className="text-2xl font-bold -mb-1 max-w-[150px]">
               {user.name} {user.surname}
             </Text>
             <Text numberOfLines={1} style={{ color: colors.textGray }} className="text-sm -mb-1">
@@ -266,7 +272,7 @@ const UserProfile = ({ route }) => {
             )}
           </View>
         ) : (
-          <View className="">
+          <View>
             {jobOffersUserSearch?.length >= 1 ? (
               <ScrollView
                 horizontal={true}
@@ -515,7 +521,7 @@ const UserProfile = ({ route }) => {
             Reseñas
           </Text>
 
-          {user.offers_services ? (
+          {reviewsUser?.length ? (
             <View className="shadow-sm py-3 px-4 rounded-lg bg-white/10 mt-2 mb-10">
               <View className="flex flex-row items-center gap-x-6">
                 <View className="">

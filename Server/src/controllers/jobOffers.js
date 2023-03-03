@@ -5,8 +5,7 @@ const getUserJobOffers = async (req, res) => {
   const { userId } = req.query;
 
   try {
-    if (!userId) return res.status(400).json({ errorMessage: "UserId missing" });
-    if (!isValidNumber(userId))
+    if (userId && !isValidNumber(userId))
       return res.status(400).json({ errorMessage: "The userId must be an integer" });
 
     const user = await User.findByPk(userId, { include: JobOffer });

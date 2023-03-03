@@ -125,7 +125,8 @@ const Messages = () => {
         chatList?.map(user => (
           <View className="flex flex-row justify-between items-center">
             <Link to={{ screen: "Message", params: { user: user } }}>
-            <View className="flex flex-row items-center gap-x-5 -mb-2">
+            <View className="flex flex-row items-center -mb-2">
+              <View className="mx-3">
               {user?.profile_pic ? (
                 <Image
                   style={{
@@ -141,6 +142,7 @@ const Messages = () => {
               ) : (
                 <Ionicons name="person-circle-outline" size={85} color={colors.text} />
               )}
+              </View>
 
               <Text style={{ color: colors.text }} className="font-bold text-xl">
                 {user?.name+" "+user?.surname}

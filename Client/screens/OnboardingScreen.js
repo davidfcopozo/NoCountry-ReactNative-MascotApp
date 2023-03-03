@@ -3,30 +3,7 @@ import React, { useRef, useState } from "react";
 import { FlatList, useWindowDimensions, View } from "react-native";
 import OnboardingFooter from "../components/OnboardingFooter";
 import OnboardingSlide from "../components/OnboardingSlide";
-
-const slides = [
-  {
-    id: "1",
-    image: require("../assets/People_with_dogs.png"),
-    title: "Conectamos Mascoteros y dueños de mascotas",
-    description:
-      "Si necesitas algún tipo de cuidado para tu mascota, ofrecer tus servicios o ambos, en MascotApp lo puedes hacer."
-  },
-  {
-    id: "2",
-    image: require("../assets/pet-sitter-city.png"),
-    title: "Encuentra y ofrece servicios en tu ciudad",
-    description:
-      "En cuestión de segundos podras encontrar Mascoteros cerca de tí u ofrecer tus servicios en tu ciudad."
-  },
-  {
-    id: "3",
-    image: require("../assets/pet-sitter-owner.png"),
-    title: "¡A cuidar las mascotas!",
-    description:
-      "Contacta al Mascotero o comunícate con dueños de mascotas para contratar los servicios."
-  }
-];
+import slides from "../db/onboardingSlides";
 
 const OnboardingScreen = ({ setFinishedOnboarding }) => {
   const { width } = useWindowDimensions();
@@ -65,7 +42,9 @@ const OnboardingScreen = ({ setFinishedOnboarding }) => {
         horizontal
         data={slides}
         pagingEnabled
-        renderItem={({ item }) => <OnboardingSlide item={item} />}
+        renderItem={({ item }) => (
+          <OnboardingSlide image={item.image} title={item.title} description={item.description} />
+        )}
       />
       <OnboardingFooter
         currentSlideIndex={currentSlideIndex}

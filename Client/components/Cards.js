@@ -1,12 +1,14 @@
 import { Text, View, Image, Pressable, ScrollView } from "react-native";
 import { Children } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Link, useTheme } from "@react-navigation/native";
+import { useTheme } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 // Componente de Cards renderiza la info de cada mascotero ofreciendo su servicio
 
 const Cards = ({ Data }) => {
   const { colors } = useTheme();
+  const navigation = useNavigation();
 
   return (
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} className="gap-x-3 py-2">
@@ -14,7 +16,11 @@ const Cards = ({ Data }) => {
         <>
           {Children.toArray(
             Data.map(card => (
-              <Link to={{ screen: "VisitProfile", params: { user: card } }}>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate({ name: "VisitProfile", params: { user: card } })
+                }
+              >
                 <View className="w-44 relative shadow-sm rounded-lg overflow-hidden bg-white/10">
                   <Image
                     className="h-36"
@@ -67,7 +73,7 @@ const Cards = ({ Data }) => {
                     </View>
                   </View>
                 </View>
-              </Link>
+              </Pressable>
             ))
           )}
           {/* <Link to={{ screen: "Jobs" }}>

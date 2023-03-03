@@ -27,6 +27,7 @@ const Filter = ({ openFilter, setOpenFilter, currentSearch}) => {
     filterBy = filters.training? filterBy+"&training=4" : filterBy
     filterBy = filters.hair? filterBy+"&hair=5" : filterBy
 
+    filterBy = filterBy + `&timestamp=${new Date().getTime()}`
     dispatch(searchView({...filters, ...currentSearch}));
 
     console.log(filterBy);

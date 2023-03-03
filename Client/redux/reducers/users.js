@@ -21,6 +21,9 @@ import {
   fetchRequestInfoUserId,
   fetchJobOffersRequestUser,
   fetchRequestInfoUsers
+  updateUser,
+  fetchReviewsUser,
+  addNewPet
 } from "../actions";
 
 const initialState = {
@@ -42,6 +45,8 @@ const initialState = {
   userContractedJobOffers: [],
   isLogin: false,
   usersContracted: []
+  reviewsUser: [],
+  isLogin: false
 };
 
 const usersReducer = createSlice({
@@ -119,6 +124,19 @@ const usersReducer = createSlice({
     });
     builder.addCase(fetchJobOffersRequestUser.fulfilled, (state, action) => {
       state.userContractedJobOffers = action.payload;
+    });
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      const { formData, profile_pic } = action.meta.arg;
+      state.currentUser = {
+        ...state.currentUser,
+        ...{ data: { ...state.currentUser.data, ...formData, profile_pic: profile_pic } }
+      };
+    });
+    builder.addCase(fetchReviewsUser.fulfilled, (state, action) => {
+      state.reviewsUser = action.payload;
+    });
+    builder.addCase(addNewPet.fulfilled, (state, action) => {
+      state.petsUsers.push(action.payload);
     });
   }
 });
