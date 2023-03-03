@@ -5,8 +5,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { updateUser } from "../redux/actions";
-import * as ImagePicker from 'expo-image-picker';
-
+import * as ImagePicker from "expo-image-picker";
 
 const FormEditProfile = () => {
   const colorScheme = "light";
@@ -18,59 +17,58 @@ const FormEditProfile = () => {
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState("Actualizar");
 
-
   const [formData, setFormData] = useState({
-    name: user? user.name : null,
-    surname: user? user.surname : null,
-    city: user? user.city : null,
-    description: user? user.description : null,
+    name: user ? user.name : null,
+    surname: user ? user.surname : null,
+    city: user ? user.city : null,
+    description: user ? user.description : null,
     services: [],
     pets: []
   });
+  console.log(currentUser);
 
   const cloudinaryUpload = async () => {
-    const data = new FormData()
-    data.append('file', {
+    const data = new FormData();
+    data.append("file", {
       uri: image,
       type: "image/*",
       name: "filename"
-    })
-    data.append('upload_preset', 'mascot')
-    data.append("cloud_name", "dizfi5qoy")
+    });
+    data.append("upload_preset", "mascot");
+    data.append("cloud_name", "dizfi5qoy");
     const res = await fetch("https://api.cloudinary.com/v1_1/dizfi5qoy/image/upload", {
       method: "post",
       body: data
-    }).then(res => res.json())
-    .then(data => {
-        return data.secure_url
-      }).catch(err => {
-        Alert.alert("An Error Occured While Uploading")
+    })
+      .then(res => res.json())
+      .then(data => {
+        return data.secure_url;
       })
-    return res
-  }
+      .catch(err => {
+        Alert.alert("An Error Occured While Uploading");
+      });
+    return res;
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [10, 10],
-      quality: 1,
+      quality: 1
     });
-
-    console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
-  }
+  };
 
   const handleChange = name => {
-      if (name) {
-        return val => {
-          setFormData({ ...formData, [name]: val });
-          //setValid({ ...valid, [name]: true });
-        };
-      } //else setValid({ ...valid, [name]: false });
+    if (name) {
+      return val => {
+        setFormData({ ...formData, [name]: val });
+      };
+    }
   };
 
   const handleSubmit = async () => {
@@ -79,14 +77,13 @@ const FormEditProfile = () => {
 
     const res = await cloudinaryUpload();
 
-    dispatch(updateUser({
-      formData,
-      profile_pic: res,
-      id: user?.id
-    }))
-/*     setTimeout(() => {
-      alert(JSON.stringify(formData, null, 2));
-    }, 100); */
+    dispatch(
+      updateUser({
+        formData,
+        profile_pic: res,
+        id: user?.id
+      })
+    );
 
     navigation.goBack();
   };
@@ -97,8 +94,7 @@ const FormEditProfile = () => {
         <View>
           <View>
             <View className="flex items-center mb-3">
-            {
-              image?
+              {image ? (
                 <Image
                   style={{
                     width: 100,
@@ -110,32 +106,36 @@ const FormEditProfile = () => {
                     uri: image
                   }}
                 />
-                :
-                user.profile_pic?(
-                  <Image
-                    style={{
-                      width: 100,
-                      height: 100,
-                      resizeMode: "cover"
-                    }}
-                    className="rounded-full"
-                    source={{
-                      uri: user.profile_pic
-                    }}
+              ) : user.profile_pic ? (
+                <Image
+                  style={{
+                    width: 100,
+                    height: 100,
+                    resizeMode: "cover"
+                  }}
+                  className="rounded-full"
+                  source={{
+                    uri: user.profile_pic
+                  }}
+                />
+              ) : (
+                <View className="rounded-full bg-white flex items-center">
+                  <Ionicons
+                    name="person-circle-outline"
+                    size={100}
+                    fill={colorScheme === "dark" ? "#fff" : "#000"}
                   />
-                ) : (
-                  <View className="rounded-full bg-white flex items-center">
-                    <Ionicons
-                      name="person-circle-outline"
-                      size={100}
-                      fill={colorScheme === "dark" ? "#fff" : "#000"}
-                    />
-                  </View>
-                )
-            }
+                </View>
+              )}
             </View>
-            <View className="flex justify-center items-center mb-5" style={{ color: colors.text, borderColor: colors.text }}>
-              <TouchableOpacity className="bg-violet-700 py-2.5 px-6 rounded-lg" onPress={pickImage}>
+            <View
+              className="flex justify-center items-center mb-5"
+              style={{ color: colors.text, borderColor: colors.text }}
+            >
+              <TouchableOpacity
+                className="bg-violet-700 py-2.5 px-6 rounded-lg"
+                onPress={pickImage}
+              >
                 <Text className="text-white font-bold">Subir foto</Text>
               </TouchableOpacity>
             </View>
@@ -183,7 +183,7 @@ const FormEditProfile = () => {
                 className="border rounded-lg"
               >
                 <TextInput
-                  className="p-2" 
+                  className="p-2"
                   style={{ color: colors.text, borderColor: colors.text }}
                   onChangeText={handleChange("city")}
                   value={formData.city}
@@ -208,7 +208,7 @@ const FormEditProfile = () => {
               </View>
             </View>
 
-{/*             <View className="gap-y-1 pb-3">
+            {/*             <View className="gap-y-1 pb-3">
               <Text style={{ color: colors.text }} className="text-lg font-bold">
                 Servicios
               </Text>
@@ -259,7 +259,9 @@ const FormEditProfile = () => {
         <View className="flex justify-center items-center">
           <TouchableOpacity
             className="bg-violet-700 py-2 px-6 rounded-lg"
-            onPress={() => {handleSubmit(), setMessage("Guardando..")}}
+            onPress={() => {
+              handleSubmit(), setMessage("Guardando..");
+            }}
           >
             <Text className="text-lg text-white font-bold">{message}</Text>
           </TouchableOpacity>

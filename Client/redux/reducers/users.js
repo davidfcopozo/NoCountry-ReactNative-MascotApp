@@ -14,6 +14,7 @@ import {
   fetchNearbyUsers,
   fetchPetsUser,
   fetchJobOffersUser,
+  updateUser,
   fetchReviewsUser
 } from "../actions";
 
@@ -88,6 +89,13 @@ const usersReducer = createSlice({
     });
     builder.addCase(fetchJobOffersUser.fulfilled, (state, action) => {
       state.jobOffersUser = action.payload;
+    });
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      const { formData, profile_pic } = action.meta.arg;
+      state.currentUser = {
+        ...state.currentUser,
+        ...{ data: { ...state.currentUser.data, ...formData, profile_pic: profile_pic } }
+      };
     });
     builder.addCase(fetchReviewsUser.fulfilled, (state, action) => {
       state.reviewsUser = action.payload;
