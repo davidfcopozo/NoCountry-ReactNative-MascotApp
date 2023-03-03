@@ -34,9 +34,9 @@ const FormEditProfile = () => {
       type: "image/*",
       name: "filename"
     });
-    data.append("upload_preset", "ml_default");
-    data.append("cloud_name", "ddlvn2tkf");
-    const res = await fetch("https://api.cloudinary.com/v1_1/ddlvn2tkf/image/upload", {
+    data.append("upload_preset", "mascot");
+    data.append("cloud_name", "dizfi5qoy");
+    const res = await fetch("https://api.cloudinary.com/v1_1/dizfi5qoy/image/upload", {
       method: "post",
       body: data
     })
