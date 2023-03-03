@@ -42,7 +42,7 @@ const Review = () => {
           <Text style={{ color: colors.text }} className="text-lg font-bold -mb-3">
             Cantidad de estrellas
           </Text>
-          {errors? <Text>La calificación es obligatoria.</Text> : undefined}
+          {errors? <Text className="text-red-600">La calificación es obligatoria.</Text> : undefined}
 
           <View className="flex flex-row gap-x-1">
             {Children.toArray(
@@ -74,8 +74,6 @@ const Review = () => {
             />
           </View>
         </View>
-
-        <Text>{JSON.stringify(formData)}</Text>
 
         <View className="px-5">
           <TouchableOpacity

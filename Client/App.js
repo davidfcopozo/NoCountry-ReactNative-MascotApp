@@ -189,15 +189,12 @@ function App() {
 
   const { colors } = useTheme();
 
-  // Esto toma el tema del dispositivo
-  // const scheme = useColorScheme();
-
   return (
     <NativeRouter>
       <AuthProvider>
         <Provider store={store}>
           <PersistGate persistor={persistorStore}>
-            <StatusBar barStyle={Platform.OS === "ios"? isDarkMode ? "light-content" : "dark-content" : "light-content"} />
+            <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
 
             <NavigationContainer theme={isDarkMode ? CustomDark : CustomLight}>
               <Stack.Navigator

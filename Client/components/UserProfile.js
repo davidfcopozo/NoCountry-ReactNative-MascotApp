@@ -35,7 +35,6 @@ const UserProfile = ({ route }) => {
   const favorited = useSelector(state => state.users.favouriteUsers);
   const userActive = route?.params?.user ? false : true;
   const { petsUsers, jobOffersUser, reviewsUser } = useSelector(state => state.users);
-  console.log("ss: ", reviewsUser);
 
   useEffect(() => {
     dispatch(fetchPetsUser({ currentUser }));
@@ -104,7 +103,7 @@ const UserProfile = ({ route }) => {
 
         <View className="flex justify-between flex-row w-full flex-shrink pl-4">
           <View className="flex flex-col gap-y-2">
-            <Text style={{ color: colors.text }} className="text-2xl font-bold -mb-1">
+            <Text style={{ color: colors.text }} className="text-2xl font-bold -mb-1 max-w-[150px]">
               {user.name} {user.surname}
             </Text>
             <Text numberOfLines={1} style={{ color: colors.textGray }} className="text-sm -mb-1">
