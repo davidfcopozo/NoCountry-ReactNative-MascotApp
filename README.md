@@ -1,8 +1,8 @@
 ![Logo](https://res.cloudinary.com/dizfi5qoy/image/upload/v1677872198/paw_durtut.png)
 
-# MascotApp
-
-<a href="https://mascotapp.netlify.app"><img width=200 src="https://res.cloudinary.com/dizfi5qoy/image/upload/v1677875491/Screenshot_2023-03-03_at_17.31.12_sxhm8e.png"></a>
+<p align="center"><a href="https://mascotapp.netlify.app"><img width=200 src="https://res.cloudinary.com/dizfi5qoy/image/upload/v1677875491/Screenshot_2023-03-03_at_17.31.12_sxhm8e.png"></a></p>
+<br />
+<br />
 
 ## Descripción
 
