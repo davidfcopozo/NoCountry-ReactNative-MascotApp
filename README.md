@@ -6,6 +6,8 @@
 
 ## Descripción
 
+Aplicación móvil que tiene como objetivo el cuidado de las mascotas y una conexión que permita acercar a clientes/dueños con prestadores de servicios varios (tales como paseos, peluquería, transporte y cuidado general).
+
 Este proyecto fue desarrollado en React Native usando las tecnologías de NativeWind para estilar la Aplicación.
 Para el backend se utilizó Node.js junto con Express para gestionar los usuarios y su actividad en la app.
 Por su parte, para la base de datos se utilizó PostgreSQL, teniendo como ORM a Sequelize.
