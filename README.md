@@ -6,7 +6,7 @@
 
 ## Descripción
 
-Este proyecto fue desarrollado en React Native usando las tecnologias de NativeWind para estilar la Aplicación.
+Este proyecto fue desarrollado en React Native usando las tecnologías de NativeWind para estilar la Aplicación.
 Para el backend se utilizó Node.js junto con Express para gestionar los usuarios y su actividad en la app.
 Por su parte, para la base de datos se utilizó PostgreSQL, teniendo como ORM a Sequelize.
 Y por último, tanto para realizar la autenticación como para integrar la funcionalidad del chat en tiempo real se implementó Firebase.
