@@ -17,7 +17,7 @@ Y por último, tanto para realizar la autenticación como para integrar la funci
 
 ## Desarrollado con
 
-### ⚙️ Lenguaje de programación
+### 🛠️ Lenguaje de programación
 
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 <br />
