@@ -110,7 +110,7 @@ npm install
 ```
 
 ```sh
-npx nodemon
+npm start
 ```
 <br />
 
